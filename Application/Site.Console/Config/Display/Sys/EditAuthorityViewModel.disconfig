@@ -1,0 +1,57 @@
+{
+    "types": [
+      {
+        "typeName": "EZNEW.ViewModel.Sys.Request.EditAuthorityViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "displays": [
+          {
+            "name": "AuthGroup",
+            "display": {
+              "displayTxt": "权限分组"
+            }
+          },
+          {
+            "name": "AuthType",
+            "display": {
+              "displayTxt": "类型"
+            }
+          },
+          {
+            "name": "Code",
+            "display": {
+              "displayTxt": "编码"
+            }
+          },
+          {
+            "name": "CreateDate",
+            "display": {
+              "displayTxt": "添加时间"
+            }
+          },
+          {
+            "name": "Name",
+            "display": {
+              "displayTxt": "名称"
+            }
+          },
+          {
+            "name": "Remark",
+            "display": {
+              "displayTxt": "描述"
+            }
+          },
+          {
+            "name": "Sort",
+            "display": {
+              "displayTxt": "排序"
+            }
+          },
+          {
+            "name": "Status",
+            "display": {
+              "displayTxt": "状态"
+            }
+          }
+        ]
+      }
+    ]
+}

@@ -1,0 +1,136 @@
+
+@{
+    ViewBag.Title = "编辑用户";
+}
+@using EZNEW.Web.Utility;
+@using EZNEW.ViewModel.Sys.Request
+@using EZNEW.Framework.Extension
+@using EZNEW.Application.Identity.User;
+@model EditUserViewModel
+@{
+    bool isAdd = Model == null || Model.SysNo <= 0;
+}
+
+<div id="page-body">
+    <div id="page-body-inner">
+        <div class="layui-form">
+            @using (Html.AjaxBeginForm("Edituser", "sys", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "UserSuccessCallback", OnFailure = "UserFailedCallback" }, new { id = "default-form", @class = "pdt-10" }))
+            {
+                @Html.Hidden("SysNo", null, new { id = "SysNo" })
+                @if (isAdd)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">@Html.LabelFor(c => c.UserName)</label>
+                        <div class="layui-input-inline w-200">
+                            @Html.TextBoxFor(a => a.UserName, new { @class = "layui-input", autocomplete = "off" })
+                        </div>
+                        <div class="layui-form-mid form-validate-msg">
+                            @Html.DefaultValidationMessageFor(c => c.UserName, "", new { @class = "form-validate-msg" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">@Html.LabelFor(c => c.UserName)</label>
+                        <div class="layui-input-inline w-200 lh-38 fs-16">
+                            @Model.UserName
+                        </div>
+                    </div>
+                }
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.RealName)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.RealName, new { @class = "layui-input", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.RealName, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+                @if (isAdd)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">@Html.LabelFor(c => c.Pwd)</label>
+                        <div class="layui-input-inline w-200">
+                            @Html.PasswordFor(a => a.Pwd, new { @class = "layui-input", autocomplete = "off" })
+                        </div>
+                        <div class="layui-form-mid form-validate-msg">
+                            @Html.DefaultValidationMessageFor(c => c.Pwd, "", new { @class = "form-validate-msg" })
+                        </div>
+                    </div>
+                }
+                @if (!Model.SuperUser)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">@Html.LabelFor(c => c.Status)</label>
+                        <div class="layui-input-inline w-200">
+                            @Html.EnumToSelect(a => a.Status, RoleStatus.正常, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                        </div>
+                    </div>
+                }
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Mobile)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.Mobile, new { @class = "layui-input", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Mobile, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Email)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.Email, new { @class = "layui-input", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Email, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.QQ)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.QQ, new { @class = "layui-input", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.QQ, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="page-foot" class="hidev">
+    <div class="page-foot-btngroup">
+        <button class="layui-btn layui-btn-gsuccess" id="btn_submit"><i class="icon-save"></i> 提交</button>
+        <button type="reset" class="layui-btn layui-btn-gsecondary" id="btn_reset"><i class="icon-undo"></i> 重置</button>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        var userDetailUrl = '@Url.Action("AdminUserDetail","Sys",new { id="_id"})';
+        $(function () {
+            BindDefaultFormSubmitEnterEvent();
+        });
+
+        //成功回调
+        function UserSuccessCallback(res) {
+            if (!res) {
+                return;
+            }
+            ResultMsg(res);
+            if (res.Success) {
+                window.top.RedirectCurrentPage(userDetailUrl.replace('_id', res.Data.SysNo), '用户详情');
+            }
+        }
+
+        //失败回掉
+        function UserFailedCallback() {
+            ErrorMsg('提交失败');
+        }
+    </script>
+}

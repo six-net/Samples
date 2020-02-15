@@ -1,0 +1,165 @@
+@{
+    ViewBag.Title = "操作权限";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using EZNEW.Framework.Extension;
+@using EZNEW.Application.Identity.Auth;
+@using EZNEW.Framework.Serialize;
+@{
+    var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
+}
+<div id="page-head">
+    <div class="layui-row pd-0 mg-0">
+        <div class="column layui-form lis_search pd-0 pdb-10">
+            <div class="list_search_inputgroup">
+                <label class="layui-form-label">权限名称/编码</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="search_authname" placeholder="权限名称/编码" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="list_search_inputgroup mgl-5">
+                @Html.AuthIcoButton("搜索", "Sys", "SearchAuthorityOperationBindAuthority",
+                new { @class= "layui-btn layui-btn-sm", id = "search_btn" }
+                ,new {@class= "icon-search" })
+
+                @Html.AuthIcoButton("添加权限", "Sys", "OperationBindAuthority",
+                new { @class= "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addauthority" }
+                ,new {@class= "icon-plus" })
+
+                @Html.AuthIcoButton("删除选中", "Sys", "OperationUnBindAuthority",
+                new { @class= "layui-btn layui-btn-danger layui-btn-sm", id = "deleteselect_btn" }
+                ,new {@class= "icon-trash" })
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page-body">
+    <table id="demo" lay-filter="demo"></table>
+</div>
+<div id="page-foot" class="pd-5 h-38"></div>
+
+@section Scripts{
+    <script type="text/html" id="auth_status">
+        {{authStatusDict[d.Status]}}
+    </script>
+    <script type="text/html" id="auth_group">
+        {{d.Group.Name}}
+    </script>
+    <script type="text/html" id="auth_bar">
+        @Html.AuthIcoButton("删除", "Sys", "OperationUnBindAuthority",
+        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "auth_del" }
+        ,new {@class= "icon-trash" })
+    </script>
+    <script type="text/javascript">
+        var authStatusDict = new Object();
+        $(function () {
+            authStatusDict = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            InitTable({
+                elem: 'demo',
+                defaultToolbar: [],
+                cols: [[
+                    { type: 'checkbox', fixed: 'left' }
+                    , { field: 'Name', title: '名称', width: 150, fixed: 'left' }
+                    , { field: 'Code', title: '编码', minWidth: 150 }
+                    , { field: 'AuthGroup.Name', title: '分组', width: 130, templet: '#auth_group' }
+                    , { field: 'Status', title: '状态', align: 'center', width: 80, templet: '#auth_status' }
+                    , { width: 80, align: 'center', fixed: 'right', toolbar: '#auth_bar' }
+                ]]
+            }, SearchAuthority);
+
+            //搜索事件
+            $("#search_btn").click(function () {
+                SearchAuthority();
+            });
+
+            //选择权限
+            $("#btn_addauthority").click(function () {
+                SelectAuthority();
+            });
+
+            //删除选中
+            $("#deleteselect_btn").click(function () {
+                var checkedValues = GetTableCheckData("demo").data;
+                UnBindAuthority(checkedValues);
+            });
+
+            //表格事件监听
+            ListenTableEvent('demo', function (obj, btn) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                switch (layEvent) {
+                    case "auth_del":
+                        UnBindAuthority([data]);
+                        break;
+                }
+            });
+        });
+
+        //搜索权限
+        function SearchAuthority() {
+            var data = {
+                AuthorityOperationFilter: {
+                    SysNos: ['@ViewBag.OperationId']
+                },
+                NameCodeMateKey: $.trim($("#search_authname").val())
+            };
+            PageSearch({
+                url: '@Url.Action("SearchAuthorityOperationBindAuthority", "Sys")',
+                method: 'post',
+                listEle: 'demo',
+                pagerEle: 'page-foot',
+                data: data
+            });
+        }
+
+        //选择权限
+        function SelectAuthority() {
+            OpenDialogPage({
+                    title: '选择权限',
+                    content:'@Url.Action("AuthorityMultiSelect", "Sys")',
+                    area: ["700px","500px"]
+            });
+        }
+
+        //权限选择回调
+        function EZNEW_SelectCallback(res) {
+            if (!res || !res.data || res.data.keys.length<1) {
+                return;
+            }
+            var data = {
+                operationId: '@ViewBag.OperationId',
+                authIds: res.data.keys
+            };
+            $.post('@Url.Action("OperationBindAuthority", "Sys")', data, function (res) {
+                ResultMsg(res);
+                if (res.Success) {
+                    SearchAuthority();
+                }
+            });
+        }
+
+        //解绑权限
+        function UnBindAuthority(datas) {
+            if (!datas || datas.length < 1) {
+                return;
+            }
+            ConfirmMsg('确认要移除功能操作下绑定的权限吗?', function () {
+                var authIds= [];
+                for (var d in datas) {
+                    authIds.push(datas[d].SysNo);
+                }
+                var data = {
+                    operationId: '@ViewBag.OperationId',
+                    authIds: authIds
+                };
+                $.post('@Url.Action("OperationUnBindAuthority", "Sys")', data, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        SearchAuthority();
+                    }
+                });
+            });
+        }
+    </script>
+}

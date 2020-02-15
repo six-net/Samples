@@ -1,0 +1,48 @@
+{
+    "rules": [
+      {
+        "typeName": "EZNEW.ViewModel.Sys.Request.EditAuthorityOperationGroupViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "rules": [
+          {
+            "name": "Name",
+            "rules": [
+              {
+                "vtype": "Required",
+                "errorMsg": "请填写10个字符内的名称",
+                "tipMsg": true
+              },
+              {
+                "maxValue": "10",
+                "minValue": "1",
+                "vtype": "StringLength",
+                "errorMsg": "请填写10个字符内的名称",
+                "tipMsg": false
+              }
+            ]
+          },
+          {
+            "name": "Remark",
+            "rules": [
+              {
+                "maxValue": "50",
+                "minValue": "0",
+                "vtype": "StringLength",
+                "errorMsg": "请填写50个字符内的说明",
+                "tipMsg": true
+              }
+            ]
+          },
+          {
+            "name": "Status",
+            "rules": [
+              {
+                "vtype": "Required",
+                "errorMsg": "请选择状态",
+                "tipMsg": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+}

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EZNEW.VerificationCode.SkiaSharp" Version="1.0.1" />
+    <PackageReference Include="EZNEW.Web" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Modules\Sys\Business\Domain\EZNEW.Domain.Sys\EZNEW.Domain.Sys.csproj" />
+  </ItemGroup>
+
+</Project>

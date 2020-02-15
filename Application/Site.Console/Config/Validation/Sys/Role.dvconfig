@@ -1,0 +1,21 @@
+﻿{
+  "rules": [
+    {
+      "typeName": "EZNEW.Domain.Sys.Model.Role,EZNEW.Domain.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "rules": [
+        {
+          "name": "Name",
+          "rules": [
+            {
+              "maxValue": "20",
+              "minValue": "1",
+              "vtype": "StringLength",
+              "errorMsg": "名称不能为空且不能大于20个字符",
+              "tipMsg": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

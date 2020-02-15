@@ -1,0 +1,69 @@
+{
+  "types": [
+    {
+      "typeName": "EZNEW.ViewModel.Sys.Request.EditUserViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "displays": [
+        {
+          "name": "UserName",
+          "display": {
+            "displayTxt": "登陆名"
+          }
+        },
+        {
+          "name": "Status",
+          "display": {
+            "displayTxt": "状态"
+          }
+        },
+        {
+          "name": "RealName",
+          "display": {
+            "displayTxt": "姓名"
+          }
+        },
+        {
+          "name": "SuperUser",
+          "display": {
+            "displayTxt": "超级用户"
+          }
+        },
+        {
+          "name": "QQ",
+          "display": {
+            "displayTxt": "QQ"
+          }
+        },
+        {
+          "name": "Pwd",
+          "display": {
+            "displayTxt": "密码"
+          }
+        },
+        {
+          "name": "Mobile",
+          "display": {
+            "displayTxt": "手机"
+          }
+        },
+        {
+          "name": "LastLoginDate",
+          "display": {
+            "displayTxt": "最近登陆时间"
+          }
+        },
+        {
+          "name": "Email",
+          "display": {
+            "displayTxt": "邮箱"
+          }
+        },
+        {
+          "name": "CreateDate",
+          "display": {
+            "displayTxt": "添加时间"
+          }
+        }
+      ]
+    }
+  ]
+}

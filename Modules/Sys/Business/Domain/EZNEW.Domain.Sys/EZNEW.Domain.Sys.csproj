@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Model\EZNEW.Query.Sys\EZNEW.Query.Sys.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Event\" />
+  </ItemGroup>
+
+</Project>

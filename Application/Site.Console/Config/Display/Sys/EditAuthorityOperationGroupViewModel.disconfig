@@ -1,0 +1,51 @@
+{
+    "types": [
+        {
+            "typeName": "EZNEW.ViewModel.Sys.Request.EditAuthorityOperationGroupViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "displays": [
+                {
+                    "name": "Level",
+                    "display": {
+                        "displayTxt": "等级"
+                    }
+                },
+                {
+                    "name": "Name",
+                    "display": {
+                        "displayTxt": "名称"
+                    }
+                },
+                {
+                    "name": "Parent",
+                    "display": {
+                        "displayTxt": "上级"
+                    }
+                },
+                {
+                    "name": "Remark",
+                    "display": {
+                        "displayTxt": "说明"
+                    }
+                },
+                {
+                    "name": "Sort",
+                    "display": {
+                        "displayTxt": "排序"
+                    }
+                },
+                {
+                    "name": "Status",
+                    "display": {
+                        "displayTxt": "状态"
+                    }
+                },
+                {
+                    "name": "SysNo",
+                    "display": {
+                        "displayTxt": "编号"
+                    }
+                }
+            ]
+        }
+    ]
+}

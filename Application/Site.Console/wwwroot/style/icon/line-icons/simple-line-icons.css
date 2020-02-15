@@ -1,0 +1,847 @@
+@font-face {
+	font-family: 'Simple-Line-Icons';
+	src        : url('fonts/Simple-Line-Icons.eot');
+	src        : url('fonts/Simple-Line-Icons.eot?#iefix') format('embedded-opentype'),
+		url('fonts/Simple-Line-Icons.woff') format('woff'),
+		url('fonts/Simple-Line-Icons.ttf') format('truetype'),
+		url('fonts/Simple-Line-Icons.svg#Simple-Line-Icons') format('svg');
+	font-weight: normal;
+	font-style : normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family            : 'Simple-Line-Icons';
+	content                : attr(data-icon);
+	font-weight            : normal;
+	font-variant           : normal;
+	text-transform         : none;
+	line-height            : 1;
+	-webkit-font-smoothing : antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="spicon-"] {
+*/
+.spicon-user-female,
+.spicon-user-follow,
+.spicon-user-following,
+.spicon-user-unfollow,
+.spicon-trophy,
+.spicon-screen-smartphone,
+.spicon-screen-desktop,
+.spicon-plane,
+.spicon-notebook,
+.spicon-moustache,
+.spicon-mouse,
+.spicon-magnet,
+.spicon-energy,
+.spicon-emotspicon-smile,
+.spicon-disc,
+.spicon-cursor-move,
+.spicon-crop,
+.spicon-credit-card,
+.spicon-chemistry,
+.spicon-user,
+.spicon-speedometer,
+.spicon-social-youtube,
+.spicon-social-twitter,
+.spicon-social-tumblr,
+.spicon-social-facebook,
+.spicon-social-dropbox,
+.spicon-social-dribbble,
+.spicon-shield,
+.spicon-screen-tablet,
+.spicon-magic-wand,
+.spicon-hourglass,
+.spicon-graduation,
+.spicon-ghost,
+.spicon-game-controller,
+.spicon-fire,
+.spicon-eyeglasses,
+.spicon-envelope-open,
+.spicon-envelope-letter,
+.spicon-bell,
+.spicon-badge,
+.spicon-anchor,
+.spicon-wallet,
+.spicon-vector,
+.spicon-speech,
+.spicon-puzzle,
+.spicon-printer,
+.spicon-present,
+.spicon-playlist,
+.spicon-pin,
+.spicon-picture,
+.spicon-map,
+.spicon-layers,
+.spicon-handbag,
+.spicon-globe-alt,
+.spicon-globe,
+.spicon-frame,
+.spicon-folder-alt,
+.spicon-film,
+.spicon-feed,
+.spicon-earphones-alt,
+.spicon-earphones,
+.spicon-drop,
+.spicon-drawer,
+.spicon-docs,
+.spicon-directions,
+.spicon-direction,
+.spicon-diamond,
+.spicon-cup,
+.spicon-compass,
+.spicon-call-out,
+.spicon-call-in,
+.spicon-call-end,
+.spicon-calculator,
+.spicon-bubbles,
+.spicon-briefcase,
+.spicon-book-open,
+.spicon-basket-loaded,
+.spicon-basket,
+.spicon-bag,
+.spicon-action-undo,
+.spicon-action-redo,
+.spicon-wrench,
+.spicon-umbrella,
+.spicon-trash,
+.spicon-tag,
+.spicon-support,
+.spicon-size-fullscreen,
+.spicon-size-actual,
+.spicon-shuffle,
+.spicon-share-alt,
+.spicon-share,
+.spicon-rocket,
+.spicon-question,
+.spicon-pie-chart,
+.spicon-pencil,
+.spicon-note,
+.spicon-music-tone-alt,
+.spicon-music-tone,
+.spicon-microphone,
+.spicon-loop,
+.spicon-logout,
+.spicon-login,
+.spicon-list,
+.spicon-like,
+.spicon-home,
+.spicon-grid,
+.spicon-graph,
+.spicon-equalizer,
+.spicon-dislike,
+.spicon-cursor,
+.spicon-control-start,
+.spicon-control-rewind,
+.spicon-control-play,
+.spicon-control-pause,
+.spicon-control-forward,
+.spicon-control-end,
+.spicon-calendar,
+.spicon-bulb,
+.spicon-bar-chart,
+.spicon-arrow-up,
+.spicon-arrow-right,
+.spicon-arrow-left,
+.spicon-arrow-down,
+.spicon-ban,
+.spicon-bubble,
+.spicon-camcorder,
+.spicon-camera,
+.spicon-check,
+.spicon-clock,
+.spicon-close,
+.spicon-cloud-download,
+.spicon-cloud-upload,
+.spicon-doc,
+.spicon-envelope,
+.spicon-eye,
+.spicon-flag,
+.spicon-folder,
+.spicon-heart,
+.spicon-info,
+.spicon-key,
+.spicon-link,
+.spicon-lock,
+.spicon-lock-open,
+.spicon-magnifier,
+.spicon-magnifier-add,
+.spicon-magnifier-remove,
+.spicon-paper-clip,
+.spicon-paper-plane,
+.spicon-plus,
+.spicon-pointer,
+.spicon-power,
+.spicon-refresh,
+.spicon-reload,
+.spicon-settings,
+.spicon-star,
+.spicon-symbol-female,
+.spicon-symbol-male,
+.spicon-target,
+.spicon-volume-1,
+.spicon-volume-2,
+.spicon-volume-off,
+.spicon-users {
+	font-family           : 'Simple-Line-Icons' !important;
+	font-style            : normal;
+	font-weight           : normal;
+	font-variant          : normal;
+	text-transform        : none;
+	line-height           : 1;
+	-webkit-font-smoothing: antialiased;
+}
+
+.spicon-user-female:before {
+	content: "\e000";
+}
+
+.spicon-user-follow:before {
+	content: "\e002";
+}
+
+.spicon-user-following:before {
+	content: "\e003";
+}
+
+.spicon-user-unfollow:before {
+	content: "\e004";
+}
+
+.spicon-trophy:before {
+	content: "\e006";
+}
+
+.spicon-screen-smartphone:before {
+	content: "\e010";
+}
+
+.spicon-screen-desktop:before {
+	content: "\e011";
+}
+
+.spicon-plane:before {
+	content: "\e012";
+}
+
+.spicon-notebook:before {
+	content: "\e013";
+}
+
+.spicon-moustache:before {
+	content: "\e014";
+}
+
+.spicon-mouse:before {
+	content: "\e015";
+}
+
+.spicon-magnet:before {
+	content: "\e016";
+}
+
+.spicon-energy:before {
+	content: "\e020";
+}
+
+.spicon-emotspicon-smile:before {
+	content: "\e021";
+}
+
+.spicon-disc:before {
+	content: "\e022";
+}
+
+.spicon-cursor-move:before {
+	content: "\e023";
+}
+
+.spicon-crop:before {
+	content: "\e024";
+}
+
+.spicon-credit-card:before {
+	content: "\e025";
+}
+
+.spicon-chemistry:before {
+	content: "\e026";
+}
+
+.spicon-user:before {
+	content: "\e005";
+}
+
+.spicon-speedometer:before {
+	content: "\e007";
+}
+
+.spicon-social-youtube:before {
+	content: "\e008";
+}
+
+.spicon-social-twitter:before {
+	content: "\e009";
+}
+
+.spicon-social-tumblr:before {
+	content: "\e00a";
+}
+
+.spicon-social-facebook:before {
+	content: "\e00b";
+}
+
+.spicon-social-dropbox:before {
+	content: "\e00c";
+}
+
+.spicon-social-dribbble:before {
+	content: "\e00d";
+}
+
+.spicon-shield:before {
+	content: "\e00e";
+}
+
+.spicon-screen-tablet:before {
+	content: "\e00f";
+}
+
+.spicon-magic-wand:before {
+	content: "\e017";
+}
+
+.spicon-hourglass:before {
+	content: "\e018";
+}
+
+.spicon-graduation:before {
+	content: "\e019";
+}
+
+.spicon-ghost:before {
+	content: "\e01a";
+}
+
+.spicon-game-controller:before {
+	content: "\e01b";
+}
+
+.spicon-fire:before {
+	content: "\e01c";
+}
+
+.spicon-eyeglasses:before {
+	content: "\e01d";
+}
+
+.spicon-envelope-open:before {
+	content: "\e01e";
+}
+
+.spicon-envelope-letter:before {
+	content: "\e01f";
+}
+
+.spicon-bell:before {
+	content: "\e027";
+}
+
+.spicon-badge:before {
+	content: "\e028";
+}
+
+.spicon-anchor:before {
+	content: "\e029";
+}
+
+.spicon-wallet:before {
+	content: "\e02a";
+}
+
+.spicon-vector:before {
+	content: "\e02b";
+}
+
+.spicon-speech:before {
+	content: "\e02c";
+}
+
+.spicon-puzzle:before {
+	content: "\e02d";
+}
+
+.spicon-printer:before {
+	content: "\e02e";
+}
+
+.spicon-present:before {
+	content: "\e02f";
+}
+
+.spicon-playlist:before {
+	content: "\e030";
+}
+
+.spicon-pin:before {
+	content: "\e031";
+}
+
+.spicon-picture:before {
+	content: "\e032";
+}
+
+.spicon-map:before {
+	content: "\e033";
+}
+
+.spicon-layers:before {
+	content: "\e034";
+}
+
+.spicon-handbag:before {
+	content: "\e035";
+}
+
+.spicon-globe-alt:before {
+	content: "\e036";
+}
+
+.spicon-globe:before {
+	content: "\e037";
+}
+
+.spicon-frame:before {
+	content: "\e038";
+}
+
+.spicon-folder-alt:before {
+	content: "\e039";
+}
+
+.spicon-film:before {
+	content: "\e03a";
+}
+
+.spicon-feed:before {
+	content: "\e03b";
+}
+
+.spicon-earphones-alt:before {
+	content: "\e03c";
+}
+
+.spicon-earphones:before {
+	content: "\e03d";
+}
+
+.spicon-drop:before {
+	content: "\e03e";
+}
+
+.spicon-drawer:before {
+	content: "\e03f";
+}
+
+.spicon-docs:before {
+	content: "\e040";
+}
+
+.spicon-directions:before {
+	content: "\e041";
+}
+
+.spicon-direction:before {
+	content: "\e042";
+}
+
+.spicon-diamond:before {
+	content: "\e043";
+}
+
+.spicon-cup:before {
+	content: "\e044";
+}
+
+.spicon-compass:before {
+	content: "\e045";
+}
+
+.spicon-call-out:before {
+	content: "\e046";
+}
+
+.spicon-call-in:before {
+	content: "\e047";
+}
+
+.spicon-call-end:before {
+	content: "\e048";
+}
+
+.spicon-calculator:before {
+	content: "\e049";
+}
+
+.spicon-bubbles:before {
+	content: "\e04a";
+}
+
+.spicon-briefcase:before {
+	content: "\e04b";
+}
+
+.spicon-book-open:before {
+	content: "\e04c";
+}
+
+.spicon-basket-loaded:before {
+	content: "\e04d";
+}
+
+.spicon-basket:before {
+	content: "\e04e";
+}
+
+.spicon-bag:before {
+	content: "\e04f";
+}
+
+.spicon-action-undo:before {
+	content: "\e050";
+}
+
+.spicon-action-redo:before {
+	content: "\e051";
+}
+
+.spicon-wrench:before {
+	content: "\e052";
+}
+
+.spicon-umbrella:before {
+	content: "\e053";
+}
+
+.spicon-trash:before {
+	content: "\e054";
+}
+
+.spicon-tag:before {
+	content: "\e055";
+}
+
+.spicon-support:before {
+	content: "\e056";
+}
+
+.spicon-size-fullscreen:before {
+	content: "\e057";
+}
+
+.spicon-size-actual:before {
+	content: "\e058";
+}
+
+.spicon-shuffle:before {
+	content: "\e059";
+}
+
+.spicon-share-alt:before {
+	content: "\e05a";
+}
+
+.spicon-share:before {
+	content: "\e05b";
+}
+
+.spicon-rocket:before {
+	content: "\e05c";
+}
+
+.spicon-question:before {
+	content: "\e05d";
+}
+
+.spicon-pie-chart:before {
+	content: "\e05e";
+}
+
+.spicon-pencil:before {
+	content: "\e05f";
+}
+
+.spicon-note:before {
+	content: "\e060";
+}
+
+.spicon-music-tone-alt:before {
+	content: "\e061";
+}
+
+.spicon-music-tone:before {
+	content: "\e062";
+}
+
+.spicon-microphone:before {
+	content: "\e063";
+}
+
+.spicon-loop:before {
+	content: "\e064";
+}
+
+.spicon-logout:before {
+	content: "\e065";
+}
+
+.spicon-login:before {
+	content: "\e066";
+}
+
+.spicon-list:before {
+	content: "\e067";
+}
+
+.spicon-like:before {
+	content: "\e068";
+}
+
+.spicon-home:before {
+	content: "\e069";
+}
+
+.spicon-grid:before {
+	content: "\e06a";
+}
+
+.spicon-graph:before {
+	content: "\e06b";
+}
+
+.spicon-equalizer:before {
+	content: "\e06c";
+}
+
+.spicon-dislike:before {
+	content: "\e06d";
+}
+
+.spicon-cursor:before {
+	content: "\e06e";
+}
+
+.spicon-control-start:before {
+	content: "\e06f";
+}
+
+.spicon-control-rewind:before {
+	content: "\e070";
+}
+
+.spicon-control-play:before {
+	content: "\e071";
+}
+
+.spicon-control-pause:before {
+	content: "\e072";
+}
+
+.spicon-control-forward:before {
+	content: "\e073";
+}
+
+.spicon-control-end:before {
+	content: "\e074";
+}
+
+.spicon-calendar:before {
+	content: "\e075";
+}
+
+.spicon-bulb:before {
+	content: "\e076";
+}
+
+.spicon-bar-chart:before {
+	content: "\e077";
+}
+
+.spicon-arrow-up:before {
+	content: "\e078";
+}
+
+.spicon-arrow-right:before {
+	content: "\e079";
+}
+
+.spicon-arrow-left:before {
+	content: "\e07a";
+}
+
+.spicon-arrow-down:before {
+	content: "\e07b";
+}
+
+.spicon-ban:before {
+	content: "\e07c";
+}
+
+.spicon-bubble:before {
+	content: "\e07d";
+}
+
+.spicon-camcorder:before {
+	content: "\e07e";
+}
+
+.spicon-camera:before {
+	content: "\e07f";
+}
+
+.spicon-check:before {
+	content: "\e080";
+}
+
+.spicon-clock:before {
+	content: "\e081";
+}
+
+.spicon-close:before {
+	content: "\e082";
+}
+
+.spicon-cloud-download:before {
+	content: "\e083";
+}
+
+.spicon-cloud-upload:before {
+	content: "\e084";
+}
+
+.spicon-doc:before {
+	content: "\e085";
+}
+
+.spicon-envelope:before {
+	content: "\e086";
+}
+
+.spicon-eye:before {
+	content: "\e087";
+}
+
+.spicon-flag:before {
+	content: "\e088";
+}
+
+.spicon-folder:before {
+	content: "\e089";
+}
+
+.spicon-heart:before {
+	content: "\e08a";
+}
+
+.spicon-info:before {
+	content: "\e08b";
+}
+
+.spicon-key:before {
+	content: "\e08c";
+}
+
+.spicon-link:before {
+	content: "\e08d";
+}
+
+.spicon-lock:before {
+	content: "\e08e";
+}
+
+.spicon-lock-open:before {
+	content: "\e08f";
+}
+
+.spicon-magnifier:before {
+	content: "\e090";
+}
+
+.spicon-magnifier-add:before {
+	content: "\e091";
+}
+
+.spicon-magnifier-remove:before {
+	content: "\e092";
+}
+
+.spicon-paper-clip:before {
+	content: "\e093";
+}
+
+.spicon-paper-plane:before {
+	content: "\e094";
+}
+
+.spicon-plus:before {
+	content: "\e095";
+}
+
+.spicon-pointer:before {
+	content: "\e096";
+}
+
+.spicon-power:before {
+	content: "\e097";
+}
+
+.spicon-refresh:before {
+	content: "\e098";
+}
+
+.spicon-reload:before {
+	content: "\e099";
+}
+
+.spicon-settings:before {
+	content: "\e09a";
+}
+
+.spicon-star:before {
+	content: "\e09b";
+}
+
+.spicon-symbol-female:before {
+	content: "\e09c";
+}
+
+.spicon-symbol-male:before {
+	content: "\e09d";
+}
+
+.spicon-target:before {
+	content: "\e09e";
+}
+
+.spicon-volume-1:before {
+	content: "\e09f";
+}
+
+.spicon-volume-2:before {
+	content: "\e0a0";
+}
+
+.spicon-volume-off:before {
+	content: "\e0a1";
+}
+
+.spicon-users:before {
+	content: "\e001";
+}

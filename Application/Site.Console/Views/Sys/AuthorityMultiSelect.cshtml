@@ -1,0 +1,136 @@
+@using EZNEW.Application.Identity.Auth
+@using EZNEW.Framework.Extension;
+@using EZNEW.Framework.Serialize;
+@{
+    ViewBag.Title = "权限选择";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
+}
+<environment>
+    <link rel="stylesheet" href="~/script/ztree/skin.css" />
+</environment>
+<div id="page-body">
+    <div class="split-container bd-w-0" split-options='{"panels": [{ "size": 150,"min":150 }] }'>
+        <div class="split-panel">
+            <div class="content-panel">
+                <div class="content-panel-body">
+                    <div class="content-panel-body-inner">
+                        <ul id="groupData" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="split-panel">
+            <div class="layui-tab layui-tab-card content-panel pd-0 mg-0 bd-lw-0" lay-filter="data_tab">
+                <ul class="layui-tab-title content-panel-head">
+                    <li class="layui-this">数据列表</li>
+                    <li>已选数据</li>
+                </ul>
+                <div class="layui-tab-content content-panel-body pd-0">
+                    <div class="layui-tab-item content-panel layui-show">
+                        <div class="content-panel-head">
+                            <div class="layui-row pd-0 mg-0">
+                                <div class="column layui-form lis_search pd-0 pdb-10">
+                                    <div class="list_search_inputgroup">
+                                        <label class="layui-form-label">名称/编码</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" id="search_namecode" placeholder="名称/编码" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="list_search_inputgroup mgl-5">
+                                        <button type="button" class="layui-btn layui-btn-sm" id="search_btn">
+                                            <i class="icon-search"></i>
+                                            搜索
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-panel-body">
+                            <table id="data_list" lay-filter="data_list"></table>
+                        </div>
+                        <div class="content-panel-foot pd-5 default_shadow_up h-38" id="data_pager"></div>
+                    </div>
+                    <div class="layui-tab-item content-panel">
+                        <div class="content-panel-head">
+                            <div class="layui-row pd-0 mg-0">
+                                <div class="column layui-form lis_search pd-0 pdb-10">
+                                    <div class="list_search_inputgroup">
+                                        <label class="layui-form-label">姓名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="title" required lay-verify="required"
+                                                   placeholder="请输入标题" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="list_search_inputgroup mgl-5">
+                                        <button type="button" class="layui-btn layui-btn-sm" onclick="AddRow()">
+                                            <i class="icon-search"></i>
+                                            搜索
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-panel-body">
+                            <table id="select_list" lay-filter="select_list"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page-foot" class="hidev">
+    <div class="page-foot-btngroup">
+        <button type="button" class="layui-btn layui-btn-gsuccess" id="btn_confirmgroupmultselect">
+            <i class="icon-save"></i>
+            确定
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary" id="btn_closegroupmultselect">
+            <i class="icon-remove"></i>
+            关闭
+        </button>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/script/ztree/jquery.ztree.all.js"></script>
+    <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
+    <script type="text/javascript" src="~/script/page/groupmultselect.js"></script>
+    <script type="text/html" id="auth_status">
+        {{authStatusDict[d.Status]}}
+    </script>
+    <script type="text/javascript">
+        var authStatusDict = new Object();
+        //表格标题配置
+        var cols = [[
+            { field: 'Name', title: '名称', width: 130, fixed: 'left' }
+            , { field: 'Code', title: '权限编码', minWidth: 120 }
+            , { field: 'Status', align: 'center', title: '状态', width: 80, templet: '#auth_status' }
+        ]];
+
+        $(function () {
+            authStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            InitGroupMultSelect({
+                objectTag: "Authority",
+                groupData: {
+                    dataUrl: "@Url.Action("SearchAuthorityGroup", "Sys")"
+                },
+                dataTable: {
+                    dataUrl: '@Url.Action("SearchAuthority", "Sys")',
+                    where: function () {
+                        var nameCodeKey = $.trim($("#search_namecode").val());
+                        return {
+                            NameCodeMateKey: nameCodeKey
+                        };
+                    },
+                    groupField: 'Group',
+                    cols: cols,
+                }
+            });
+        });
+
+    </script>
+}
+

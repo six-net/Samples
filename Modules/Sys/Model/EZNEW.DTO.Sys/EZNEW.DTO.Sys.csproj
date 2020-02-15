@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EZNEW.Application.Identity" Version="1.0.2" />
+    <PackageReference Include="EZNEW.Framework" Version="2.1.5" />
+  </ItemGroup>
+
+</Project>

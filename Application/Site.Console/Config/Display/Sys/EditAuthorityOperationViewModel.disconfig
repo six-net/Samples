@@ -1,0 +1,69 @@
+{
+  "types": [
+    {
+      "typeName": "EZNEW.ViewModel.Sys.Request.EditAuthorityOperationViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "displays": [
+        {
+          "name": "ActionCode",
+          "display": {
+            "displayTxt": "方法编码"
+          }
+        },
+        {
+          "name": "ControllerCode",
+          "display": {
+            "displayTxt": "控制组编码"
+          }
+        },
+        {
+          "name": "Group",
+          "display": {
+            "displayTxt": "操作分组"
+          }
+        },
+        {
+          "name": "Method",
+          "display": {
+            "displayTxt": "请求类型"
+          }
+        },
+        {
+          "name": "Name",
+          "display": {
+            "displayTxt": "方法名称"
+          }
+        },
+        {
+          "name": "Remark",
+          "display": {
+            "displayTxt": "说明"
+          }
+        },
+        {
+          "name": "Sort",
+          "display": {
+            "displayTxt": "排序"
+          }
+        },
+        {
+          "name": "Status",
+          "display": {
+            "displayTxt": "状态"
+          }
+        },
+        {
+          "name": "SysNo",
+          "display": {
+            "displayTxt": "编号"
+          }
+        },
+        {
+          "name": "AuthorizeType",
+          "display": {
+            "displayTxt": "访问限制"
+          }
+        }
+      ]
+    }
+  ]
+}

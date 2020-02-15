@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.DBConfig\App.DBConfig.csproj" />
+    <ProjectReference Include="..\App.Mapper\App.Mapper.csproj" />
+  </ItemGroup>
+
+</Project>

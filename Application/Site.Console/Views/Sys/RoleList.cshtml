@@ -1,0 +1,400 @@
+@using EZNEW.Framework.Serialize;
+@using EZNEW.Application.Identity.Auth
+@using EZNEW.Framework.Extension;
+@{
+    ViewData["Title"] = "角色管理";
+    var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
+}
+<environment>
+    <link rel="stylesheet" href="~/script/ztree/skin.css" />
+</environment>
+
+<div id="page-body">
+    <div class="split-container bd-w-0" split-options='{"panels": [{ "size": 250,"min":200 }] }'>
+        <div class="split-panel">
+            <div class="content-panel">
+                <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
+                    @Html.AuthIcoButton("添加角色","sys","editrole",
+                   new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess",id= "btn_addgroup" }
+                   ,new {@class= "icon-plus" })
+                    @Html.AuthIcoButton("删除选中", "sys", "deleterole",
+                   new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "btn_delgroup" }
+                   ,new {@class= "icon-trash" })
+                </div>
+                <div class="content-panel-body">
+                    <div class="content-panel-body-inner">
+                        <ul id="group_tree" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="split-panel">
+            <div class="content-panel fiterhide" id="detail_container">
+                <div class="content-panel-head">
+                    <table cellpadding="0" cellspacing="0" class="detail-table">
+                        <tr>
+                            <td class="detail-td-tit">名称</td>
+                            <td class="detail-td-content" id="content-for-Name"></td>
+                        </tr>
+                        <tr>
+                            <td class="detail-td-tit">状态</td>
+                            <td class="detail-td-content" id="content-for-Status"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="detail-td-content">
+                                @Html.AuthIcoButton("编辑", "sys", "editrole",
+                                new { @class= "layui-btn layui-btn-gprimary", id= "btn_editgroup" }
+                                ,new {@class= "icon-edit" })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="content-panel-body">
+                    <div class="layui-tab layui-tab-card content-panel mg-0 bd-lw-0" lay-filter="group_data_tab">
+                        <ul class="layui-tab-title content-panel-head">
+                            <li class="layui-this" lay-id="group_table_data_tab">成员管理</li>
+                            <li lay-id="role_auth_tab">操作授权</li>
+                        </ul>
+                        <div class="layui-tab-content content-panel-body pd-0">
+                            <div class="layui-tab-item layui-show content-panel">
+                                <div class="content-panel-head">
+                                    <div class="layui-row pd-0 mg-0">
+                                        <div class="column layui-form lis_search pd-0 pdb-10">
+                                            <div class="list_search_inputgroup">
+                                                <label class="layui-form-label">登录名/姓名</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" id="search_username" placeholder="登陆名/姓名"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="list_search_inputgroup mgl-5">
+                                                @Html.AuthIcoButton("搜索", "Sys", "SearchAdminUser",
+                                                new { @class= "layui-btn layui-btn-sm", id= "btn_search_group_table_data" }
+                                                ,new {@class= "icon-search" })
+
+                                                @Html.AuthIcoButton("清除所有用户", "Sys", "ClearRoleUser",
+                                                new { @class= "layui-btn layui-btn-sm layui-btn-gdanger", id= "btn_cleargrouptabledata" }
+                                                ,new {@class= "icon-remove" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content-panel-body">
+                                    <table id="group_table_data" lay-filter="group_table_data"></table>
+                                </div>
+                                <div class="content-panel-foot pd-5 default_shadow_up h-38" id="group_table_data_pager"></div>
+                            </div>
+
+                            <div class="layui-tab-item content-panel">
+                                <div class="split-container bd-w-0"
+                                     split-options='{"panels": [{ "size": 200,"min":200 }] }'>
+                                    <div class="split-panel">
+                                        <div class="content-panel">
+                                            <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
+                                                @Html.AuthIcoButton("清除所有授权", "Sys", "ClearRoleAuthorize",
+                                                new { @class= "layui-btn layui-btn-sm layui-btn-gdanger", id= "btn_clearroleauth" }
+                                                ,new {@class= "icon-remove" })
+                                            </div>
+                                            <div class="content-panel-body">
+                                                <ul id="all_authtree" class="ztree"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="split-panel">
+                                        <div class="content-panel">
+                                            <div class="content-panel-head">
+                                                <div class="layui-row pd-0 mg-0">
+                                                    <div class="column layui-form lis_search pd-0 pdb-10">
+                                                        <div class="list_search_inputgroup">
+                                                            <label class="layui-form-label">名称/编码</label>
+                                                            <div class="layui-input-inline">
+                                                                <input type="text" id="search_authnamecode" placeholder="权限名称/编码"
+                                                                       autocomplete="off" class="layui-input">
+                                                            </div>
+                                                        </div>
+                                                        <div class="list_search_inputgroup mgl-5">
+                                                            @Html.AuthIcoButton("搜索", "Sys", "SearchRoleAuthority",
+                                                            new { @class= "layui-btn layui-btn-sm", onclick = "LoadAuthorityData()" }
+                                                            ,new {@class= "icon-search" })
+
+                                                            @Html.AuthIcoButton("添加权限", "Sys", "AddRoleAuthority",
+                                                            new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addauth" }
+                                                            ,new {@class= "icon-plus" })
+
+                                                            @Html.AuthIcoButton("删除选中权限", "Sys", "RemoveRoleAuthority",
+                                                            new { @class= "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delauth" }
+                                                            ,new {@class= "icon-trash" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="content-panel-body">
+                                                <table id="role_auth_table" lay-filter="role_auth_table"></table>
+                                            </div>
+                                            <div class="content-panel-foot pd-5 default_shadow_up h-38" id="role_auth_table_pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <environment>
+        <script src="~/script/ztree/jquery.ztree.all.js"></script>
+        <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
+        <script src="~/script/page/treecontrol.js"></script>
+        <script src="~/script/page/groupdata.js"></script>
+    </environment>
+    <script type="text/html" id="group_table_toolbar">
+        @Html.AuthIcoButton("删除", "Sys", "RemoveRoleUser",
+        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
+        ,new {@class= "icon-trash" })
+    </script>
+    <script type="text/html" id="auth_table_toolbar">
+        @Html.AuthIcoButton("删除", "Sys", "RemoveRoleAuthority",
+        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event= "remove" }
+        ,new {@class= "icon-trash" })
+    </script>
+    <script type="text/html" id="group_table_headtoolbar">
+        @Html.AuthIcoButton("添加用户", "Sys", "AddRoleUser",
+        new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id= "btn_addgrouptabledata" }
+        ,new {@class= "icon-plus" })
+        @Html.AuthIcoButton("删除选中", "Sys", "RemoveRoleUser",
+        new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "btn_delgrouptabledata" }
+        ,new {@class= "icon-trash" })
+    </script>
+    <script type="text/html" id="auth_status">
+        {{authStatusDict[d.Status]}}
+    </script>
+    <script type="text/javascript">
+        var loadAuth = false;
+        var nowAuthNode = null;
+        var authStatusDict = new Object();
+        var authGroupTree = null;
+        $(function () {
+            authStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            InitGroupDataManage({
+                groupData: {
+                    loadDataUrl: '@Url.Action("SearchRole", "Sys")',
+                    deleteUrl: '@Url.Action("DeleteRole", "Sys")',
+                    sortUrl: '@Url.Action("ChangeRoleSort","Sys")',
+                    editUrl: '@Url.Action("EditRole", "Sys")',
+                    groupName: '角色',
+                    objectTag: 'Role',
+                    selectCallback: function (res) {
+                        switch (res.objectTag) {
+                            case "Authority":
+                                AddAuthority(res.data);
+                                break;
+                        }
+                    },
+                    nodeSelectToggle: function (oldNode, newNode) {
+                        if (loadAuth) {
+                            ResetAuthorityData();
+                        }
+                    }
+                },
+                dataTable: {
+                    toolbar: '#group_table_headtoolbar',
+                    cols: [[
+                        { type: 'checkbox', fixed: 'left' }
+                        , { field: 'RealName', title: '姓名', width: 120 }
+                        , { field: 'UserName', title: '登陆名', width: 150 }
+                        , { field: 'Mobile', title: '手机', width: 120 }
+                        , { field: 'Email', title: '邮箱', minWidth: 150 }
+                        , { width: 80, align: 'center', fixed: 'right', toolbar: '#group_table_toolbar' }
+                    ]],
+                    where: function (data) {
+                        var userName = $.trim($("#search_username").val());
+                        var roleIds = new Array();
+                        roleIds.push(data.SysNo);
+                        return {
+                            NameMateKey: userName,
+                            RoleFilter: {
+                                SysNos: roleIds
+                            }
+                        };
+                    },
+                    loadDataUrl: '@Url.Action("SearchAdminUser", "Sys")',
+                    removeDataUrl: '@Url.Action("RemoveRoleUser", "Sys")',
+                    clearDataUrl:'@Url.Action("ClearRoleUser", "Sys")',
+                    addDataUrl: '@Url.Action("AdminUserMultiSelect", "Sys")',
+                    addCallbackUrl: '@Url.Action("AddRoleUser","Sys")',
+                    dataTag: 'AdminUser',
+                    dataName:'用户'
+                },
+                detailContainer: {
+                    showDataDetailFunc: function (data) {
+                        $('#content-for-Name').text(data.Name);
+                        $('#content-for-Status').text(data.StatusText);
+                    },
+                    resetCallback: function () {
+                        $('#content-for-Name').text("");
+                        $('#content-for-Status').text("");
+                        ResetAuthorityData();
+                    }
+                },
+                tab: {
+                    tabEventCallback: function (data) {
+                        if (data.index == 1) {
+                            OpenRoleAuthTab();
+                        }
+                    }
+                }
+            });
+
+            //添加授权权限
+            $("body").on("click","#btn_addauth",function () {
+                OpenDialogPage({
+                    title: '选择权限',
+                    content:'@Url.Action("AuthorityMultiSelect", "Sys")',
+                    area: ["700px","500px"]
+                });
+            });
+
+            //删除授权权限
+            $("body").on("click","#btn_delauth",function () {
+                var removeDatas = GetTableCheckData('role_auth_table').data;
+                RemoveAuthority(removeDatas);
+            });
+
+            //清除所有授权
+            $("#btn_clearroleauth").click(function () {
+                ClearAuthority();
+            });
+        });
+
+        //打开授权面板
+        function OpenRoleAuthTab() {
+            if (loadAuth) {
+                return;
+            }
+            setTimeout(function () {
+                InitTable({
+                    elem: 'role_auth_table',
+                    defaultToolbar: [],
+                    cols: [[
+                        { type: 'checkbox', fixed: 'left' }
+                        , { field: 'Name', title: '名称', width: 150, fixed: 'left' }
+                        , { field: 'Code', title: '编码', minWidth: 150 }
+                        , { field: 'Status', align: 'center', title: '状态', width: 80, templet: '#auth_status' }
+                        , { width: 80, align: 'center', fixed: 'right', toolbar: '#auth_table_toolbar' }
+                    ]]
+                });
+            }, 0);
+
+            //监听数据表格事件
+            ListenTableEvent('role_auth_table', function (obj, btn) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                var tr = obj.tr;
+                switch (layEvent) {
+                    case "remove":
+                        RemoveAuthority([data]);
+                        break;
+                }
+            });
+
+            authGroupTree=new CTreeControl({
+                data: {
+                    url: '@Url.Action("SearchAuthorityGroup", "Sys")',
+                    treeEleId: 'all_authtree',
+                    onClick: function (event, treeId, treeNode) {
+                        nowAuthNode = treeNode;
+                        LoadAuthorityData();
+                    }
+                }
+            });
+            loadAuth = true;
+        }
+
+        //重置授权
+        function ResetAuthorityData() {
+            $("#search_authnamecode").val('');
+            if (loadAuth) {
+                nowAuthNode = null;
+                ClearAuthorityData();
+                authGroupTree.CancelSelectedNodes();
+                authGroupTree.ExpandAll(false);
+            }
+        }
+
+        //清除授权数据
+        function ClearAuthorityData() {
+            ClearTableData('role_auth_table');
+            $("#role_auth_table_pager").html('');
+        }
+
+        //加载权限数据
+        function LoadAuthorityData() {
+            ClearAuthorityData();
+            if (!nowAuthNode || !EZNEW_NowSelectedNode) {
+                return;
+            }
+            PageSearch({
+                url: '@Url.Action("SearchRoleAuthority","Sys")',
+                listEle: 'role_auth_table',
+                pagerEle: 'role_auth_table_pager',
+                data: {
+                   Group: nowAuthNode.id,
+                   NameCodeMateKey: $.trim($("#search_authnamecode").val()),
+                   RoleFilter: {
+                       SysNos: [EZNEW_NowSelectedNode.id]
+                   }
+                }
+             });
+        }
+
+        //添加权限
+        function AddAuthority(data) {
+            if (!data.datas || data.datas.length < 1 || !EZNEW_NowSelectedNode) {
+                return;
+            }
+            $.post('@Url.Action("AddRoleAuthorize", "Sys")', { roleId: EZNEW_NowSelectedNode.id, authSysNos: data.keys},function(res)
+            {
+                ResultMsg(res);
+                LoadAuthorityData();
+            });
+        }
+
+        //移除权限
+        function RemoveAuthority(datas) {
+            if (!datas || datas.length < 1 || !EZNEW_NowSelectedNode) {
+                ErrorMsg('没有指定要移除的角色授权');
+                return;
+            }
+            ConfirmMsg('确认移除角色授权吗?', function () {
+                var authIds = [];
+                for (var d in datas) {
+                    authIds.push(datas[d].SysNo);
+                }
+                $.post('@Url.Action("RemoveRoleAuthorize", "Sys")', { roleId: EZNEW_NowSelectedNode.id, authSysNos: authIds},function(res)
+                {
+                    ResultMsg(res);
+                    LoadAuthorityData();
+                });
+            });
+        }
+
+        //清除所有权限
+        function ClearAuthority() {
+            if (!EZNEW_NowSelectedNode) {
+                return;
+            }
+            ConfirmMsg('确认要清除掉角色的所有授权吗?', function () {
+                $.post('@Url.Action("ClearRoleAuthorize", "Sys")', { roleId: EZNEW_NowSelectedNode.id},function(res)
+                {
+                    ResultMsg(res);
+                    LoadAuthorityData();
+                });
+            });
+        }
+    </script>
+}

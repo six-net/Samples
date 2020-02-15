@@ -1,0 +1,94 @@
+@{
+    ViewBag.Title = "编辑授权操作";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using EZNEW.Framework.Extension
+@using EZNEW.ViewModel.Sys.Request
+@using EZNEW.Application.Identity.Auth
+@model EditAuthorityOperationViewModel
+@{
+    var isAdd = (Model?.SysNo ?? 0) <= 0;
+    if (isAdd)
+    {
+        Model.AuthorizeType = AuthorityOperationAuthorizeType.权限授权;
+        Model.Status = AuthorityOperationStatus.启用;
+    }
+}
+<div id="page-body">
+    <div id="page-body-inner">
+        <div class="layui-form">
+            @using (Html.AjaxBeginForm("EditAuthorityOperation", "Sys", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback" }, new { id = "default-form" }))
+            {
+                @Html.HiddenFor(r => r.Group.SysNo)
+                @Html.HiddenFor(r => r.SysNo)
+                @if (Model.Group != null)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属分组</label>
+                        <div class="layui-input-inline w-200 lh-38">
+                            @Model.Group.Name
+                        </div>
+                    </div>
+                }
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Name)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.Name, new { @class = "layui-input" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.ControllerCode)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.ControllerCode, new { @class = "layui-input" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.ControllerCode, "", new { @class = "form-validate-msg" })</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.ActionCode)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.ActionCode, new { @class = "layui-input" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.ActionCode, "", new { @class = "form-validate-msg" })</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.AuthorizeType)</label>
+                    <div class="layui-input-block">
+                        @Html.EnumToRadio(a => a.AuthorizeType, AuthorityOperationAuthorizeType.无限制, checkedValue: Model?.AuthorizeType, textAttributes: new string[] { "title" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Status)</label>
+                    <div class="layui-input-block">
+                        @Html.EnumToRadio(a => a.Status, AuthorityOperationStatus.启用, checkedValue: Model?.Status, textAttributes: new string[] { "title" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Remark)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextAreaFor(a => a.Remark, new { @class = "layui-input h-50", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.Remark, "", new { @class = "form-validate-msg" })</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="page-foot" class="hidev">
+    <div class="page-foot-btngroup">
+        <button type="button" id="btn_submit" class="layui-btn layui-btn-gsuccess"><i class="icon-save"></i> 提交</button>
+        <button type="reset" id="btn_reset" class="layui-btn layui-btn-gsecondary"><i class="icon-undo"></i> 重置</button>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        DataObjectTag = "AuthorityOperation";
+        $(function () {
+            BindDefaultFormSubmitEnterEvent();
+        });
+
+    </script>
+}

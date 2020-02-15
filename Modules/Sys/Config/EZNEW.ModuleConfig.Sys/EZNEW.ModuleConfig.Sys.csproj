@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="EZNEW.Cache" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business\Domain\EZNEW.Domain.Sys\EZNEW.Domain.Sys.csproj" />
+    <ProjectReference Include="..\..\Model\EZNEW.DTO.Sys\EZNEW.DTO.Sys.csproj" />
+    <ProjectReference Include="..\..\Model\EZNEW.Entity.Sys\EZNEW.Entity.Sys.csproj" />
+    <ProjectReference Include="..\..\Model\EZNEW.ViewModel.Sys\EZNEW.ViewModel.Sys.csproj" />
+    <ProjectReference Include="..\..\Business\EZNEW.BusinessContract.Sys\EZNEW.BusinessContract.Sys.csproj" />
+    <ProjectReference Include="..\..\Business\Domain\EZNEW.Repository.Sys\EZNEW.Repository.Sys.csproj" />
+    <ProjectReference Include="..\..\DataAccess\EZNEW.DataAccess.Sys\EZNEW.DataAccess.Sys.csproj" />
+    <ProjectReference Include="..\..\DataAccess\EZNEW.DataAccessContract.Sys\EZNEW.DataAccessContract.Sys.csproj" />
+    <ProjectReference Include="..\..\Model\EZNEW.Query.Sys\EZNEW.Query.Sys.csproj" />
+    <ProjectReference Include="..\..\Service\EZNEW.AppService.Sys\EZNEW.AppService.Sys.csproj" />
+    <ProjectReference Include="..\..\Service\EZNEW.AppServiceContract.Sys\EZNEW.AppServiceContract.Sys.csproj" />
+    <ProjectReference Include="..\..\Business\EZNEW.Business.Sys\EZNEW.Business.Sys.csproj" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="build.bat" />
+  </Target>
+
+</Project>

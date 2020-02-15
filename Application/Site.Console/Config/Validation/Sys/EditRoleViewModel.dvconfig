@@ -1,0 +1,48 @@
+{
+    "rules": [
+        {
+            "typeName": "EZNEW.ViewModel.Sys.Request.EditRoleViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "rules": [
+                {
+                    "name": "Name",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请填写20个字符内的名字",
+                            "tipMsg": true
+                        },
+                        {
+                            "maxValue": "20",
+                            "minValue": "0",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写20个字符内的名字",
+                            "tipMsg": false
+                        }
+                    ]
+                },
+                {
+                    "name": "Status",
+                    "rules": [
+                        {
+                            "vtype": "Required",
+                            "errorMsg": "请选择状态",
+                            "tipMsg": true
+                        }
+                    ]
+                },
+                {
+                    "name": "Remark",
+                    "rules": [
+                        {
+                            "maxValue": "50",
+                            "minValue": "0",
+                            "vtype": "StringLength",
+                            "errorMsg": "请填写50个字符内的说明",
+                            "tipMsg": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

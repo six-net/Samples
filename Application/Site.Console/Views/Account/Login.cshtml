@@ -1,0 +1,119 @@
+﻿@{
+    Layout = null;
+}
+@using EZNEW.Web.Mvc
+@using EZNEW.ViewModel.Sys.Request
+@model LoginViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>EZNEW.NET应用开发框架</title>
+    <environment>
+        <link rel="stylesheet" href="~/script/layui/css/layui.css" />
+        <link rel="stylesheet" href="~/style/css/cuslayui.css" />
+        <link rel="stylesheet" href="~/style/css/login.css" />
+        <link rel="stylesheet" href="~/style/css/font-awesome.min.css" />
+
+        <script type="text/javascript" src="~/script/jquery.min.js"></script>
+        <script type="text/javascript" src="~/script/jquery.validate.js"></script>
+        <script type="text/javascript" src="~/script/jquery.validate.unobtrusive.js"></script>
+        <script type="text/javascript" src="~/script/jquery.unobtrusive-ajax.js"></script>
+    </environment>
+</head>
+<body>
+    <div id="login-container">
+        <div id="login-log">
+            <img src="~/style/images/flogo1.png" style="width:95%;margin-bottom:20px" />
+        </div>
+        <div id="login-form" class="layui-form layadmin-user-login-body">
+            @using (Html.AjaxBeginForm("Login", "Account", new AjaxFormOptions() { OnSuccess = "LoginSuccess", OnBegin = "LoginBegin", HttpMethod = "Post" }, new { id = "loginform" }))
+            {
+                <div class="layui-form-item">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-username"></label>
+                    @Html.TextBoxFor(c => c.LoginName, new { placeholder = "用户名", @class = "layui-input" })
+                </div>
+                <div class="layui-form-item">
+                    <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
+                    @Html.PasswordFor(c => c.Pwd, new { placeholder = "密码", @class = "layui-input" })
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-row">
+                        <div class="layui-col-xs7">
+                            <label class="layadmin-user-login-icon layui-icon layui-icon-vercode"></label>
+                            @Html.TextBoxFor(c => c.VerificationCode, new { placeholder = "验证码", @class = "layui-input" })
+                        </div>
+                        <div class="layui-col-xs5">
+                            <div style="margin-left: 10px;">
+                                <img src="@Url.Action("VCode","Account")" class="layadmin-user-login-codeimg" id="log_vcodeimg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div id="login_errormessage"></div>
+                </div>
+                <div class="layui-form-item" style="margin-bottom: 0px;">
+                    <button type="button" class="layui-btn layui-btn-gsuccess layui-btn-fluid" id="loginbtn">登 入</button>
+                </div>
+            }
+        </div>
+    </div>
+    <environment>
+        <script type="text/javascript" src="~/script/layui/layui.all.js"></script>
+    </environment>
+    <script type="text/javascript">
+        window.onload = function () {
+            if (!window.applicationCache) {
+                window.location.href = "@Url.Action("Browser","Home")";
+            }
+        }
+        var imgUrl = '@Url.Action("VCode","Account")';
+        var homeUrl = '@Url.Action("Index","Home")';
+        $(function () {
+            if (self != top) {
+                top.location.href = "@Url.Action("Login","Account")";
+            }
+            $("#log_vcodeimg").click(function () {
+                $(this).attr("src", imgUrl + "?k=" + Math.random());
+            });
+            $("#loginbtn").click(function () {
+                $("#loginform").submit();
+            });
+
+            $(window).keydown(function (e) {
+                if (e.keyCode == 13) {
+                    $("#loginform").submit();
+                }
+            });
+            $("#log_vcodeimg").click();
+        });
+
+        function ValidError(error, input) {
+            input.addClass("error");
+            $(error).toggleClass('error_msg');
+            $("#login_errormessage").append(error);
+        }
+        function ValidSuccess(error, input) {
+            $(input).removeClass("error");
+            //$("#login_errormessage").html("");
+        }
+        function LoginBegin() {
+            var loginBtn = $("#loginbtn");
+            loginBtn.attr("disabled", "disabled").html("登录中...");
+        }
+        function LoginSuccess(res) {
+            var loginBtn = $("#loginbtn");
+            if (res.Success) {
+                loginBtn.html("登录成功");
+                window.location.href = homeUrl;
+            } else {
+                $("#log_vcodeimg").click();
+                loginBtn.html("登录").removeAttr("disabled");
+                $("#login_errormessage").html('<div class="error_msg">'+res.Message+'</div>');
+            }
+        }
+    </script>
+</body>
+</html>

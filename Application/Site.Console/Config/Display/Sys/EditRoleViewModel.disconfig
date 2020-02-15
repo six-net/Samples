@@ -1,0 +1,33 @@
+{
+  "types": [
+    {
+      "typeName": "EZNEW.ViewModel.Sys.Request.EditRoleViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "displays": [
+        {
+          "name": "Name",
+          "display": {
+            "displayTxt": "名称"
+          }
+        },
+        {
+          "name": "Remark",
+          "display": {
+            "displayTxt": "说明"
+          }
+        },
+        {
+          "name": "Status",
+          "display": {
+            "displayTxt": "状态"
+          }
+        },
+        {
+          "name": "Parent",
+          "display": {
+            "displayTxt": "上级"
+          }
+        }
+      ]
+    }
+  ]
+}

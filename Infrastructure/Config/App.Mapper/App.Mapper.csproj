@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="EZNEW.DataValidation.Config" Version="1.0.1" />
+    <PackageReference Include="EZNEW.Mvc.CustomModelDisplayName" Version="3.0.0" />
+    <PackageReference Include="EZNEW.Mvc.DataAnnotationsModelValidatorConfig" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Modules\Sys\Config\EZNEW.ModuleConfig.Sys\EZNEW.ModuleConfig.Sys.csproj" />
+  </ItemGroup>
+
+</Project>

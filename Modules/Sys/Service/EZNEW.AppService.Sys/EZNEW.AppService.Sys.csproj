@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EZNEW.Develop" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business\EZNEW.BusinessContract.Sys\EZNEW.BusinessContract.Sys.csproj" />
+    <ProjectReference Include="..\..\Model\EZNEW.DTO.Sys\EZNEW.DTO.Sys.csproj" />
+    <ProjectReference Include="..\EZNEW.AppServiceContract.Sys\EZNEW.AppServiceContract.Sys.csproj" />
+  </ItemGroup>
+
+</Project>

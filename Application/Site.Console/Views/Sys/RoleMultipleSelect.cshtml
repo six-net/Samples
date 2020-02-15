@@ -1,0 +1,58 @@
+
+@{
+    ViewData["Title"] = "选择角色";
+}
+<environment>
+    <link rel="stylesheet" href="~/script/ztree/skin.css" />
+</environment>
+<div id="page-body">
+    <div id="page-body-inner">
+        <ul id="data_tree" class="ztree"></ul>
+    </div>
+</div>
+
+<div id="page-foot" class="hidev">
+    <div class="page-foot-btngroup">
+        <button type="button" class="layui-btn layui-btn-sm" id="btn_selectall">
+            <i class="icon-check"></i>
+            全选
+        </button>
+        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="btn_cancelall">
+            <i class="icon-check-empty"></i>
+            取消
+        </button>
+        <button type="button" class="layui-btn layui-btn-gsuccess layui-btn-sm" id="btn_confirmselect">
+            <i class="icon-ok"></i>
+            确定
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="btn_closeselect">
+            <i class="icon-remove"></i>
+            关闭
+        </button>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <environment>
+        <script src="~/script/ztree/jquery.ztree.all.js"></script>
+        <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
+        <script type="text/javascript" src="~/script/page/treecontrol.js"></script>
+    </environment>
+    <script type="text/javascript">
+        var treeControl = null;
+        $(function () {
+            treeControl = new CTreeControl({
+                treeSetting: {
+                    check: {
+                        enable: true,
+                    },
+                },
+                data: {
+                    url: '@Url.Action("SearchRole", "Sys")',
+                    dataTag:'Role'
+                }
+            });
+        });
+    </script>
+}

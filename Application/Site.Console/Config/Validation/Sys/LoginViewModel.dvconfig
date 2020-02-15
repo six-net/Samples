@@ -1,0 +1,60 @@
+{
+    "rules": [
+        {
+            "typeName": "EZNEW.ViewModel.Sys.Request.LoginViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "rules": [
+                {
+                    "name": "LoginName",
+                    "rules": [
+                        {
+                            "vtype": 9,
+                            "errorMsg": "请填写登陆名",
+                            "tipMsg": false
+                        },
+                        {
+                            "maxValue": "20",
+                            "minValue": "5",
+                            "vtype": 10,
+                            "errorMsg": "请填写正确的的登陆名",
+                            "tipMsg": false
+                        }
+                    ]
+                },
+                {
+                    "name": "Pwd",
+                    "rules": [
+                        {
+                            "vtype": 9,
+                            "errorMsg": "请填写登陆密码",
+                            "tipMsg": false
+                        },
+                        {
+                            "maxValue": "20",
+                            "minValue": "5",
+                            "vtype": 10,
+                            "errorMsg": "请填写正确的登陆密码",
+                            "tipMsg": false
+                        }
+                    ]
+                },
+                {
+                    "name": "VerificationCode",
+                    "rules": [
+                        {
+                            "vtype": 9,
+                            "errorMsg": "请填写验证码",
+                            "tipMsg": false
+                        },
+                        {
+                            "maxValue": "5",
+                            "minValue": "5",
+                            "vtype": 10,
+                            "errorMsg": "请填写正确的验证码",
+                            "tipMsg": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,108 @@
+.layui-form-checked span,
+.layui-form-checked:hover span {
+  background-color: #1e9fff;
+}
+.layui-form-checked,
+.layui-form-checked:hover {
+  border-color: #1e9fff;
+}
+.layui-form-onswitch {
+  border-color: #1e9fff;
+  background-color: #1e9fff;
+}
+.layui-form-radio > i:hover,
+.layui-form-radioed > i {
+  color: #1e9fff;
+}
+.layui-form-select dl dd.layui-this {
+  background-color: #1e9fff;
+}
+.layui-form-checked i,
+.layui-form-checked:hover i {
+  color: #1e9fff;
+}
+.layui-form-label {
+  padding: 9px 10px;
+  width: 100px;
+}
+.layui-form-label:after {
+  content: ':';
+  margin: 0 0 0 3px;
+  font-family: Monospaced Number, Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+.layui-input-block {
+  margin-left: 100px;
+}
+.layui-card {
+  margin: 0px;
+  border-radius: 0px;
+}
+.layui-card-header {
+  height: 40px;
+  line-height: 40px;
+  padding: 0px;
+  border-bottom: 1px solid #D8E3EF;
+}
+.layui-card-header .layui-card-header-txt {
+  display: inline-block;
+  height: 98%;
+  border-bottom: 2px solid #1E9FFF;
+  padding: 0px 10px;
+  padding-right: 80px;
+  font-weight: bold;
+  border-radius: 0px;
+}
+.layui-input:hover,
+.layui-input:focus,
+.layui-textarea:hover,
+.layui-textarea:focus {
+  border-color: #1e9fff !important;
+}
+.layui-form-checkbox[lay-skin="primary"] i:hover {
+  border-color: #1e9fff;
+}
+.layui-form-checked[lay-skin="primary"] i {
+  border-color: #1e9fff;
+  background-color: #1e9fff;
+}
+.layui-form-checked[lay-skin="primary"]:hover span {
+  background: none;
+}
+.layui-table,
+.layui-table-view {
+  margin: 0px;
+}
+.layui-table-page {
+  text-align: right;
+}
+.layui-tab {
+  margin: 0px;
+}
+.layui-tab-content {
+  padding: 0px;
+}
+.layui-nav-child {
+  min-width: auto;
+  right: 0px !important;
+  left: auto !important;
+}
+.layui-nav .layui-nav-child dd.layui-this a,
+.layui-nav-child dd.layui-this {
+  background: none;
+  color: #333;
+}
+.layui-btn-sm {
+  padding: 0px 5px;
+}
+.layui-tab-title .layui-this:after {
+  height: 40px;
+}
+.layui-btn,
+.layui-edge,
+.layui-inline,
+img {
+  vertical-align: inherit;
+}
+.layui-btn .layui-icon {
+  margin-right: 0px;
+}
