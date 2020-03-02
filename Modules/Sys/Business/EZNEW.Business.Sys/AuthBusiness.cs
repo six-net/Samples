@@ -70,7 +70,7 @@ namespace EZNEW.Business.Sys
 
                 var commitVal = businessWork.Commit();
                 Result<AuthorityDto> result = null;
-                if (commitVal.ExecutedSuccess)
+                if (commitVal.EmptyResultOrSuccess)
                 {
                     result = Result<AuthorityDto>.SuccessResult("保存成功");
                     result.Data = authSaveResult.Data.MapTo<AuthorityDto>();
@@ -256,7 +256,7 @@ namespace EZNEW.Business.Sys
                 }
                 var commitResult = businessWork.Commit();
                 Result<AuthorityGroupDto> result = null;
-                if (commitResult.ExecutedSuccess)
+                if (commitResult.EmptyResultOrSuccess)
                 {
                     result = Result<AuthorityGroupDto>.SuccessResult("保存成功");
                     result.Data = saveResult.Data.MapTo<AuthorityGroupDto>();
@@ -593,7 +593,7 @@ namespace EZNEW.Business.Sys
                 }
                 var commitResult = businessWork.Commit();
                 Result<AuthorityOperationDto> result = null;
-                if (commitResult.ExecutedSuccess)
+                if (commitResult.EmptyResultOrSuccess)
                 {
                     result = Result<AuthorityOperationDto>.SuccessResult("保存成功");
                     result.Data = saveResult.Data.MapTo<AuthorityOperationDto>();
