@@ -13,7 +13,6 @@ using EZNEW.Framework;
 using EZNEW.Application.Identity.User;
 using EZNEW.Application.Identity;
 using EZNEW.Framework.Code;
-using Newtonsoft.Json;
 using EZNEW.Develop.Command.Modify;
 
 namespace EZNEW.Domain.Sys.Model

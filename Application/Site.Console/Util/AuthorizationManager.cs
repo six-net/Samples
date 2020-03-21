@@ -70,6 +70,9 @@ namespace Site.Console.Util
                 return true;
             }
 
+            operation.ControllerCode = operation.ControllerCode?.ToUpper() ?? string.Empty;
+            operation.ActionCode = operation.ActionCode?.ToUpper() ?? string.Empty;
+
             #region 授权操作判断
 
             string operationValue = $"{operation.ControllerCode}/{operation.ActionCode}";

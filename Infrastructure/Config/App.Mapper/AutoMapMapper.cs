@@ -8,7 +8,6 @@ using EZNEW.Framework.Extension;
 using EZNEW.Framework.ObjectMap;
 using EZNEW.Framework.Serialize;
 using AutoMapper;
-using EZNEW.ModuleConfig.Sys;
 
 namespace App.Mapper
 {

@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="EZNEW.Application.Identity" Version="1.0.2" />
-    <PackageReference Include="EZNEW.Framework" Version="2.1.6" />
+    <PackageReference Include="EZNEW.Framework" Version="2.1.8" />
   </ItemGroup>
 
 </Project>
