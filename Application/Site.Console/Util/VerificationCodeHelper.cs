@@ -27,6 +27,7 @@ namespace Site.Console.Util
         public static byte[] RefreshLoginCode()
         {
             var codeObj = VerificationCodeFactory.GetVerificationCode();
+            codeObj.CodeType = VerificationCodeType.Number;
             var byteValues = codeObj.CreateCode();
             CookieHelper.SetCookieValue(LoginVerificationCodeKey, codeObj.Code);
             return byteValues;
