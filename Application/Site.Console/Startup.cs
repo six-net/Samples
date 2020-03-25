@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.IoC;
 using EZNEW.Mvc.CustomModelDisplayName;
 using EZNEW.Mvc.DataAnnotationsModelValidatorConfig;
+using EZNEW.Web.Mvc;
 using EZNEW.Web.Security.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Site.Console.Config;
+using Site.Console.Controllers;
 using Site.Console.Filters;
 using Site.Console.Util;
 
@@ -39,6 +40,10 @@ namespace Site.Console
             .AddViewOptions(vo =>
             {
                 vo.ClientModelValidatorProviders.Add(new CustomDataAnnotationsClientModelValidatorProvider());
+            })
+            .AddRazorOptions(ro =>
+            {
+                ro.ViewLocationExpanders.Add(new FolderLevelViewLocationExpander(typeof(WebBaseController)));
             });
             services.AddAuthentication(options =>
             {

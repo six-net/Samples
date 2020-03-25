@@ -14,7 +14,7 @@
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("Edituser", "sys", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "UserSuccessCallback", OnFailure = "UserFailedCallback" }, new { id = "default-form", @class = "pdt-10" }))
+            @using (Html.AjaxBeginForm("Edituser", "User", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "UserSuccessCallback", OnFailure = "UserFailedCallback" }, new { id = "default-form", @class = "pdt-10" }))
             {
                 @Html.Hidden("SysNo", null, new { id = "SysNo" })
                 @if (isAdd)
@@ -112,7 +112,7 @@
 
 @section Scripts{
     <script type="text/javascript">
-        var userDetailUrl = '@Url.Action("AdminUserDetail","Sys",new { id="_id"})';
+        var userDetailUrl = '@Url.Action("AdminUserDetail","User",new { id="_id"})';
         $(function () {
             BindDefaultFormSubmitEnterEvent();
         });

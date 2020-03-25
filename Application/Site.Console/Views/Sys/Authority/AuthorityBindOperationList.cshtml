@@ -19,13 +19,13 @@
                 </div>
             </div>
             <div class="list_search_inputgroup mgl-5">
-                @Html.AuthIcoButton("搜索", "Sys", "SearchAuthorityBindOperation",
+                @Html.AuthIcoButton("搜索", "AuthorityOperation", "SearchAuthorityBindOperation",
                 new { @class= "layui-btn layui-btn-sm", id = "search_btn" }
                 ,new {@class= "icon-search" })
-                @Html.AuthIcoButton("添加功能操作", "Sys", "AuthorityBindOperation",
+                @Html.AuthIcoButton("添加功能操作", "Authority", "AuthorityBindOperation",
                 new { @class= "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addoperation" }
                 ,new {@class= "icon-plus" })
-                @Html.AuthIcoButton("删除选中", "Sys", "AuthorityUnBindOperation",
+                @Html.AuthIcoButton("删除选中", "Authority", "AuthorityUnBindOperation",
                 new { @class= "layui-btn layui-btn-danger layui-btn-sm", id = "btn_deleteoperation" }
                 ,new {@class= "icon-trash" })
             </div>
@@ -48,7 +48,7 @@
         {{d.Group.Name}}
     </script>
     <script type="text/html" id="operation_bar">
-        @Html.AuthIcoButton("删除", "Sys", "AuthorityUnBindOperation",
+        @Html.AuthIcoButton("删除", "Authority", "AuthorityUnBindOperation",
         new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "operation_del" }
         ,new {@class= "icon-trash" })
     </script>
@@ -104,7 +104,7 @@
                         OperationMateKey: $.trim($("#search_authname").val())
                 };
                 PageSearch({
-                    url: '@Url.Action("SearchAuthorityBindOperation", "Sys")',
+                    url: '@Url.Action("SearchAuthorityBindOperation", "AuthorityOperation")',
                     method: 'post',
                     listEle: 'demo',
                     pagerEle: 'page-foot',
@@ -123,7 +123,7 @@
             //选择操作
             function SelectOperation() {
                 OpenDialogPage({
-                    content: '@Url.Action("AuthorityOperationMultiSelect", "Sys")',
+                    content: '@Url.Action("AuthorityOperationMultiSelect", "AuthorityOperation")',
                     area: ['750px', '550px'],
                     title: '选择操作功能'
                 });
@@ -146,7 +146,7 @@
                     sysNo: '@ViewBag.AuthoritySysNo',
                     operationIds: operations
                 };
-                $.post('@Url.Action("AuthorityBindOperation", "Sys")', data, function (res) {
+                $.post('@Url.Action("AuthorityBindOperation", "Authority")', data, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         SearchOperation();
@@ -169,7 +169,7 @@
                         sysNo: '@ViewBag.AuthoritySysNo',
                         operationIds: dataIds
                     };
-                    $.post('@Url.Action("AuthorityUnBindOperation", "Sys")', data, function (res) {
+                    $.post('@Url.Action("AuthorityUnBindOperation", "Authority")', data, function (res) {
                         ResultMsg(res);
                         if (res.Success) {
                             SearchOperation();

@@ -115,10 +115,10 @@
             InitGroupMultSelect({
                 objectTag: "Authority",
                 groupData: {
-                    dataUrl: "@Url.Action("SearchAuthorityGroup", "Sys")"
+                    dataUrl: "@Url.Action("SearchAuthorityGroup", "Authority")"
                 },
                 dataTable: {
-                    dataUrl: '@Url.Action("SearchAuthority", "Sys")',
+                    dataUrl: '@Url.Action("SearchAuthority", "Authority")',
                     where: function () {
                         var nameCodeKey = $.trim($("#search_namecode").val());
                         return {

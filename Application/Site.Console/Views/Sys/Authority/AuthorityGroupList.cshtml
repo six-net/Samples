@@ -2,9 +2,9 @@
 @using EZNEW.Framework.Extension;
 @using EZNEW.Framework.Serialize;
 @{
-    ViewData["Title"] = "授权操作管理";
-    var statusValues = AuthorityOperationStatus.启用.GetType().GetEnumValueAndNames();
-    var groupStatusValues = AuthorityOperationGroupStatus.启用.GetType().GetEnumValueAndNames();
+    ViewData["Title"] = "授权管理";
+    var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
+    var groupStatusValues = AuthorityGroupStatus.启用.GetType().GetEnumValueAndNames();
 }
 <environment>
     <link rel="stylesheet" href="~/script/ztree/skin.css" />
@@ -15,10 +15,10 @@
         <div class="split-panel">
             <div class="content-panel">
                 <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
-                   @Html.AuthIcoButton("添加功能分组", "Sys", "EditAuthorityOperationGroup",
+                    @Html.AuthIcoButton("添加权限分组", "Authority","EditAuthorityGroup",
                    new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id= "btn_addgroup" }
                    ,new {@class= "icon-plus" })
-                   @Html.AuthIcoButton("删除选中", "Sys", "DeleteAuthorityOperationGroup",
+                    @Html.AuthIcoButton("删除选中", "Authority", "DeleteAuthorityGroup",
                    new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "btn_delgroup" }
                    ,new {@class= "icon-trash" })
                 </div>
@@ -44,7 +44,7 @@
                         <tr>
                             <td></td>
                             <td class="detail-td-content">
-                                @Html.AuthIcoButton("编辑", "Sys", "EditAuthorityOperationGroup",
+                                @Html.AuthIcoButton("编辑", "Authority","EditAuthorityGroup",
                                 new { @class= "layui-btn layui-btn-gprimary", id= "btn_editgroup" }
                                 ,new {@class= "icon-edit" })
                             </td>
@@ -62,21 +62,23 @@
                                     <div class="layui-row pd-0 mg-0">
                                         <div class="column layui-form lis_search pd-0 pdb-10">
                                             <div class="list_search_inputgroup">
-                                                <label class="layui-form-label">名称/控制器/方法</label>
+                                                <label class="layui-form-label">名称/编码</label>
                                                 <div class="layui-input-inline">
-                                                    <input type="text" id="search_authname" placeholder="名称/控制器/方法"
+                                                    <input type="text" id="search_namecodekey" placeholder="名称/编码"
                                                            autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                             <div class="list_search_inputgroup mgl-5">
-                                                @Html.AuthIcoButton("搜索", "Sys", "SearchAuthorityOperation",
-                                                new { @class= "layui-btn layui-btn-sm", id = "btn_search_group_table_data" }
+                                                @Html.AuthIcoButton("搜索", "Authority", "SearchAuthority",
+                                                new { @class= "layui-btn layui-btn-sm", id= "btn_search_group_table_data" }
                                                 ,new {@class= "icon-search" })
-                                                @Html.AuthIcoButton("添加功能", "Sys", "EditAuthorityOperation",
-                                                new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addgrouptabledata" }
+
+                                                @Html.AuthIcoButton("添加权限", "Authority", "EditAuthority",
+                                                new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id= "btn_addgrouptabledata" }
                                                 ,new {@class= "icon-plus" })
-                                                @Html.AuthIcoButton("删除选中", "Sys", "DeleteAuthorityOperation",
-                                                new { @class= "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delgrouptabledata" }
+
+                                                @Html.AuthIcoButton("删除选中", "Authority", "DeleteAuthority",
+                                                new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "btn_delgrouptabledata" }
                                                 ,new {@class= "icon-trash" })
                                             </div>
 
@@ -100,87 +102,85 @@
     <environment>
         <script src="~/script/ztree/jquery.ztree.all.js"></script>
         <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
-        <script src="~/script/page/treecontrol.js"></script>
         <script src="~/script/page/groupdata.js"></script>
     </environment>
     <script type="text/html" id="group_table_toolbar">
-        @Html.AuthIcoButton("编辑", "Sys", "EditAuthorityOperation",
-        new { @class= "layui-btn layui-btn-xs layui-btn-gprimary", lay_event = "edit" }
+        @Html.AuthIcoButton("编辑", "Authority", "EditAuthority",
+        new { @class= "layui-btn layui-btn-xs layui-btn-gprimary", lay_event= "edit" }
         ,new {@class= "icon-pencil" })
 
-        @Html.AuthIcoButton("授权", "Sys", "AuthorityOperationBindAuthorityList",
-        new { @class= "layui-btn layui-btn-xs layui-btn-gsuccess", lay_event = "auth" }
+        @Html.AuthIcoButton("绑定功能", "Authority", "AuthorityBindOperationList",
+        new { @class= "layui-btn layui-btn-xs layui-btn-gsuccess", lay_event= "auth" }
         ,new {@class= "icon-check" })
 
-        @Html.AuthIcoButton("删除", "Sys", "DeleteAuthorityOperation",
-        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
+        @Html.AuthIcoButton("删除", "Authority", "DeleteAuthority",
+        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event= "remove" }
         ,new {@class= "icon-trash" })
     </script>
-    <script type="text/html" id="operation_status">
-        {{operationStatusDict[d.Status]}}
+    <script type="text/html" id="auth_status">
+        {{authStatusDict[d.Status]}}
     </script>
     <script type="text/javascript">
-        var loadAuth = false;
-        var operationStatusDict = new Object();
-        var operationGroupStatusDict = {};
+        var authStatusDict = new Object();
+        var authGroupStatusDict = {};
         $(function () {
-            operationStatusDict = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
-            operationGroupStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(groupStatusValues))');
+            authStatusDict = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            authGroupStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(groupStatusValues))');
             InitGroupDataManage({
                 groupData: {
-                    loadDataUrl: '@Url.Action("SearchAuthorityOperationGroup", "Sys")',
-                    deleteUrl: '@Url.Action("DeleteAuthorityOperationGroup", "Sys")',
-                    sortUrl: '@Url.Action("ChangeAuthorityOperationGroupSort","Sys")',
-                    editUrl: '@Url.Action("EditAuthorityOperationGroup", "Sys")',
-                    groupName: '操作分组',
-                    objectTag:"AuthorityOperationGroup"
+                    loadDataUrl: '@Url.Action("SearchAuthorityGroup", "Authority")',
+                    deleteUrl: '@Url.Action("DeleteAuthorityGroup", "Authority")',
+                    sortUrl: '@Url.Action("ChangeAuthorityGroupSort","Authority")',
+                    editUrl: '@Url.Action("EditAuthorityGroup", "Authority")',
+                    groupName: '权限分组',
+                    objectTag:"AuthorityGroup"
                 },
                 dataTable: {
                     cols: [[
                         { type: 'checkbox', fixed: 'left' }
                         , { field: 'Name', title: '名称', width: 150 }
-                        , { field: 'ControllerCode', title: '控制器', width: 150 }
-                        , { field: 'ActionCode', title: '方法', minWidth: 120 }
-                        , { field: 'Status', align: 'center', title: '状态', width: 80, templet: '#operation_status' }
-                        , { width: 200, align: 'center', fixed: 'right', toolbar: '#group_table_toolbar' }
+                        , { field: 'Code', title: '编码', width: 200 }
+                        , { field: 'Status', align: 'center', title: '状态', width: 80, templet: '#auth_status' }
+                        , { field: 'Remark', title: '说明', minWidth: 150 }
+                        , { width: 215, align: 'center', fixed: 'right', toolbar: '#group_table_toolbar' }
                     ]],
                     where: function (data) {
-                        var key = $.trim($("#search_authname").val());
+                        var key = $.trim($("#search_namecodekey").val());
                         return {
                             Group: data.SysNo,
-                            OperationMateKey:key
+                            NameCodeMateKey:key
                         };
                     },
-                    loadDataUrl: '@Url.Action("SearchAuthorityOperation", "Sys")',
-                    removeDataUrl: '@Url.Action("DeleteAuthorityOperation", "Sys")',
-                    addDataUrl: '@Url.Action("EditAuthorityOperation", "Sys",new { groupSysNo= "_groupid" })',
+                    loadDataUrl: '@Url.Action("SearchAuthority", "Authority")',
+                    removeDataUrl: '@Url.Action("DeleteAuthority", "Authority")',
+                    addDataUrl: '@Url.Action("EditAuthority", "Authority",new { groupSysNo= "_groupid" })',
                     toolBarEvent: function (obj, btn) {
                         var data = obj.data;
                         var layEvent = obj.event;
                         switch (layEvent) {
                             case "edit":
                                 OpenDialogPage({
-                                    title: '编辑授权操作',
-                                    content: '@Url.Action("EditAuthorityOperation", "Sys", new { sysNo = "_sysno" })'.replace('_sysno', data.SysNo),
-                                    area: ['700px', '550px']
+                                    title: '编辑权限',
+                                    content: '@Url.Action("EditAuthority", "Authority", new { sysNo = "_sysno" })'.replace('_sysno', data.SysNo),
+                                    area: ['600px', '420px']
                                 });
                                 break;
                             case "auth":
                                 OpenDialogPage({
-                                    content: '@Url.Action("AuthorityOperationBindAuthorityList", "Sys", new { id = "_id" })'.replace('_id', data.SysNo),
+                                    content: '@Url.Action("AuthorityBindOperationList", "Authority", new { sysNo = "_sysno" })'.replace('_sysno', data.SysNo),
                                     area: ['700px', '500px'],
-                                    title: '【'+data.Name+'】操作功能授权',
+                                    title: '【'+data.Name+'】绑定的功能操作',
                                 });
                                 break;
                         }
                     },
-                    dataTag: 'AuthorityOperation',
-                    editWindowSize: ['700px', '550px']
+                    dataTag: 'Authority',
+                    editWindowSize: ['600px', '420px']
                 },
                 detailContainer: {
                     showDataDetailFunc: function (data) {
                         $('#content-for-Name').text(data.Name);
-                        $('#content-for-Status').text(operationGroupStatusDict[data.Status]);
+                        $('#content-for-Status').text(authGroupStatusDict[data.Status]);
                     },
                     resetCallback: null
                 }

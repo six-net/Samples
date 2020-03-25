@@ -19,17 +19,17 @@
                 </div>
             </div>
             <div class="list_search_inputgroup mgl-5">
-                @Html.AuthIcoButton("搜索", "Sys", "SearchAuthorityOperationBindAuthority",
-                new { @class= "layui-btn layui-btn-sm", id = "search_btn" }
-                ,new {@class= "icon-search" })
+                @Html.AuthIcoButton("搜索", "Authority", "SearchAuthorityOperationBindAuthority",
+                new { @class = "layui-btn layui-btn-sm", id = "search_btn" }
+                , new { @class = "icon-search" })
 
-                @Html.AuthIcoButton("添加权限", "Sys", "OperationBindAuthority",
-                new { @class= "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addauthority" }
-                ,new {@class= "icon-plus" })
+                @Html.AuthIcoButton("添加权限", "AuthorityOperation", "OperationBindAuthority",
+                new { @class = "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addauthority" }
+                , new { @class = "icon-plus" })
 
-                @Html.AuthIcoButton("删除选中", "Sys", "OperationUnBindAuthority",
-                new { @class= "layui-btn layui-btn-danger layui-btn-sm", id = "deleteselect_btn" }
-                ,new {@class= "icon-trash" })
+                @Html.AuthIcoButton("删除选中", "AuthorityOperation", "OperationUnBindAuthority",
+                new { @class = "layui-btn layui-btn-danger layui-btn-sm", id = "deleteselect_btn" }
+                , new { @class = "icon-trash" })
             </div>
         </div>
     </div>
@@ -47,9 +47,9 @@
         {{d.Group.Name}}
     </script>
     <script type="text/html" id="auth_bar">
-        @Html.AuthIcoButton("删除", "Sys", "OperationUnBindAuthority",
-        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "auth_del" }
-        ,new {@class= "icon-trash" })
+        @Html.AuthIcoButton("删除", "AuthorityOperation", "OperationUnBindAuthority",
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "auth_del" }
+        , new { @class = "icon-trash" })
     </script>
     <script type="text/javascript">
         var authStatusDict = new Object();
@@ -105,7 +105,7 @@
                 NameCodeMateKey: $.trim($("#search_authname").val())
             };
             PageSearch({
-                url: '@Url.Action("SearchAuthorityOperationBindAuthority", "Sys")',
+                url: '@Url.Action("SearchAuthorityOperationBindAuthority", "Authority")',
                 method: 'post',
                 listEle: 'demo',
                 pagerEle: 'page-foot',
@@ -117,7 +117,7 @@
         function SelectAuthority() {
             OpenDialogPage({
                     title: '选择权限',
-                    content:'@Url.Action("AuthorityMultiSelect", "Sys")',
+                    content:'@Url.Action("AuthorityMultiSelect", "Authority")',
                     area: ["700px","500px"]
             });
         }
@@ -131,7 +131,7 @@
                 operationId: '@ViewBag.OperationId',
                 authIds: res.data.keys
             };
-            $.post('@Url.Action("OperationBindAuthority", "Sys")', data, function (res) {
+            $.post('@Url.Action("OperationBindAuthority", "AuthorityOperation")', data, function (res) {
                 ResultMsg(res);
                 if (res.Success) {
                     SearchAuthority();
@@ -153,7 +153,7 @@
                     operationId: '@ViewBag.OperationId',
                     authIds: authIds
                 };
-                $.post('@Url.Action("OperationUnBindAuthority", "Sys")', data, function (res) {
+                $.post('@Url.Action("OperationUnBindAuthority", "AuthorityOperation")', data, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         SearchAuthority();

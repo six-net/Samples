@@ -1,10 +1,10 @@
 
 @{
-    ViewData["Title"] = "编辑角色";
+    ViewData["Title"] = "编辑操作分组";
 }
 @using EZNEW.ViewModel.Sys.Request
-@using EZNEW.Application.Identity.User
-@model EditRoleViewModel
+@using EZNEW.Application.Identity.Auth
+@model EditAuthorityOperationGroupViewModel
 
 <environment>
     <link href="~/script/ztree/skin.css" rel="stylesheet" />
@@ -12,14 +12,14 @@
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("EditRole", "Sys", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form", @class = "pdt-10" }))
+            @using (Html.AjaxBeginForm("EditAuthorityOperationGroup", "AuthorityOperation", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form",@class = "pdt-10" }))
             {
                 @Html.HiddenFor(c => c.SysNo)
                 @Html.HiddenFor(c => c.Parent.SysNo)
                 <div class="layui-form-item">
-                    <label class="layui-form-label">上级角色</label>
+                    <label class="layui-form-label">上级分组</label>
                     <div class="layui-input-inline w-300 h-38">
-                        <div id="parent_role" class=""></div>
+                        <div id="parent_group"></div>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -27,19 +27,30 @@
                     <div class="layui-input-inline w-200">
                         @Html.TextBoxFor(a => a.Name, new { @class = "layui-input", autocomplete = "off" })
                     </div>
-                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })</div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })
+                    </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态</label>
                     <div class="layui-input-inline w-200">
-                        @Html.EnumToSelect(a => a.Status, RoleStatus.正常, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                        @Html.EnumToSelect(a => a.Status, AuthorityOperationGroupStatus.启用, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">说明</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextAreaFor(a => a.Remark, new { @class = "layui-input w-200 h-50", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Remark, "", new { @class = "form-validate-msg" })
                     </div>
                 </div>
             }
         </div>
     </div>
 </div>
-
 <div id="page-foot" class="hidev">
     <div class="page-foot-btngroup">
         <button type="button" id="btn_submit" class="layui-btn layui-btn-gsuccess"><i class="icon-save"></i> 提交</button>
@@ -53,19 +64,19 @@
         <script src="~/script/treeselect.js"></script>
     </environment>
     <script type="text/javascript">
-        DataObjectTag = "Role";
-        var selectRoleTree = null;
-        var nowRoleId ='@(Model?.SysNo??0)'
+        DataObjectTag = "AuthorityOperationGroup";
+        var selectTree = null;
+        var nowId ='@(Model?.SysNo??0)'
         $(function () {
-            InitRoleTreeData();
+            InitTreeData();
             BindDefaultFormSubmitEnterEvent();//绑定默认表单事件
         });
 
         //初始化选择控件
-        function InitRoleTreeData() {
+        function InitTreeData() {
             var options = {
-                containerEle: '#parent_role',
-                dataUrl:'@Url.Action("SearchRole", "Sys")',
+                containerEle: '#parent_group',
+                dataUrl:'@Url.Action("SearchAuthorityOperationGroup", "AuthorityOperation")',
                 selectCallback: function (datas) {
                    if (!datas || datas.length < 1) {
                        return;
@@ -75,16 +86,16 @@
                 selectedValue: ['@(Model.Parent?.SysNo)'],
                 inputText: '@(Model.Parent?.Name)',
                 height: 200,
-                defaultNode: { id: 0, name: '一级角色', value: '0', isParent: true },
+                defaultNode: { id: 0, name: '一级分组', value: '0', isParent: true },
                 editMode: IsEdit(),
-                editKeyValue: nowRoleId
+                editKeyValue: nowId
             };
-            selectRoleTree = new CTreeSelect(options);
+            selectTree = new CTreeSelect(options);
         }
 
         //是否编辑
         function IsEdit() {
-            return nowRoleId != '' && nowRoleId != '0';
+            return nowId != '' && nowId != '0';
 
         }
     </script>

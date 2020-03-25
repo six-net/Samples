@@ -56,15 +56,15 @@
                                 <h3 class="funcgroupmenu-title"><i class="menugroup-ico icon-user"></i> 角色/账户</h3>
                                 <div class="funcgroupmenu-list">
                                     <ul>
-                                        <li action="@Url.Action("RoleList","Sys")">角色管理</li>
-                                        <li action="@Url.Action("AdminUserList","Sys")">管理账户</li>
+                                        <li action="@Url.Action("RoleList","Role")">角色管理</li>
+                                        <li action="@Url.Action("AdminUserList","User")">管理账户</li>
                                     </ul>
                                 </div>
                                 <h3 class="funcgroupmenu-title"><i class="menugroup-ico icon-cogs"></i> 权限/功能</h3>
                                 <div class="funcgroupmenu-list">
                                     <ul>
-                                        <li action="@Url.Action("AuthorityGroupList","Sys")">权限管理</li>
-                                        <li action="@Url.Action("AuthorityOperationGroupList","Sys")">功能操作</li>
+                                        <li action="@Url.Action("AuthorityGroupList","Authority")">权限管理</li>
+                                        <li action="@Url.Action("AuthorityOperationGroupList","AuthorityOperation")">功能操作</li>
                                     </ul>
                                 </div>
                             </div>
@@ -126,7 +126,7 @@
             function ModifyPwd() {
                 OpenDialogPage({
                     title: '修改登录密码',
-                    content:'@Url.Action("ModifyPassword", "Sys")',
+                    content:'@Url.Action("ModifyPassword", "User")',
                     area: ["600px","300px"]
                 });
             }

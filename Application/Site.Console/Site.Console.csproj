@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>
 
@@ -18,49 +19,49 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Config\Display\Sys\EditAuthorityGroupViewModel.disconfig">
+    <None Update="ConfigFile\Display\Sys\EditAuthorityGroupViewModel.disconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Display\Sys\EditAuthorityOperationGroupViewModel.disconfig">
+    <None Update="ConfigFile\Display\Sys\EditAuthorityOperationGroupViewModel.disconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Display\Sys\EditAuthorityOperationViewModel.disconfig">
+    <None Update="ConfigFile\Display\Sys\EditAuthorityOperationViewModel.disconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Display\Sys\EditAuthorityViewModel.disconfig">
+    <None Update="ConfigFile\Display\Sys\EditAuthorityViewModel.disconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Display\Sys\EditRoleViewModel.disconfig">
+    <None Update="ConfigFile\Display\Sys\EditRoleViewModel.disconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Display\Sys\EditUserViewModel.disconfig">
+    <None Update="ConfigFile\Display\Sys\EditUserViewModel.disconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\EditAuthorityGroupViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\EditAuthorityGroupViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\EditAuthorityOperationGroupViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\EditAuthorityOperationGroupViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\EditAuthorityOperationViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\EditAuthorityOperationViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\EditAuthorityViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\EditAuthorityViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\EditRoleViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\EditRoleViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\EditUserViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\EditUserViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\LoginViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\LoginViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\ModifyPasswordViewModel.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\ModifyPasswordViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Config\Validation\Sys\Role.dvconfig">
+    <None Update="ConfigFile\Validation\Sys\Role.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

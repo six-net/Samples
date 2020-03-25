@@ -23,7 +23,7 @@ namespace EZNEW.ViewModel.Sys.Request
         /// <summary>
         /// 名称
         /// </summary>
-        [Remote("CheckAuthorityOperationGroupName", "Sys", AdditionalFields = "SysNo", ErrorMessage = "操作分组名已存在",HttpMethod ="Post")]
+        [Remote("CheckAuthorityOperationGroupName", "AuthorityOperation", AdditionalFields = "SysNo", ErrorMessage = "操作分组名已存在",HttpMethod ="Post")]
         public string Name
         {
             get;

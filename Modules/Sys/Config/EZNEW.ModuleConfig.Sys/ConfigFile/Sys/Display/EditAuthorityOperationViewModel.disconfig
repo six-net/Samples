@@ -22,12 +22,6 @@
           }
         },
         {
-          "name": "Method",
-          "display": {
-            "displayTxt": "请求类型"
-          }
-        },
-        {
           "name": "Name",
           "display": {
             "displayTxt": "方法名称"

@@ -23,7 +23,7 @@ namespace EZNEW.ViewModel.Sys.Request
         /// <summary>
         /// 权限编码
         /// </summary>
-        [Remote("CheckAuthorityCode", "Sys", AdditionalFields = "SysNo", ErrorMessage = "权限编码已存在", HttpMethod = "Post")]
+        [Remote("CheckAuthorityCode", "Authority", AdditionalFields = "SysNo", ErrorMessage = "权限编码已存在", HttpMethod = "Post")]
         public string Code
         {
             get;
@@ -33,7 +33,7 @@ namespace EZNEW.ViewModel.Sys.Request
         /// <summary>
         /// 名称
         /// </summary>
-        [Remote("CheckAuthorityName", "Sys", AdditionalFields = "SysNo", ErrorMessage = "权限名称已存在", HttpMethod = "Post")]
+        [Remote("CheckAuthorityName", "Authority", AdditionalFields = "SysNo", ErrorMessage = "权限名称已存在", HttpMethod = "Post")]
         public string Name
         {
             get;

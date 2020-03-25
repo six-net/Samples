@@ -61,7 +61,7 @@ namespace EZNEW.Repository.Sys
             }
             var copyQuery = query.Clone();
             copyQuery.QueryFields.Clear();
-            copyQuery.AddQueryFields<AuthorityQuery>(c => c.Code);
+            copyQuery.AddQueryFields<AuthorityQuery>(c => c.SysNo);
             var removeQuery = QueryFactory.Create<UserAuthorizeQuery>();
             removeQuery.And<UserAuthorizeQuery>(ur => ur.AuthoritySysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;

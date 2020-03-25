@@ -9,7 +9,7 @@
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("EditAuthority", "Sys", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback" }, new { id = "default-form" }))
+            @using (Html.AjaxBeginForm("EditAuthority", "Authority", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback" }, new { id = "default-form" }))
             {
                 @Html.HiddenFor(r => r.SysNo)
                 @Html.HiddenFor(r => r.Group.SysNo)

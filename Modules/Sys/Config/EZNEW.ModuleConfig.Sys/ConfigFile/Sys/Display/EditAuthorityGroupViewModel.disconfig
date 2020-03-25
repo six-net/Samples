@@ -28,7 +28,7 @@
             }
           },
           {
-            "name": "SortIndex",
+            "name": "Sort",
             "display": {
               "displayTxt": "排序"
             }

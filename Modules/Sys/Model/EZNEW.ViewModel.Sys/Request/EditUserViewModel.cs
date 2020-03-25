@@ -27,7 +27,7 @@ namespace EZNEW.ViewModel.Sys.Request
         /// <summary>
         /// 登录名
         /// </summary>
-        [Remote("CheckUserName", "Sys", ErrorMessage = "登陆名已存在", HttpMethod = "post")]
+        [Remote("CheckUserName", "User", ErrorMessage = "登陆名已存在", HttpMethod = "post")]
         public string UserName
         {
             get;

@@ -41,7 +41,7 @@ namespace EZNEW.ViewModel.Sys.Request
         /// <summary>
         /// 名称
         /// </summary>
-        [Remote("CheckAuthorityOperationName", "Sys", AdditionalFields = "SysNo", ErrorMessage = "方法名已存在", HttpMethod = "Post")]
+        [Remote("CheckAuthorityOperationName", "AuthorityOperation", AdditionalFields = "SysNo", ErrorMessage = "方法名已存在", HttpMethod = "Post")]
         public string Name
         {
             get;

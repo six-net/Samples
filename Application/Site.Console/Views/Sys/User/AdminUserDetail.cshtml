@@ -11,7 +11,6 @@
 @{
     var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
 }
-
 <environment>
     <link rel="stylesheet" href="~/script/ztree/skin.css" />
 </environment>
@@ -70,10 +69,10 @@
                                         </div>
                                     </div>
                                     <div class="list_search_inputgroup mgl-5">
-                                        @Html.AuthIcoButton("搜索", "Sys", "SearchRolePaging",
+                                        @Html.AuthIcoButton("搜索", "Role", "SearchRolePaging",
                                         new { @class= "layui-btn layui-btn-sm", onclick = "LoadRoleData()" }
                                         ,new {@class= "icon-search" })
-                                        @Html.AuthIcoButton("清除所有角色", "Sys", "ClearUserRole",
+                                        @Html.AuthIcoButton("清除所有角色", "User", "ClearUserRole",
                                         new { @class= "layui-btn layui-btn-sm layui-btn-gdanger", id = "btn_clearrole" }
                                         ,new {@class= "icon-remove" })
                                     </div>
@@ -95,7 +94,7 @@
                             <div class="split-panel">
                                 <div class="content-panel">
                                     <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
-                                        @Html.AuthIcoButton("还原角色授权", "Sys", "RestoreUserRoleAuthority",
+                                        @Html.AuthIcoButton("还原角色授权", "User", "RestoreUserRoleAuthorize",
                                         new { @class= "layui-btn layui-btn-sm layui-btn-gdanger", id = "btn_restoreroleauth" }
                                         ,new {@class= "icon-undo" })
                                     </div>
@@ -117,13 +116,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="list_search_inputgroup mgl-5">
-                                                    @Html.AuthIcoButton("搜索", "Sys", "SearchUserAuthority",
+                                                    @Html.AuthIcoButton("搜索", "Authority", "SearchUserAuthority",
                                                     new { @class= "layui-btn layui-btn-sm", onclick = "LoadAuthorityData()" }
                                                     ,new {@class= "icon-search" })
-                                                    @Html.AuthIcoButton("添加授权", "Sys", "AddUserAuthority",
+                                                    @Html.AuthIcoButton("添加授权", "User", "AddUserAuthorize",
                                                     new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addauth" }
                                                     ,new {@class= "icon-plus" })
-                                                    @Html.AuthIcoButton("删除选中授权", "Sys", "RemoveUserAuthority",
+                                                    @Html.AuthIcoButton("删除选中授权", "User", "RemoveUserAuthorize",
                                                     new { @class= "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delauth" }
                                                     ,new {@class= "icon-trash" })
                                                 </div>
@@ -147,25 +146,25 @@
 </div>
 <div id="page-foot" class="hidev">
     <div class="page-foot-btngroup">
-        @Html.AuthIcoButton("编辑", "Sys", "EditUser",
+        @Html.AuthIcoButton("编辑", "User", "EditUser",
         new { @class= "layui-btn layui-btn-gprimary", id = "btn_edit" }
         ,new {@class= "icon-pencil" })
         @if (Model.Status == UserStatus.正常)
         {
-            @Html.AuthIcoButton("锁定", "Sys", "ModifyUserStatus",
+            @Html.AuthIcoButton("锁定", "User", "ModifyUserStatus",
             new { @class= "layui-btn layui-btn-warm", id = "btn_lock" }
             ,new {@class= "icon-lock" })
         }
         else
         {
-            @Html.AuthIcoButton("解锁", "Sys", "ModifyUserStatus",
+            @Html.AuthIcoButton("解锁", "User", "ModifyUserStatus",
             new { @class= "layui-btn layui-btn-warm", id = "btn_lock" }
             ,new {@class= "icon-unlock" })
         }
-        @Html.AuthIcoButton("修改密码", "Sys", "AdminModifyPassword",
+        @Html.AuthIcoButton("修改密码", "User", "AdminModifyPassword",
         new { @class= "layui-btn layui-btn-gwarning", id = "btn_modifypwd" }
         ,new {@class= "icon-key" })
-        @Html.AuthIcoButton("删除", "Sys", "DeleteUser",
+        @Html.AuthIcoButton("删除", "User", "DeleteUser",
         new { @class= "layui-btn layui-btn-gdanger", id = "btn_remove" }
         ,new {@class= "icon-trash" })
     </div>
@@ -175,15 +174,15 @@
     <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
     <script src="~/script/page/treecontrol.js"></script>
     <script type="text/html" id="role_toolbar">
-        @Html.AuthIcoButton("删除", "Sys", "RemoveUserRole",
+        @Html.AuthIcoButton("删除", "User", "RemoveUserRole",
         new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
         ,new {@class= "icon-trash" })
     </script>
     <script type="text/html" id="roletable_toolbar">
-        @Html.AuthIcoButton("添加角色", "Sys", "AddUserRole",
+        @Html.AuthIcoButton("添加角色", "User", "AddUserRole",
         new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addrole" }
         ,new {@class= "icon-plus" })
-        @Html.AuthIcoButton("删除选中角色", "Sys", "RemoveUserRole",
+        @Html.AuthIcoButton("删除选中角色", "User", "RemoveUserRole",
         new { @class= "layui-btn layui-btn-sm layui-btn-danger", id = "btn_deleterole" }
         ,new {@class= "icon-trash" })
     </script>
@@ -230,7 +229,7 @@
             $("#btn_addrole").click(function () {
                 OpenDialogPage({
                     title: '选择角色',
-                    content:'@Url.Action("RoleMultipleSelect","Sys")',
+                    content:'@Url.Action("RoleMultipleSelect","Role")',
                     area: ["300px","450px"]
                 });
             });
@@ -262,7 +261,7 @@
             $("body").on("click","#btn_addauth",function () {
                 OpenDialogPage({
                     title: '选择权限',
-                    content:'@Url.Action("AuthorityMultiSelect", "Sys")',
+                    content:'@Url.Action("AuthorityMultiSelect", "Authority")',
                     area: ["700px","500px"]
                 });
             });
@@ -275,7 +274,7 @@
 
             //编辑用户
             $("#btn_edit").click(function () {
-                window.top.RedirectCurrentPage('@Url.Action("EditUser", "Sys", new { sysNo = Model.SysNo })', '编辑用户');
+                window.top.RedirectCurrentPage('@Url.Action("EditUser", "User", new { sysNo = Model.SysNo })', '编辑用户');
             });
 
             //修改用户状态
@@ -286,7 +285,7 @@
             //修改密码
             $("#btn_modifypwd").click(function () {
                 OpenDialogPage({
-                    content: '@Url.Action("AdminModifyPassword", "Sys",new { sysNo=Model.SysNo})',
+                    content: '@Url.Action("AdminModifyPassword", "User",new { sysNo=Model.SysNo})',
                     area:['550px','300px'],
                     title: '修改登录密码',
                 });
@@ -294,7 +293,7 @@
             //删除用户
             $("#btn_remove").click(function () {
                 ConfirmMsg('用户删除后将不能恢复，确认删除吗?', function () {
-                    $.post('@Url.Action("DeleteUser","Sys")', { sysNos: ['@Model.SysNo'] }, function (res) {
+                    $.post('@Url.Action("DeleteUser","User")', { sysNos: ['@Model.SysNo'] }, function (res) {
                         ResultMsg(res);
                         if (res.Success) {
                             window.top.CloseCurrentPage();
@@ -307,7 +306,7 @@
         //加载角色数据
         function LoadRoleData() {
             PageSearch({
-                 url: '@Url.Action("SearchRolePaging","Sys")',
+                 url: '@Url.Action("SearchRolePaging","Role")',
                  listEle: "role_table",
                  pagerEle: "role_table_pager",
                  data: {
@@ -330,7 +329,7 @@
                 roleIds.push(datas[d].SysNo);
             }
             ConfirmMsg('确认移除绑定角色吗?', function (res) {
-                $.post('@Url.Action("RemoveUserRole","Sys")', { userId: '@Model.SysNo', roleIds:roleIds}, function (res) {
+                $.post('@Url.Action("RemoveUserRole","User")', { userId: '@Model.SysNo', roleIds:roleIds}, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         LoadRoleData();
@@ -342,7 +341,7 @@
         //清除角色
         function ClearRole() {
             ConfirmMsg('确认清除所有绑定的角色吗?', function () {
-                $.post('@Url.Action("ClearUserRole","Sys")', { userId: '@Model.SysNo' }, function (res) {
+                $.post('@Url.Action("ClearUserRole","User")', { userId: '@Model.SysNo' }, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         LoadRoleData();
@@ -358,7 +357,7 @@
             }
             switch (res.objectTag) {
                 case "Role":
-                    $.post('@Url.Action("AddUserRole", "Sys")', { userId: '@Model.SysNo', roleIds: res.data.keys }, function (res) {
+                    $.post('@Url.Action("AddUserRole", "User")', { userId: '@Model.SysNo', roleIds: res.data.keys }, function (res) {
                         ResultMsg(res);
                         if (res.Success) {
                             LoadRoleData();
@@ -366,7 +365,7 @@
                     });
                     break;
                 case "Authority":
-                    $.post('@Url.Action("AddUserAuthorize", "Sys")', { userId: '@Model.SysNo', authSysNos: res.data.keys }, function (res) {
+                    $.post('@Url.Action("AddUserAuthorize", "User")', { userId: '@Model.SysNo', authSysNos: res.data.keys }, function (res) {
                         ResultMsg(res);
                         if (res.Success) {
                             LoadAuthorityData();
@@ -409,7 +408,7 @@
 
             authGroupTree=new CTreeControl({
                 data: {
-                    url: '@Url.Action("SearchAuthorityGroup", "Sys")',
+                    url: '@Url.Action("SearchAuthorityGroup", "Authority")',
                     treeEleId: 'all_authtree',
                     onClick: function (event, treeId, treeNode) {
                         nowAuthNode = treeNode;
@@ -426,7 +425,7 @@
                 return;
             }
             PageSearch({
-                url: '@Url.Action("SearchUserAuthority", "Sys")',
+                url: '@Url.Action("SearchUserAuthority", "Authority")',
                 listEle: 'user_auth_table',
                 pagerEle: 'user_auth_table_pager',
                 data: {
@@ -442,7 +441,7 @@
         //还原用户角色授权
         function RestoreUserRoleAuthority() {
             ConfirmMsg('还原角色权限将删除单独赋予用户和用户单独禁用的权限,确认还原吗?', function () {
-                $.post('@Url.Action("RestoreUserRoleAuthorize", "Sys")', { userId:'@Model.SysNo'}, function (res) {
+                $.post('@Url.Action("RestoreUserRoleAuthorize", "User")', { userId:'@Model.SysNo'}, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         LoadAuthorityData();
@@ -462,7 +461,7 @@
                 authIds.push(datas[d].SysNo);
             }
             ConfirmMsg('确认删除用户授权吗?', function () {
-                $.post('@Url.Action("RemoveUserAuthorize", "Sys")', { userId: '@Model.SysNo', authSysNos: authIds }, function (res) {
+                $.post('@Url.Action("RemoveUserAuthorize", "User")', { userId: '@Model.SysNo', authSysNos: authIds }, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         LoadAuthorityData();
@@ -476,7 +475,7 @@
             var status = nowUser.Status == lockStatus ? unlockStatus : lockStatus;
             var unlock = status ==unlockStatus;
             ConfirmMsg(unlock ?'账户解锁后将恢复登陆,确认解锁吗?':'用户锁定后将不能登录使用,确认锁定吗?', function () {
-                $.post('@Url.Action("ModifyUserStatus", "Sys")', { id: '@Model.SysNo',status:status }, function (res) {
+                $.post('@Url.Action("ModifyUserStatus", "User")', { id: '@Model.SysNo',status:status }, function (res) {
                     ResultMsg(res);
                     if (res.Success) {
                         nowUser.Status = status;

@@ -23,7 +23,7 @@ namespace EZNEW.ViewModel.Sys.Request
         /// <summary>
         /// 名称
         /// </summary>
-        [Remote("CheckRoleName", "Sys", AdditionalFields = "SysNo", ErrorMessage = "角色名已存在",HttpMethod ="post")]
+        [Remote("CheckRoleName", "Role", AdditionalFields = "SysNo", ErrorMessage = "角色名已存在",HttpMethod ="post")]
         public string Name
         {
             get;

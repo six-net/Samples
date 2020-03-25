@@ -1,10 +1,10 @@
 
 @{
-    ViewData["Title"] = "编辑操作分组";
+    ViewData["Title"] = "编辑分组";
 }
 @using EZNEW.ViewModel.Sys.Request
 @using EZNEW.Application.Identity.Auth
-@model EditAuthorityOperationGroupViewModel
+@model EditAuthorityGroupViewModel
 
 <environment>
     <link href="~/script/ztree/skin.css" rel="stylesheet" />
@@ -12,7 +12,7 @@
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("EditAuthorityOperationGroup", "Sys", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form",@class = "pdt-10" }))
+            @using (Html.AjaxBeginForm("EditAuthorityGroup", "Authority", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form", @class = "layui-form pdt-10" }))
             {
                 @Html.HiddenFor(c => c.SysNo)
                 @Html.HiddenFor(c => c.Parent.SysNo)
@@ -34,17 +34,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态</label>
                     <div class="layui-input-inline w-200">
-                        @Html.EnumToSelect(a => a.Status, AuthorityOperationGroupStatus.启用, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">说明</label>
-                    <div class="layui-input-inline w-200">
-                        @Html.TextAreaFor(a => a.Remark, new { @class = "layui-input w-200 h-50", autocomplete = "off" })
-                    </div>
-                    <div class="layui-form-mid form-validate-msg">
-                        @Html.DefaultValidationMessageFor(c => c.Remark, "", new { @class = "form-validate-msg" })
+                        @Html.EnumToSelect(a => a.Status, AuthorityGroupStatus.启用, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
                     </div>
                 </div>
             }
@@ -64,7 +54,7 @@
         <script src="~/script/treeselect.js"></script>
     </environment>
     <script type="text/javascript">
-        DataObjectTag = "AuthorityOperationGroup";
+        DataObjectTag = "AuthorityGroup";
         var selectTree = null;
         var nowId ='@(Model?.SysNo??0)'
         $(function () {
@@ -76,7 +66,7 @@
         function InitTreeData() {
             var options = {
                 containerEle: '#parent_group',
-                dataUrl:'@Url.Action("SearchAuthorityOperationGroup", "Sys")',
+                dataUrl:'@Url.Action("SearchAuthorityGroup", "Authority")',
                 selectCallback: function (datas) {
                    if (!datas || datas.length < 1) {
                        return;

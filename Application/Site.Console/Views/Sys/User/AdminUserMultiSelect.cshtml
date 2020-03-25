@@ -74,10 +74,9 @@
             InitMultSelect({
                 objectTag: "AdminUser",
                 dataTable: {
-                    dataUrl: '@Url.Action("SearchAdminUser", "Sys")',
+                    dataUrl: '@Url.Action("SearchAdminUser", "User")',
                     where: function () {
                         var nameKey = $.trim($("#search_username").val());
-                        //var contactKey = $.trim($("#search_contact").val());
                         var data = { NameMateKey: nameKey };
                         return data;
                     },
