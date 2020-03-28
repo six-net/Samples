@@ -12,7 +12,7 @@
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("EditAuthorityOperationGroup", "AuthorityOperation", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form",@class = "pdt-10" }))
+            @using (Html.AjaxBeginForm("EditAuthorityOperationGroup", "AuthorityOperation", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form", @class = "pdt-10" }))
             {
                 @Html.HiddenFor(c => c.SysNo)
                 @Html.HiddenFor(c => c.Parent.SysNo)

@@ -27,8 +27,8 @@
             </div>
             <div class="list_search_inputgroup mgl-5">
                 @Html.AuthIcoButton("搜索", "User", "SearchAdminUser",
-                new { @class= "layui-btn layui-btn-sm", id= "search_btn" }
-                ,new {@class= "icon-search" })
+                new { @class = "layui-btn layui-btn-sm", id = "search_btn" }
+                , new { @class = "icon-search" })
             </div>
         </div>
     </div>
@@ -43,11 +43,11 @@
 @section Scripts{
     <script type="text/html" id="table_toolbar">
         @Html.AuthIcoButton("添加用户", "User", "EditUser",
-        new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id= "create_btn" }
-        ,new {@class= "icon-plus" })
+        new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "create_btn" }
+        , new { @class = "icon-plus" })
         @Html.AuthIcoButton("删除选中", "User", "DeleteUser",
-        new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "deleteselect_btn" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "deleteselect_btn" }
+        , new { @class = "icon-trash" })
     </script>
 
     <script type="text/html" id="toobar_status">
@@ -59,26 +59,26 @@
 
     <script type="text/html" id="user_bar">
         @Html.AuthIcoButton("详情", "User", "AdminUserDetail",
-        new { @class= "layui-btn layui-btn-xs layui-btn-ginfo", lay_event= "user_detail" }
-        ,new {@class= "icon-file-alt" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-ginfo", lay_event = "user_detail" }
+        , new { @class = "icon-file-alt" })
         @Html.AuthIcoButton("编辑", "User", "EditUser",
-        new { @class= "layui-btn layui-btn-xs layui-btn-gprimary", lay_event= "user_edit" }
-        ,new {@class= "icon-edit" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-gprimary", lay_event = "user_edit" }
+        , new { @class = "icon-edit" })
         {{#  if(d.Status==@((int)UserStatus.正常)){ }}
         @Html.AuthIcoButton("锁定", "User", "ModifyUserStatus",
-        new { @class= "layui-btn layui-btn-xs layui-btn-warm", lay_event= "user_lock" }
-        ,new {@class= "icon-lock" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-warm", lay_event = "user_lock" }
+        , new { @class = "icon-lock" })
         {{#  }else{ }}
         @Html.AuthIcoButton("解锁", "User", "ModifyUserStatus",
-        new { @class= "layui-btn layui-btn-xs layui-btn-warm", lay_event= "user_unlock" }
-        ,new {@class= "icon-unlock" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-warm", lay_event = "user_unlock" }
+        , new { @class = "icon-unlock" })
         {{#  } }}
         @Html.AuthIcoButton("修改密码", "User", "AdminModifyPassword",
-        new { @class= "layui-btn layui-btn-xs layui-btn-gwarning", lay_event= "user_modifypwd" }
-        ,new {@class= "icon-key" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-gwarning", lay_event = "user_modifypwd" }
+        , new { @class = "icon-key" })
         @Html.AuthIcoButton("删除", "User", "DeleteUser",
-        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event= "user_del" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "user_del" }
+        , new { @class = "icon-trash" })
     </script>
 
     <script type="text/javascript">

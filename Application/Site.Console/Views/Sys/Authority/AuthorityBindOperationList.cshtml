@@ -20,14 +20,14 @@
             </div>
             <div class="list_search_inputgroup mgl-5">
                 @Html.AuthIcoButton("搜索", "AuthorityOperation", "SearchAuthorityBindOperation",
-                new { @class= "layui-btn layui-btn-sm", id = "search_btn" }
-                ,new {@class= "icon-search" })
+                new { @class = "layui-btn layui-btn-sm", id = "search_btn" }
+                , new { @class = "icon-search" })
                 @Html.AuthIcoButton("添加功能操作", "Authority", "AuthorityBindOperation",
-                new { @class= "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addoperation" }
-                ,new {@class= "icon-plus" })
+                new { @class = "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addoperation" }
+                , new { @class = "icon-plus" })
                 @Html.AuthIcoButton("删除选中", "Authority", "AuthorityUnBindOperation",
-                new { @class= "layui-btn layui-btn-danger layui-btn-sm", id = "btn_deleteoperation" }
-                ,new {@class= "icon-trash" })
+                new { @class = "layui-btn layui-btn-danger layui-btn-sm", id = "btn_deleteoperation" }
+                , new { @class = "icon-trash" })
             </div>
         </div>
     </div>
@@ -49,8 +49,8 @@
     </script>
     <script type="text/html" id="operation_bar">
         @Html.AuthIcoButton("删除", "Authority", "AuthorityUnBindOperation",
-        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "operation_del" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "operation_del" }
+        , new { @class = "icon-trash" })
     </script>
     <script type="text/javascript">
         var operationStatusDict = new Object();

@@ -15,12 +15,12 @@
         <div class="split-panel">
             <div class="content-panel">
                 <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
-                    @Html.AuthIcoButton("添加权限分组", "Authority","EditAuthorityGroup",
-                   new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id= "btn_addgroup" }
-                   ,new {@class= "icon-plus" })
+                    @Html.AuthIcoButton("添加权限分组", "Authority", "EditAuthorityGroup",
+                   new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addgroup" }
+                   , new { @class = "icon-plus" })
                     @Html.AuthIcoButton("删除选中", "Authority", "DeleteAuthorityGroup",
-                   new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "btn_delgroup" }
-                   ,new {@class= "icon-trash" })
+                   new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delgroup" }
+                   , new { @class = "icon-trash" })
                 </div>
                 <div class="content-panel-body">
                     <div class="content-panel-body-inner">
@@ -44,9 +44,9 @@
                         <tr>
                             <td></td>
                             <td class="detail-td-content">
-                                @Html.AuthIcoButton("编辑", "Authority","EditAuthorityGroup",
-                                new { @class= "layui-btn layui-btn-gprimary", id= "btn_editgroup" }
-                                ,new {@class= "icon-edit" })
+                                @Html.AuthIcoButton("编辑", "Authority", "EditAuthorityGroup",
+                                new { @class = "layui-btn layui-btn-gprimary", id = "btn_editgroup" }
+                                , new { @class = "icon-edit" })
                             </td>
                         </tr>
                     </table>
@@ -70,16 +70,16 @@
                                             </div>
                                             <div class="list_search_inputgroup mgl-5">
                                                 @Html.AuthIcoButton("搜索", "Authority", "SearchAuthority",
-                                                new { @class= "layui-btn layui-btn-sm", id= "btn_search_group_table_data" }
-                                                ,new {@class= "icon-search" })
+                                                new { @class = "layui-btn layui-btn-sm", id = "btn_search_group_table_data" }
+                                                , new { @class = "icon-search" })
 
                                                 @Html.AuthIcoButton("添加权限", "Authority", "EditAuthority",
-                                                new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id= "btn_addgrouptabledata" }
-                                                ,new {@class= "icon-plus" })
+                                                new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addgrouptabledata" }
+                                                , new { @class = "icon-plus" })
 
                                                 @Html.AuthIcoButton("删除选中", "Authority", "DeleteAuthority",
-                                                new { @class= "layui-btn layui-btn-sm layui-btn-danger", id= "btn_delgrouptabledata" }
-                                                ,new {@class= "icon-trash" })
+                                                new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delgrouptabledata" }
+                                                , new { @class = "icon-trash" })
                                             </div>
 
                                         </div>
@@ -106,16 +106,16 @@
     </environment>
     <script type="text/html" id="group_table_toolbar">
         @Html.AuthIcoButton("编辑", "Authority", "EditAuthority",
-        new { @class= "layui-btn layui-btn-xs layui-btn-gprimary", lay_event= "edit" }
-        ,new {@class= "icon-pencil" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-gprimary", lay_event = "edit" }
+        , new { @class = "icon-pencil" })
 
         @Html.AuthIcoButton("绑定功能", "Authority", "AuthorityBindOperationList",
-        new { @class= "layui-btn layui-btn-xs layui-btn-gsuccess", lay_event= "auth" }
-        ,new {@class= "icon-check" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-gsuccess", lay_event = "auth" }
+        , new { @class = "icon-check" })
 
         @Html.AuthIcoButton("删除", "Authority", "DeleteAuthority",
-        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event= "remove" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
+        , new { @class = "icon-trash" })
     </script>
     <script type="text/html" id="auth_status">
         {{authStatusDict[d.Status]}}

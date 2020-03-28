@@ -70,11 +70,11 @@
                                     </div>
                                     <div class="list_search_inputgroup mgl-5">
                                         @Html.AuthIcoButton("搜索", "Role", "SearchRolePaging",
-                                        new { @class= "layui-btn layui-btn-sm", onclick = "LoadRoleData()" }
-                                        ,new {@class= "icon-search" })
+                                        new { @class = "layui-btn layui-btn-sm", onclick = "LoadRoleData()" }
+                                        , new { @class = "icon-search" })
                                         @Html.AuthIcoButton("清除所有角色", "User", "ClearUserRole",
-                                        new { @class= "layui-btn layui-btn-sm layui-btn-gdanger", id = "btn_clearrole" }
-                                        ,new {@class= "icon-remove" })
+                                        new { @class = "layui-btn layui-btn-sm layui-btn-gdanger", id = "btn_clearrole" }
+                                        , new { @class = "icon-remove" })
                                     </div>
                                 </div>
                             </div>
@@ -95,8 +95,8 @@
                                 <div class="content-panel">
                                     <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
                                         @Html.AuthIcoButton("还原角色授权", "User", "RestoreUserRoleAuthorize",
-                                        new { @class= "layui-btn layui-btn-sm layui-btn-gdanger", id = "btn_restoreroleauth" }
-                                        ,new {@class= "icon-undo" })
+                                        new { @class = "layui-btn layui-btn-sm layui-btn-gdanger", id = "btn_restoreroleauth" }
+                                        , new { @class = "icon-undo" })
                                     </div>
                                     <div class="content-panel-body">
                                         <ul id="all_authtree" class="ztree"></ul>
@@ -117,14 +117,14 @@
                                                 </div>
                                                 <div class="list_search_inputgroup mgl-5">
                                                     @Html.AuthIcoButton("搜索", "Authority", "SearchUserAuthority",
-                                                    new { @class= "layui-btn layui-btn-sm", onclick = "LoadAuthorityData()" }
-                                                    ,new {@class= "icon-search" })
+                                                    new { @class = "layui-btn layui-btn-sm", onclick = "LoadAuthorityData()" }
+                                                    , new { @class = "icon-search" })
                                                     @Html.AuthIcoButton("添加授权", "User", "AddUserAuthorize",
-                                                    new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addauth" }
-                                                    ,new {@class= "icon-plus" })
+                                                    new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addauth" }
+                                                    , new { @class = "icon-plus" })
                                                     @Html.AuthIcoButton("删除选中授权", "User", "RemoveUserAuthorize",
-                                                    new { @class= "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delauth" }
-                                                    ,new {@class= "icon-trash" })
+                                                    new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delauth" }
+                                                    , new { @class = "icon-trash" })
                                                 </div>
                                             </div>
                                         </div>
@@ -147,26 +147,26 @@
 <div id="page-foot" class="hidev">
     <div class="page-foot-btngroup">
         @Html.AuthIcoButton("编辑", "User", "EditUser",
-        new { @class= "layui-btn layui-btn-gprimary", id = "btn_edit" }
-        ,new {@class= "icon-pencil" })
+        new { @class = "layui-btn layui-btn-gprimary", id = "btn_edit" }
+        , new { @class = "icon-pencil" })
         @if (Model.Status == UserStatus.正常)
         {
             @Html.AuthIcoButton("锁定", "User", "ModifyUserStatus",
-            new { @class= "layui-btn layui-btn-warm", id = "btn_lock" }
-            ,new {@class= "icon-lock" })
+            new { @class = "layui-btn layui-btn-warm", id = "btn_lock" }
+            , new { @class = "icon-lock" })
         }
         else
         {
             @Html.AuthIcoButton("解锁", "User", "ModifyUserStatus",
-            new { @class= "layui-btn layui-btn-warm", id = "btn_lock" }
-            ,new {@class= "icon-unlock" })
+            new { @class = "layui-btn layui-btn-warm", id = "btn_lock" }
+            , new { @class = "icon-unlock" })
         }
         @Html.AuthIcoButton("修改密码", "User", "AdminModifyPassword",
-        new { @class= "layui-btn layui-btn-gwarning", id = "btn_modifypwd" }
-        ,new {@class= "icon-key" })
+        new { @class = "layui-btn layui-btn-gwarning", id = "btn_modifypwd" }
+        , new { @class = "icon-key" })
         @Html.AuthIcoButton("删除", "User", "DeleteUser",
-        new { @class= "layui-btn layui-btn-gdanger", id = "btn_remove" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-gdanger", id = "btn_remove" }
+        , new { @class = "icon-trash" })
     </div>
 </div>
 @section Scripts{
@@ -175,16 +175,16 @@
     <script src="~/script/page/treecontrol.js"></script>
     <script type="text/html" id="role_toolbar">
         @Html.AuthIcoButton("删除", "User", "RemoveUserRole",
-        new { @class= "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
+        , new { @class = "icon-trash" })
     </script>
     <script type="text/html" id="roletable_toolbar">
         @Html.AuthIcoButton("添加角色", "User", "AddUserRole",
-        new { @class= "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addrole" }
-        ,new {@class= "icon-plus" })
+        new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addrole" }
+        , new { @class = "icon-plus" })
         @Html.AuthIcoButton("删除选中角色", "User", "RemoveUserRole",
-        new { @class= "layui-btn layui-btn-sm layui-btn-danger", id = "btn_deleterole" }
-        ,new {@class= "icon-trash" })
+        new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "btn_deleterole" }
+        , new { @class = "icon-trash" })
     </script>
     <script type="text/html" id="auth_status">
         {{authStatusDict[d.Status]}}
