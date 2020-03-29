@@ -29,7 +29,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         internal AdminUser() : base()
         {
-            userType = UserType.管理账户;
+            UserType = UserType.管理账户;
         }
 
         #endregion

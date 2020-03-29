@@ -26,11 +26,6 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         protected LazyMember<Authority> authority;
 
-        /// <summary>
-        /// 禁用
-        /// </summary>
-        protected bool disable;
-
         #endregion
 
         #region 构造方法
@@ -84,14 +79,8 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public bool Disable
         {
-            get
-            {
-                return disable;
-            }
-            protected set
-            {
-                disable = value;
-            }
+            get;
+            protected set;
         }
 
         #endregion

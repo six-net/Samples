@@ -19,49 +19,9 @@ namespace EZNEW.Domain.Sys.Model
         #region	字段
 
         /// <summary>
-        /// 编号
-        /// </summary>
-        protected long sysNo;
-
-        /// <summary>
-        /// 权限编码
-        /// </summary>
-        protected string code;
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        protected string name;
-
-        /// <summary>
-        /// 权限类型
-        /// </summary>
-        protected AuthorityType authorityType;
-
-        /// <summary>
-        /// 状态
-        /// </summary>
-        protected AuthorityStatus status;
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        protected int sort;
-
-        /// <summary>
         /// 权限分组
         /// </summary>
         protected LazyMember<AuthorityGroup> group;
-
-        /// <summary>
-        /// 说明
-        /// </summary>
-        protected string remark;
-
-        /// <summary>
-        /// 添加时间
-        /// </summary>
-        protected DateTime createDate;
 
         #endregion
 
@@ -72,11 +32,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public Authority()
         {
-            status = AuthorityStatus.启用;
             group = new LazyMember<AuthorityGroup>(LoadAuthorityGroup);
-            authorityType = AuthorityType.管理;
-            createDate = DateTime.Now;
-            sort = 0;
             repository = this.Instance<IAuthorityRepository>();
         }
 
@@ -86,14 +42,7 @@ namespace EZNEW.Domain.Sys.Model
 
         public long SysNo
         {
-            get
-            {
-                return sysNo;
-            }
-            protected set
-            {
-                sysNo = value;
-            }
+            get; protected set;
         }
 
         /// <summary>
@@ -101,14 +50,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Code
         {
-            get
-            {
-                return code;
-            }
-            set
-            {
-                code = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -116,14 +58,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Name
         {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -131,44 +66,23 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public AuthorityType AuthorityType
         {
-            get
-            {
-                return authorityType;
-            }
-            set
-            {
-                authorityType = value;
-            }
-        }
+            get; set;
+        } = AuthorityType.管理;
 
         /// <summary>
         /// 状态
         /// </summary>
         public AuthorityStatus Status
         {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value;
-            }
-        }
+            get; set;
+        } = AuthorityStatus.启用;
 
         /// <summary>
         /// 排序
         /// </summary>
         public int Sort
         {
-            get
-            {
-                return sort;
-            }
-            set
-            {
-                sort = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -191,14 +105,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Remark
         {
-            get
-            {
-                return remark;
-            }
-            set
-            {
-                remark = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -206,15 +113,8 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public DateTime CreateDate
         {
-            get
-            {
-                return createDate;
-            }
-            set
-            {
-                createDate = value;
-            }
-        }
+            get; set;
+        } = DateTime.Now;
 
         #endregion
 
@@ -243,7 +143,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public override void InitIdentityValue()
         {
-            sysNo = SerialNumber.GetSerialNumber(((int)EZNEW.Application.Identity.IdentityGroup.权限).ToString());
+            SysNo = SerialNumber.GetSerialNumber(((int)EZNEW.Application.Identity.IdentityGroup.权限).ToString());
         }
 
         #endregion
@@ -281,7 +181,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public override bool IdentityValueIsNone()
         {
-            return sysNo < 1;
+            return SysNo < 1;
         }
 
         #endregion
@@ -294,7 +194,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns>权限对象标识</returns>
         protected override string GetIdentityValue()
         {
-            return sysNo.ToString();
+            return SysNo.ToString();
         }
 
         #endregion

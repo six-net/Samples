@@ -23,39 +23,9 @@ namespace EZNEW.Domain.Sys.Model
         #region	字段
 
         /// <summary>
-        /// 编号
-        /// </summary>
-        protected long sysNo;
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        protected string name;
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        protected int sort;
-
-        /// <summary>
         /// 上级
         /// </summary>
         protected LazyMember<AuthorityOperationGroup> parent;
-
-        /// <summary>
-        /// 等级
-        /// </summary>
-        protected int level;
-
-        /// <summary>
-        /// 状态
-        /// </summary>
-        protected AuthorityOperationGroupStatus status;
-
-        /// <summary>
-        /// 说明
-        /// </summary>
-        protected string remark;
 
         #endregion
 
@@ -79,14 +49,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public long SysNo
         {
-            get
-            {
-                return sysNo;
-            }
-            set
-            {
-                sysNo = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -94,14 +57,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Name
         {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -109,14 +65,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public int Sort
         {
-            get
-            {
-                return sort;
-            }
-            set
-            {
-                sort = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -139,14 +88,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public int Level
         {
-            get
-            {
-                return level;
-            }
-            set
-            {
-                level = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -154,14 +96,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public AuthorityOperationGroupStatus Status
         {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -169,14 +104,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Remark
         {
-            get
-            {
-                return remark;
-            }
-            set
-            {
-                remark = value;
-            }
+            get; set;
         }
 
         #endregion
@@ -212,7 +140,7 @@ namespace EZNEW.Domain.Sys.Model
                 parentLevel = parentGroup.Level;
                 parentSysNo = parentGroup.SysNo;
             }
-            if (parentSysNo == sysNo && !IdentityValueIsNone())
+            if (parentSysNo == SysNo && !IdentityValueIsNone())
             {
                 throw new Exception("不能将分组本身设置为上级分组");
             }
@@ -220,12 +148,12 @@ namespace EZNEW.Domain.Sys.Model
             IQuery sortQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.Parent == parentSysNo);
             sortQuery.AddQueryFields<AuthorityOperationGroupQuery>(c => c.Sort);
             int maxSortIndex = repository.Max<int>(sortQuery);
-            sort = maxSortIndex + 1;
+            Sort = maxSortIndex + 1;
             parent.SetValue(parentGroup, true);
             //等级
             int newLevel = parentLevel + 1;
-            bool modifyChild = newLevel != level;
-            level = newLevel;
+            bool modifyChild = newLevel != Level;
+            Level = newLevel;
             if (modifyChild)
             {
                 //修改所有子集信息
@@ -243,7 +171,7 @@ namespace EZNEW.Domain.Sys.Model
         public override void InitIdentityValue()
         {
             base.InitIdentityValue();
-            sysNo = GenerateAuthorityOperationGroupId();
+            SysNo = GenerateAuthorityOperationGroupId();
         }
 
         #endregion
@@ -260,7 +188,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 throw new Exception("请填写正确的排序编号");
             }
-            sort = newSort;
+            Sort = newSort;
             //其它分组顺延
             IQuery sortQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
             IModify modifyExpression = ModifyFactory.Create();
@@ -307,7 +235,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return parent.CurrentValue;
             }
-            if (level <= 1 || parent.CurrentValue == null)
+            if (Level <= 1 || parent.CurrentValue == null)
             {
                 return parent.CurrentValue;
             }
@@ -325,7 +253,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public override bool IdentityValueIsNone()
         {
-            return sysNo < 1;
+            return SysNo < 1;
         }
 
         #endregion

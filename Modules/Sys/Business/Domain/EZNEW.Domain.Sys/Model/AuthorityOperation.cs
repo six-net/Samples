@@ -23,49 +23,9 @@ namespace EZNEW.Domain.Sys.Model
         #region	字段
 
         /// <summary>
-        /// 主键编号
-        /// </summary>
-        protected long sysNo;
-
-        /// <summary>
-        /// 控制器
-        /// </summary>
-        protected string controllerCode;
-
-        /// <summary>
-        /// 操作方法
-        /// </summary>
-        protected string actionCode;
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        protected string name;
-
-        /// <summary>
-        /// 状态
-        /// </summary>
-        protected AuthorityOperationStatus status;
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        protected int sort;
-
-        /// <summary>
         /// 操作分组
         /// </summary>
         protected LazyMember<AuthorityOperationGroup> group;
-
-        /// <summary>
-        /// 授权类型
-        /// </summary>
-        protected AuthorityOperationAuthorizeType authorizeType;
-
-        /// <summary>
-        /// 方法描述
-        /// </summary>
-        protected string remark;
 
         /// <summary>
         /// 操作对应的权限
@@ -95,14 +55,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public long SysNo
         {
-            get
-            {
-                return sysNo;
-            }
-            set
-            {
-                sysNo = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -110,14 +63,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string ControllerCode
         {
-            get
-            {
-                return controllerCode;
-            }
-            set
-            {
-                controllerCode = value?.ToUpper();
-            }
+            get; set;
         }
 
         /// <summary>
@@ -125,14 +71,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string ActionCode
         {
-            get
-            {
-                return actionCode;
-            }
-            set
-            {
-                actionCode = value?.ToUpper();
-            }
+            get; set;
         }
 
         /// <summary>
@@ -140,14 +79,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Name
         {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -155,14 +87,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public AuthorityOperationStatus Status
         {
-            get
-            {
-                return status;
-            }
-            set
-            {
-                status = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -170,14 +95,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public int Sort
         {
-            get
-            {
-                return sort;
-            }
-            set
-            {
-                sort = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -200,14 +118,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public AuthorityOperationAuthorizeType AuthorizeType
         {
-            get
-            {
-                return authorizeType;
-            }
-            set
-            {
-                authorizeType = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -215,14 +126,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         public string Remark
         {
-            get
-            {
-                return remark;
-            }
-            set
-            {
-                remark = value;
-            }
+            get; set;
         }
 
         /// <summary>
@@ -330,7 +234,7 @@ namespace EZNEW.Domain.Sys.Model
         public override void InitIdentityValue()
         {
             base.InitIdentityValue();
-            sysNo = GenerateAuthorityOperationId();
+            SysNo = GenerateAuthorityOperationId();
         }
 
         #endregion
@@ -373,6 +277,8 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return valResult;
             }
+            ControllerCode = ControllerCode?.ToUpper() ?? string.Empty;
+            ActionCode = ActionCode?.ToUpper() ?? string.Empty;
             if (group.CurrentValue == null || group.CurrentValue.SysNo <= 0)
             {
                 throw new Exception("请设置操作所属分组");
@@ -402,7 +308,7 @@ namespace EZNEW.Domain.Sys.Model
             IQuery query = QueryFactory.Create();
             IQuery bindQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
             bindQuery.AddQueryFields<AuthorityBindOperationQuery>(a => a.AuthoritySysNo);
-            bindQuery.And<AuthorityBindOperationQuery>(a => a.AuthorityOperationSysNo == sysNo);
+            bindQuery.And<AuthorityBindOperationQuery>(a => a.AuthorityOperationSysNo == SysNo);
             query.And<AuthorityQuery>(a => a.Code, CriteriaOperator.In, bindQuery);
             return this.Instance<IAuthorityRepository>().GetList(query);
         }
@@ -417,7 +323,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public override bool IdentityValueIsNone()
         {
-            return sysNo <= 0;
+            return SysNo <= 0;
         }
 
         #endregion
