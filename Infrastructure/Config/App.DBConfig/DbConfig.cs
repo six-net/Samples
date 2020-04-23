@@ -1,15 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EZNEW.Develop.Command;
 using Microsoft.Extensions.Configuration;
 using EZNEW.Framework.IoC;
 using EZNEW.Data.SqlServer;
 using EZNEW.Data;
-using EZNEW.Data.Config;
-using EZNEW.Develop.CQuery;
 
 namespace App.DBConfig
 {
