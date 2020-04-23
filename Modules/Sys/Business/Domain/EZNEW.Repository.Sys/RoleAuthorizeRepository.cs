@@ -52,7 +52,7 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            var copyQuery = query.Clone();
+            var copyQuery = query.Copy();
             copyQuery.QueryFields.Clear();
             copyQuery.AddQueryFields<RoleQuery>(c => c.SysNo);
             var removeQuery = QueryFactory.Create<RoleAuthorizeQuery>();
@@ -77,7 +77,7 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            var copyQuery = query.Clone();
+            var copyQuery = query.Copy();
             copyQuery.QueryFields.Clear();
             copyQuery.AddQueryFields<AuthorityQuery>(c => c.SysNo);
             var removeQuery = QueryFactory.Create<RoleAuthorizeQuery>();

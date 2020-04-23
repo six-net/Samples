@@ -47,7 +47,7 @@ namespace EZNEW.Repository.Sys
             {
                 return;
             }
-            var removeGroupQuery = query.Clone();
+            var removeGroupQuery = query.Copy();
             removeGroupQuery.QueryFields.Clear();
             removeGroupQuery.AddQueryFields<AuthorityOperationGroupQuery>(c => c.SysNo);
             //remove operation

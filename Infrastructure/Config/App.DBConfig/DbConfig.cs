@@ -21,7 +21,7 @@ namespace App.DBConfig
         public static void Init()
         {
             DataBaseEngineConfig();//数据库执行器
-            DataManager.GetDBServerAsync = GetServerInfoAsync;//获取数据连接信息方法
+            DataManager.GetDBServer = GetServerInfo;//获取数据连接信息方法
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace App.DBConfig
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        static async Task<List<ServerInfo>> GetServerInfoAsync(ICommand command)
+        static List<ServerInfo> GetServerInfo(ICommand command)
         {
             List<ServerInfo> servers = new List<ServerInfo>();
             servers.Add(new ServerInfo()
@@ -45,7 +45,7 @@ namespace App.DBConfig
                 ServerType = ServerType.SQLServer,
                 ConnectionString = ContainerManager.Resolve<IConfiguration>().GetConnectionString("DefaultConnection")
             });
-            return await Task.FromResult(servers);
+            return servers;
         }
     }
 }

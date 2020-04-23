@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Model\EZNEW.Query.Sys\EZNEW.Query.Sys.csproj" />
+    <Compile Remove="Event\**" />
+    <EmbeddedResource Remove="Event\**" />
+    <None Remove="Event\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Event\" />
+    <ProjectReference Include="..\..\..\Model\EZNEW.Query.Sys\EZNEW.Query.Sys.csproj" />
   </ItemGroup>
 
 </Project>
