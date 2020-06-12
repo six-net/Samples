@@ -3,16 +3,10 @@ using EZNEW.Domain.Sys.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.DataAccessContract.Sys;
 using EZNEW.Entity.Sys;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using EZNEW.Develop.UnitOfWork;
-using EZNEW.Develop.Domain.Repository.Warehouse;
-using EZNEW.Framework.IoC;
 using EZNEW.Develop.Domain.Repository;
 
 namespace EZNEW.Repository.Sys
@@ -49,7 +43,7 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var authSysNos = datas.Select(c => c.SysNo);
-            var query = QueryFactory.Create<AuthorityBindOperationQuery>(a => authSysNos.Contains(a.AuthoritySysNo));
+            var query = QueryManager.Create<AuthorityBindOperationQuery>(a => authSysNos.Contains(a.AuthoritySysNo));
             return query;
         }
 
@@ -65,9 +59,9 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var copyQuery = query.Copy();
-            copyQuery.QueryFields.Clear();
+            copyQuery.ClearQueryFields();
             copyQuery.AddQueryFields<AuthorityQuery>(c => c.SysNo);
-            var removeQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
+            var removeQuery = QueryManager.Create<AuthorityBindOperationQuery>();
             removeQuery.And<AuthorityBindOperationQuery>(ur => ur.AuthoritySysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;
         }
@@ -84,7 +78,7 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var operationIds = datas.Select(c => c.SysNo);
-            var query = QueryFactory.Create<AuthorityBindOperationQuery>(a => operationIds.Contains(a.AuthorityOperationSysNo));
+            var query = QueryManager.Create<AuthorityBindOperationQuery>(a => operationIds.Contains(a.AuthorityOperationSysNo));
             return query;
         }
 
@@ -100,9 +94,9 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var copyQuery = query.Copy();
-            copyQuery.QueryFields.Clear();
+            copyQuery.ClearQueryFields();
             copyQuery.AddQueryFields<AuthorityOperationQuery>(c => c.SysNo);
-            var removeQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
+            var removeQuery = QueryManager.Create<AuthorityBindOperationQuery>();
             removeQuery.And<AuthorityBindOperationQuery>(ur => ur.AuthorityOperationSysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;
         }

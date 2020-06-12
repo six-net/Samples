@@ -2,17 +2,12 @@ using EZNEW.Domain.Sys.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.IoC;
-using EZNEW.Framework;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework.Response;
-using EZNEW.Develop.Command.Modify;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.Paging;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -42,7 +37,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #endregion
 
             //删除角色信息
-            IQuery removeQuery = QueryFactory.Create<RoleQuery>(c => roleIds.Contains(c.SysNo));
+            IQuery removeQuery = QueryManager.Create<RoleQuery>(c => roleIds.Contains(c.SysNo));
             removeQuery.SetRecurve<RoleQuery>(c => c.SysNo, c => c.Parent);//删除角色所有的下级数据
             roleRepository.Remove(removeQuery);
         }
@@ -80,9 +75,9 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<Role>(0);
             }
-            var roleQuery = QueryFactory.Create<RoleQuery>();
+            var roleQuery = QueryManager.Create<RoleQuery>();
             //用户绑定的角色
-            var userRoleQuery = QueryFactory.Create<UserRoleQuery>(ur => ur.UserSysNo == userId);
+            var userRoleQuery = QueryManager.Create<UserRoleQuery>(ur => ur.UserSysNo == userId);
             roleQuery.EqualInnerJoin(userRoleQuery);
             //所有上级角色
             roleQuery.SetRecurve<RoleQuery>(r => r.SysNo, r => r.Parent, RecurveDirection.Up);
@@ -136,7 +131,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             Role parentRole = null;
             if (parentRoleId > 0)
             {
-                IQuery parentQuery = QueryFactory.Create<RoleQuery>(c => c.SysNo == parentRoleId);
+                IQuery parentQuery = QueryManager.Create<RoleQuery>(c => c.SysNo == parentRoleId);
                 parentRole = roleRepository.Get(parentQuery);
                 if (parentRole == null)
                 {
@@ -170,7 +165,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
 
             #endregion
 
-            IQuery roleQuery = QueryFactory.Create<RoleQuery>(r => r.SysNo == newRole.SysNo);
+            IQuery roleQuery = QueryManager.Create<RoleQuery>(r => r.SysNo == newRole.SysNo);
             Role role = roleRepository.Get(roleQuery);
             if (role == null)
             {
@@ -187,7 +182,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                 Role parentRole = null;
                 if (newParentRoleId > 0)
                 {
-                    IQuery parentQuery = QueryFactory.Create<RoleQuery>(c => c.SysNo == newParentRoleId);
+                    IQuery parentQuery = QueryManager.Create<RoleQuery>(c => c.SysNo == newParentRoleId);
                     parentRole = roleRepository.Get(parentQuery);
                     if (parentRole == null)
                     {
@@ -235,7 +230,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<RoleQuery>(c => c.SysNo == id);
+            IQuery query = QueryManager.Create<RoleQuery>(c => c.SysNo == id);
             return GetRole(query);
         }
 
@@ -265,7 +260,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<Role>(0);
             }
-            IQuery query = QueryFactory.Create<RoleQuery>(c => roleIds.Contains(c.SysNo));
+            IQuery query = QueryManager.Create<RoleQuery>(c => roleIds.Contains(c.SysNo));
             return GetRoleList(query);
         }
 
@@ -331,7 +326,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<RoleQuery>(c => c.Name == roleName && c.SysNo != excludeRoleId);
+            IQuery query = QueryManager.Create<RoleQuery>(c => c.Name == roleName && c.SysNo != excludeRoleId);
             return roleRepository.Exist(query);
         }
 

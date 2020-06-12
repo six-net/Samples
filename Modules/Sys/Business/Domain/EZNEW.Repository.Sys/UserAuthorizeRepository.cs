@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Entity.Sys;
-using EZNEW.Framework.Extension;
 using EZNEW.DataAccessContract.Sys;
 using EZNEW.Query.Sys;
 using EZNEW.Develop.Domain.Repository;
@@ -26,7 +23,7 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var userIds = datas.Select(c => c.SysNo);
-            return QueryFactory.Create<UserAuthorizeQuery>(c => userIds.Contains(c.UserSysNo));
+            return QueryManager.Create<UserAuthorizeQuery>(c => userIds.Contains(c.UserSysNo));
         }
 
         public override IQuery CreateQueryByFirst(IQuery query)
@@ -36,9 +33,9 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var copyQuery = query.Copy();
-            copyQuery.QueryFields.Clear();
+            copyQuery.ClearQueryFields();
             copyQuery.AddQueryFields<UserQuery>(c => c.SysNo);
-            var removeQuery = QueryFactory.Create<UserAuthorizeQuery>();
+            var removeQuery = QueryManager.Create<UserAuthorizeQuery>();
             removeQuery.And<UserAuthorizeQuery>(ur => ur.UserSysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;
         }
@@ -50,7 +47,7 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var authSysNos = datas.Select(c => c.SysNo);
-            return QueryFactory.Create<UserAuthorizeQuery>(c => authSysNos.Contains(c.AuthoritySysNo));
+            return QueryManager.Create<UserAuthorizeQuery>(c => authSysNos.Contains(c.AuthoritySysNo));
         }
 
         public override IQuery CreateQueryBySecond(IQuery query)
@@ -60,9 +57,9 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var copyQuery = query.Copy();
-            copyQuery.QueryFields.Clear();
+            copyQuery.ClearQueryFields();
             copyQuery.AddQueryFields<AuthorityQuery>(c => c.SysNo);
-            var removeQuery = QueryFactory.Create<UserAuthorizeQuery>();
+            var removeQuery = QueryManager.Create<UserAuthorizeQuery>();
             removeQuery.And<UserAuthorizeQuery>(ur => ur.AuthoritySysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;
         }

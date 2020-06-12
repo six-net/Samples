@@ -1,19 +1,15 @@
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Domain.Sys.Service.Param;
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.IoC;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Framework.Response;
+using EZNEW.Module.Sys;
 using EZNEW.Develop.UnitOfWork;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -104,10 +100,10 @@ namespace EZNEW.Domain.Sys.Service.Impl
 
             //用户绑定角色
             List<long> userIds = userAuthorizes.Select(c => c.User?.SysNo ?? 0).Distinct().ToList();
-            IQuery userRoleBindQuery = QueryFactory.Create<UserRoleQuery>(c => userIds.Contains(c.UserSysNo));
+            IQuery userRoleBindQuery = QueryManager.Create<UserRoleQuery>(c => userIds.Contains(c.UserSysNo));
 
             //角色授权
-            IQuery roleAuthBindQuery = QueryFactory.Create<RoleAuthorizeQuery>();
+            IQuery roleAuthBindQuery = QueryManager.Create<RoleAuthorizeQuery>();
             roleAuthBindQuery.EqualInnerJoin(userRoleBindQuery);
 
             List<long> roleAuthorityIds = roleAuthRepository.GetList(roleAuthBindQuery).Select(c => c.Item2.SysNo).ToList();
@@ -207,29 +203,29 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #region 授权验证
 
             //权限
-            IQuery authorityQuery = QueryFactory.Create<AuthorityQuery>(a => a.Status == AuthorityStatus.启用);
+            IQuery authorityQuery = QueryManager.Create<AuthorityQuery>(a => a.Status == AuthorityStatus.启用);
             authorityQuery.AddQueryFields<AuthorityQuery>(a => a.Code);
             //操作绑定权限
-            IQuery operationBindQuery = QueryFactory.Create<AuthorityBindOperationQuery>(a => a.AuthorityOperationSysNo == nowOperation.SysNo);
+            IQuery operationBindQuery = QueryManager.Create<AuthorityBindOperationQuery>(a => a.AuthorityOperationSysNo == nowOperation.SysNo);
             operationBindQuery.AddQueryFields<AuthorityBindOperationQuery>(a => a.AuthoritySysNo);
             authorityQuery.And<AuthorityQuery>(a => a.Code, CriteriaOperator.In, operationBindQuery);
             //当前用户可以使用
-            IQuery userAuthorizeQuery = QueryFactory.Create<UserAuthorizeQuery>(a => a.UserSysNo == auth.User.SysNo && a.Disable == false);
+            IQuery userAuthorizeQuery = QueryManager.Create<UserAuthorizeQuery>(a => a.UserSysNo == auth.User.SysNo && a.Disable == false);
             userAuthorizeQuery.AddQueryFields<UserAuthorizeQuery>(a => a.AuthoritySysNo);
             //用户角色
-            IQuery userRoleQuery = QueryFactory.Create<UserRoleQuery>(a => a.UserSysNo == auth.User.SysNo);
+            IQuery userRoleQuery = QueryManager.Create<UserRoleQuery>(a => a.UserSysNo == auth.User.SysNo);
             userRoleQuery.AddQueryFields<UserRoleQuery>(r => r.RoleSysNo);
             //角色权限
-            IQuery roleAuthorizeQuery = QueryFactory.Create<RoleAuthorizeQuery>();
+            IQuery roleAuthorizeQuery = QueryManager.Create<RoleAuthorizeQuery>();
             roleAuthorizeQuery.AddQueryFields<RoleAuthorizeQuery>(a => a.AuthoritySysNo);
             roleAuthorizeQuery.And<RoleAuthorizeQuery>(a => a.RoleSysNo, CriteriaOperator.In, userRoleQuery);
             //用户或用户角色拥有权限
-            IQuery userAndRoleAuthorityQuery = QueryFactory.Create();
+            IQuery userAndRoleAuthorityQuery = QueryManager.Create();
             userAndRoleAuthorityQuery.And<AuthorityQuery>(a => a.Code, CriteriaOperator.In, userAuthorizeQuery);//用户拥有权限
             userAndRoleAuthorityQuery.Or<AuthorityQuery>(a => a.Code, CriteriaOperator.In, roleAuthorizeQuery);//或者角色拥有权限
             authorityQuery.And(userAndRoleAuthorityQuery);
             //去除用户禁用的
-            IQuery userDisableAuthorizeQuery = QueryFactory.Create<UserAuthorizeQuery>(a => a.UserSysNo == auth.User.SysNo && a.Disable == true);
+            IQuery userDisableAuthorizeQuery = QueryManager.Create<UserAuthorizeQuery>(a => a.UserSysNo == auth.User.SysNo && a.Disable == true);
             userDisableAuthorizeQuery.AddQueryFields<UserAuthorizeQuery>(a => a.AuthoritySysNo);
             authorityQuery.And<AuthorityQuery>(a => a.Code, CriteriaOperator.NotIn, userDisableAuthorizeQuery);
             return authorityRepository.Exist(authorityQuery);

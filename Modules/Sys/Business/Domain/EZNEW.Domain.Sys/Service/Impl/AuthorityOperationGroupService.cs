@@ -1,17 +1,13 @@
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework.Response;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.Paging;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -40,7 +36,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #endregion
 
             //删除分组信息
-            IQuery removeQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(c => groupIds.Contains(c.SysNo));
+            IQuery removeQuery = QueryManager.Create<AuthorityOperationGroupQuery>(c => groupIds.Contains(c.SysNo));
             removeQuery.SetRecurve<AuthorityOperationGroupQuery>(c => c.SysNo, c => c.Parent);
             authorityOperationGroupRepository.Remove(removeQuery);
             return Result.SuccessResult("删除成功");
@@ -77,7 +73,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             AuthorityOperationGroup parentGroup = null;
             if (parentGroupId > 0)
             {
-                IQuery parentQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(c => c.SysNo == parentGroupId);
+                IQuery parentQuery = QueryManager.Create<AuthorityOperationGroupQuery>(c => c.SysNo == parentGroupId);
                 parentGroup = authorityOperationGroupRepository.Get(parentQuery);
                 if (parentGroup == null)
                 {
@@ -116,7 +112,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                 AuthorityOperationGroup parentGroup = null;
                 if (newParentGroupId > 0)
                 {
-                    IQuery parentQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(c => c.SysNo == newParentGroupId);
+                    IQuery parentQuery = QueryManager.Create<AuthorityOperationGroupQuery>(c => c.SysNo == newParentGroupId);
                     parentGroup = authorityOperationGroupRepository.Get(parentQuery);
                     if (parentGroup == null)
                     {
@@ -162,7 +158,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationGroupQuery>(c => c.SysNo == groupId);
+            IQuery query = QueryManager.Create<AuthorityOperationGroupQuery>(c => c.SysNo == groupId);
             return GetAuthorityOperationGroup(query);
         }
 
@@ -192,7 +188,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<AuthorityOperationGroup>(0);
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationGroupQuery>(c => groupIds.Contains(c.SysNo));
+            IQuery query = QueryManager.Create<AuthorityOperationGroupQuery>(c => groupIds.Contains(c.SysNo));
             return GetAuthorityOperationGroupList(query);
         }
 
@@ -258,7 +254,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationQuery>(c => c.Name == groupName && c.SysNo != excludeId);
+            IQuery query = QueryManager.Create<AuthorityOperationQuery>(c => c.Name == groupName && c.SysNo != excludeId);
             return authorityOperationGroupRepository.Exist(query);
         }
 

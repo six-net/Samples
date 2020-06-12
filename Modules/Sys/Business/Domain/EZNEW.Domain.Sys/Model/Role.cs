@@ -1,19 +1,13 @@
+using System;
+using System.Collections.Generic;
+using EZNEW.Module.Sys;
+using EZNEW.Develop.Command.Modify;
+using EZNEW.Code;
+using EZNEW.ValueType;
 using EZNEW.Develop.CQuery;
 using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Query.Sys;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework;
-using EZNEW.Application.Identity.User;
-using EZNEW.Application.Identity;
-using EZNEW.Framework.Code;
-using EZNEW.Develop.Command.Modify;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -145,7 +139,7 @@ namespace EZNEW.Domain.Sys.Model
                 throw new Exception("不能将角色本身设置为自己的上级角色");
             }
             //排序
-            IQuery sortQuery = QueryFactory.Create<RoleQuery>(r => r.Parent == parentSysNo);
+            IQuery sortQuery = QueryManager.Create<RoleQuery>(r => r.Parent == parentSysNo);
             sortQuery.AddQueryFields<RoleQuery>(c => c.Sort);
             int maxSortIndex = repository.Max<int>(sortQuery);
             Sort = maxSortIndex + 1;
@@ -177,7 +171,7 @@ namespace EZNEW.Domain.Sys.Model
             }
             Sort = newSort;
             //其它角色顺延
-            IQuery sortQuery = QueryFactory.Create<RoleQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
+            IQuery sortQuery = QueryManager.Create<RoleQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
             IModify modifyExpression = ModifyFactory.Create();
             modifyExpression.Add<RoleQuery>(r => r.Sort, 1);
             repository.Modify(modifyExpression, sortQuery);
@@ -231,7 +225,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return null;
             }
-            return repository.Get(QueryFactory.Create<RoleQuery>(r => r.SysNo == parent.CurrentValue.SysNo));
+            return repository.Get(QueryManager.Create<RoleQuery>(r => r.SysNo == parent.CurrentValue.SysNo));
         }
 
         #endregion
@@ -247,7 +241,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return;
             }
-            IQuery query = QueryFactory.Create<RoleQuery>(r => r.Parent == SysNo);
+            IQuery query = QueryManager.Create<RoleQuery>(r => r.Parent == SysNo);
             List<Role> childRoleList = repository.GetList(query);
             foreach (var role in childRoleList)
             {
@@ -283,7 +277,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public static long GenerateRoleId()
         {
-            return SerialNumber.GetSerialNumber(IdentityApplicationHelper.GetIdGroupCode(IdentityGroup.角色));
+            return SysManager.GetId(SysModuleObject.Role);
         }
 
         #endregion

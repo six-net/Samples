@@ -1,8 +1,5 @@
 ﻿using EZNEW.Domain.Sys.Service.Param;
-using EZNEW.Framework.Response;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Service
 {

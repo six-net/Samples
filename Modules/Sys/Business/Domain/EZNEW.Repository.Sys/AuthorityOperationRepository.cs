@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Entity.Sys;
-using EZNEW.Framework.Extension;
 using EZNEW.DataAccessContract.Sys;
 using EZNEW.Develop.Domain.Repository;
 using EZNEW.Query.Sys;
@@ -33,7 +30,7 @@ namespace EZNEW.Repository.Sys
                 return;
             }
             IEnumerable<long> groupIds = groups.Select(c => c.SysNo).Distinct().ToList();
-            IQuery query = QueryFactory.Create<AuthorityOperationQuery>(c => groupIds.Contains(c.Group));
+            IQuery query = QueryManager.Create<AuthorityOperationQuery>(c => groupIds.Contains(c.Group));
             Remove(query, activationOption);
         }
 
@@ -48,10 +45,10 @@ namespace EZNEW.Repository.Sys
                 return;
             }
             var removeGroupQuery = query.Copy();
-            removeGroupQuery.QueryFields.Clear();
+            removeGroupQuery.ClearQueryFields();
             removeGroupQuery.AddQueryFields<AuthorityOperationGroupQuery>(c => c.SysNo);
             //remove operation
-            var removeOperationQuery = QueryFactory.Create<AuthorityOperationQuery>();
+            var removeOperationQuery = QueryManager.Create<AuthorityOperationQuery>();
             removeOperationQuery.And<AuthorityOperationQuery>(c => c.Group, CriteriaOperator.In, removeGroupQuery);
             Remove(removeOperationQuery, activationOption);
         }

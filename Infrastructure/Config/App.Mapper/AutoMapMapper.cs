@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AutoMapper.Configuration;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.ObjectMap;
-using EZNEW.Framework.Serialize;
 using AutoMapper;
 
 namespace App.Mapper
 {
-    public class AutoMapMapper : IObjectMap
+    public class AutoMapMapper : EZNEW.Mapper.IMapper
     {
         IMapper Mapper = null;
 

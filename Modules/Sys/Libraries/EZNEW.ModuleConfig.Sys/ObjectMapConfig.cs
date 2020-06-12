@@ -1,29 +1,30 @@
 ﻿using AutoMapper;
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Service.Param;
 using EZNEW.DTO.Sys.Cmd;
 using EZNEW.DTO.Sys.Query;
 using EZNEW.DTO.Sys.Query.Filter;
 using EZNEW.Entity.Sys;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.ValueType;
+using EZNEW.ValueType;
 using EZNEW.ViewModel.Sys.Filter;
 using EZNEW.ViewModel.Sys.Request;
 using EZNEW.ViewModel.Sys.Response;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EZNEW.ModuleConfig.Sys
 {
     /// <summary>
-    /// object map
+    /// Object map config
     /// </summary>
-    public static class SysModuleObjectMapper
+    public static class ObjectMapConfig
     {
-        public static void Config(IMapperConfigurationExpression cfg)
+        /// <summary>
+        /// 配置对象映射转换
+        /// </summary>
+        /// <param name="cfg"></param>
+        public static void Configure(IMapperConfigurationExpression cfg)
         {
             if (cfg == null)
             {

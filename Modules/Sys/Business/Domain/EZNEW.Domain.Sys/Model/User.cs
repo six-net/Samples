@@ -1,20 +1,13 @@
 using System;
-using EZNEW.Develop.Domain.Aggregation;
-using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.Extension;
-using EZNEW.Develop.CQuery;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework;
-using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Linq;
-using EZNEW.Framework.ExpressionUtil;
-using EZNEW.Application.Identity.User;
-using EZNEW.Application.Identity;
-using EZNEW.Framework.Code;
-using System.Threading.Tasks;
+using EZNEW.Module.Sys;
 using EZNEW.Domain.Sys.Service;
-using EZNEW.Framework.IoC;
+using EZNEW.DependencyInjection;
+using EZNEW.ValueType;
+using EZNEW.Code;
+using EZNEW.Develop.Domain.Aggregation;
+using EZNEW.Domain.Sys.Repository;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -327,7 +320,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public static long GenerateUserId()
         {
-            return SerialNumber.GetSerialNumber(IdentityApplicationHelper.GetIdGroupCode(IdentityGroup.用户));
+            return SysManager.GetId(SysModuleObject.User);
         }
 
         #endregion

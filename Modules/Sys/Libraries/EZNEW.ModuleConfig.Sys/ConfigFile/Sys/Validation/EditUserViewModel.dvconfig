@@ -1,8 +1,8 @@
 {
-  "rules": [
+  "types": [
     {
       "typeName": "EZNEW.ViewModel.Sys.Request.EditUserViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "rules": [
+      "properties": [
         {
           "name": "UserName",
           "rules": [

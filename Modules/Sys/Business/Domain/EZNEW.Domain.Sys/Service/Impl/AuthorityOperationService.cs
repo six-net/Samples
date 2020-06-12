@@ -2,18 +2,13 @@ using EZNEW.Domain.Sys.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using EZNEW.Framework.IoC;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework;
-using EZNEW.Framework.Paging;
 using EZNEW.Domain.Sys.Service.Param;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Framework.Response;
+using EZNEW.DependencyInjection;
+using EZNEW.Paging;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -74,7 +69,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return Result.FailedResult("没有指定任何要删除的信息");
             }
-            IQuery delQuery = QueryFactory.Create<AuthorityOperationQuery>();
+            IQuery delQuery = QueryManager.Create<AuthorityOperationQuery>();
             delQuery.In<AuthorityOperationQuery>(a => a.SysNo, authorityOperationIds);
             authorityOperationRepository.Remove(delQuery);
             return Result.SuccessResult("删除成功");
@@ -118,7 +113,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns>执行结果</returns>
         static Result<AuthorityOperation> UpdateAuthorityOperation(AuthorityOperation newAuthorityOperation)
         {
-            AuthorityOperation nowAuthorityOperation = authorityOperationRepository.Get(QueryFactory.Create<AuthorityOperationQuery>(a => a.SysNo == newAuthorityOperation.SysNo));
+            AuthorityOperation nowAuthorityOperation = authorityOperationRepository.Get(QueryManager.Create<AuthorityOperationQuery>(a => a.SysNo == newAuthorityOperation.SysNo));
             if (nowAuthorityOperation == null)
             {
                 return Result<AuthorityOperation>.FailedResult("请指定要修改授权操作");
@@ -169,7 +164,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationQuery>(c => c.SysNo == operationId);
+            IQuery query = QueryManager.Create<AuthorityOperationQuery>(c => c.SysNo == operationId);
             return GetAuthorityOperation(query);
         }
 
@@ -186,7 +181,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                 return null;
             }
             AuthorityOperation operation = AuthorityOperation.CreateAuthorityOperation(controllerCode: controllerCode, actionCode: actionCode);
-            IQuery query = QueryFactory.Create<AuthorityOperationQuery>(c => c.ControllerCode == operation.ControllerCode && c.ActionCode == operation.ActionCode);
+            IQuery query = QueryManager.Create<AuthorityOperationQuery>(c => c.ControllerCode == operation.ControllerCode && c.ActionCode == operation.ActionCode);
             return GetAuthorityOperation(query);
         }
 
@@ -217,7 +212,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<AuthorityOperation>(0);
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationQuery>(c => ids.Contains(c.SysNo));
+            IQuery query = QueryManager.Create<AuthorityOperationQuery>(c => ids.Contains(c.SysNo));
             return GetAuthorityOperationList(query);
         }
 
@@ -234,7 +229,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         {
             var authorityOperationPaging = authorityOperationRepository.GetPaging(query);
             var authorityOperationList = LoadOtherObjectData(authorityOperationPaging, query);
-            return new Paging<AuthorityOperation>(authorityOperationPaging.Page, authorityOperationPaging.PageSize, authorityOperationPaging.TotalCount, authorityOperationList);
+            return Pager.Create<AuthorityOperation>(authorityOperationPaging.Page, authorityOperationPaging.PageSize, authorityOperationPaging.TotalCount, authorityOperationList);
         }
 
         #endregion
@@ -253,7 +248,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationQuery>(c => c.Name == name && c.SysNo != excludeId);
+            IQuery query = QueryManager.Create<AuthorityOperationQuery>(c => c.Name == name && c.SysNo != excludeId);
             return authorityOperationRepository.Exist(query);
         }
 

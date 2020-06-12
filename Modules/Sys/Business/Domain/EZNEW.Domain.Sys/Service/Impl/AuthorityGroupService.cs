@@ -1,17 +1,13 @@
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework.Response;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.Paging;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -41,7 +37,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #endregion
 
             //删除分组信息
-            IQuery removeQuery = QueryFactory.Create<AuthorityGroupQuery>(c => groupIds.Contains(c.SysNo));
+            IQuery removeQuery = QueryManager.Create<AuthorityGroupQuery>(c => groupIds.Contains(c.SysNo));
             removeQuery.SetRecurve<AuthorityGroupQuery>(c => c.SysNo, c => c.Parent);
             authorityGroupRepository.Remove(removeQuery);
             return Result.SuccessResult("删除成功");
@@ -62,7 +58,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<AuthorityGroupQuery>(c => c.SysNo == groupId);
+            IQuery query = QueryManager.Create<AuthorityGroupQuery>(c => c.SysNo == groupId);
             return authorityGroupRepository.Exist(query);
         }
 
@@ -101,7 +97,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             AuthorityGroup parentGroup = null;
             if (parentGroupId > 0)
             {
-                IQuery parentQuery = QueryFactory.Create<AuthorityGroupQuery>(c => c.SysNo == parentGroupId);
+                IQuery parentQuery = QueryManager.Create<AuthorityGroupQuery>(c => c.SysNo == parentGroupId);
                 parentGroup = authorityGroupRepository.Get(parentQuery);
                 if (parentGroup == null)
                 {
@@ -125,7 +121,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns>执行结果</returns>
         Result<AuthorityGroup> UpdateAuthorityGroup(AuthorityGroup newAuthorityGroup)
         {
-            AuthorityGroup authorityGroup = authorityGroupRepository.Get(QueryFactory.Create<AuthorityGroupQuery>(r => r.SysNo == newAuthorityGroup.SysNo));
+            AuthorityGroup authorityGroup = authorityGroupRepository.Get(QueryManager.Create<AuthorityGroupQuery>(r => r.SysNo == newAuthorityGroup.SysNo));
             if (authorityGroup == null)
             {
                 return Result<AuthorityGroup>.FailedResult("没有指定要操作的分组信息");
@@ -139,7 +135,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                 AuthorityGroup parentGroup = null;
                 if (newParentGroupId > 0)
                 {
-                    IQuery parentQuery = QueryFactory.Create<AuthorityGroupQuery>(c => c.SysNo == newParentGroupId);
+                    IQuery parentQuery = QueryManager.Create<AuthorityGroupQuery>(c => c.SysNo == newParentGroupId);
                     parentGroup = authorityGroupRepository.Get(parentQuery);
                     if (parentGroup == null)
                     {
@@ -184,7 +180,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<AuthorityGroupQuery>(c => c.SysNo == groupId);
+            IQuery query = QueryManager.Create<AuthorityGroupQuery>(c => c.SysNo == groupId);
             return GetAuthorityGroup(query);
         }
 
@@ -214,7 +210,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<AuthorityGroup>(0);
             }
-            IQuery query = QueryFactory.Create<AuthorityGroupQuery>(c => groupIds.Contains(c.SysNo));
+            IQuery query = QueryManager.Create<AuthorityGroupQuery>(c => groupIds.Contains(c.SysNo));
             return GetAuthorityGroupList(query);
         }
 
@@ -279,7 +275,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<AuthorityGroupQuery>(c => c.Name == groupName && c.SysNo != excludeGroupId);
+            IQuery query = QueryManager.Create<AuthorityGroupQuery>(c => c.Name == groupName && c.SysNo != excludeGroupId);
             return authorityGroupRepository.Exist(query);
         }
 

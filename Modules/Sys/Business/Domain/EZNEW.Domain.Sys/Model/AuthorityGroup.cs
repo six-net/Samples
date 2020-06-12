@@ -1,17 +1,13 @@
 using System;
+using System.Collections.Generic;
+using EZNEW.Module.Sys;
+using EZNEW.Develop.Command.Modify;
+using EZNEW.Code;
+using EZNEW.ValueType;
 using EZNEW.Develop.Domain.Aggregation;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
 using EZNEW.Domain.Sys.Repository;
-using System.Collections.Generic;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Application.Identity;
-using EZNEW.Framework.Code;
-using System.Threading.Tasks;
-using EZNEW.Develop.Command.Modify;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -136,7 +132,7 @@ namespace EZNEW.Domain.Sys.Model
                 throw new Exception("不能将分组本身设置为上级分组");
             }
             //排序
-            IQuery sortQuery = QueryFactory.Create<AuthorityGroupQuery>(r => r.Parent == parentSysNo);
+            IQuery sortQuery = QueryManager.Create<AuthorityGroupQuery>(r => r.Parent == parentSysNo);
             sortQuery.AddQueryFields<AuthorityGroupQuery>(c => c.Sort);
             int maxSortIndex = repository.Max<int>(sortQuery);
             Sort = maxSortIndex + 1;
@@ -168,7 +164,7 @@ namespace EZNEW.Domain.Sys.Model
             }
             Sort = newSort;
             //其它分组顺延
-            IQuery sortQuery = QueryFactory.Create<AuthorityGroupQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
+            IQuery sortQuery = QueryManager.Create<AuthorityGroupQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
             IModify modifyExpression = ModifyFactory.Create();
             modifyExpression.Add<AuthorityGroupQuery>(r => r.Sort, 1);
             repository.Modify(modifyExpression, sortQuery);
@@ -204,7 +200,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return;
             }
-            IQuery query = QueryFactory.Create<AuthorityGroupQuery>(r => r.Parent == SysNo);
+            IQuery query = QueryManager.Create<AuthorityGroupQuery>(r => r.Parent == SysNo);
             List<AuthorityGroup> childGroupList = repository.GetList(query);
             foreach (var group in childGroupList)
             {
@@ -230,7 +226,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return null;
             }
-            return repository.Get(QueryFactory.Create<AuthorityGroupQuery>(r => r.SysNo == parent.CurrentValue.SysNo));
+            return repository.Get(QueryManager.Create<AuthorityGroupQuery>(r => r.SysNo == parent.CurrentValue.SysNo));
         }
 
         #endregion
@@ -260,7 +256,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public static long GenerateAuthorityGroupId()
         {
-            return SerialNumber.GetSerialNumber(IdentityApplicationHelper.GetIdGroupCode(IdentityGroup.权限分组));
+            return SysManager.GetId(SysModuleObject.AuthorityGroup);
         }
 
         #endregion
@@ -286,7 +282,7 @@ namespace EZNEW.Domain.Sys.Model
 
         protected override string GetIdentityValue()
         {
-            throw new NotImplementedException();
+            return SysNo.ToString();
         }
 
         #endregion

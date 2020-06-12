@@ -2,9 +2,8 @@
     ViewData["Title"] = "角色管理";
     var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
 }
-@using EZNEW.Framework.Serialize;
-@using EZNEW.Application.Identity.Auth
-@using EZNEW.Framework.Extension;
+@using EZNEW.Serialize;
+@using EZNEW.Module.Sys
 <environment>
     <link rel="stylesheet" href="~/script/ztree/skin.css" />
 </environment>
@@ -179,7 +178,7 @@
         var authStatusDict = new Object();
         var authGroupTree = null;
         $(function () {
-            authStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            authStatusDict=JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
             InitGroupDataManage({
                 groupData: {
                     loadDataUrl: '@Url.Action("SearchRole", "Role")',

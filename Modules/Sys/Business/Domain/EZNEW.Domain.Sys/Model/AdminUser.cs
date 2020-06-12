@@ -1,19 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.Extension;
-using EZNEW.Domain.Sys.Service;
-using EZNEW.Develop.CQuery;
-using EZNEW.Query.Sys;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework;
-using System.Linq.Expressions;
-using EZNEW.Framework.ExpressionUtil;
-using EZNEW.Application.Identity.User;
-using EZNEW.Framework.IoC;
+using EZNEW.Module.Sys;
 
 namespace EZNEW.Domain.Sys.Model
 {

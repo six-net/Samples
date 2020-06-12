@@ -1,11 +1,9 @@
 using System;
+using EZNEW.Develop.CQuery;
 using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.ValueType;
-using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using System.Threading.Tasks;
+using EZNEW.ValueType;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -109,7 +107,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return null;
             }
-            return this.Instance<IUserRepository>().Get(QueryFactory.Create<UserQuery>(r => r.SysNo == user.CurrentValue.SysNo));
+            return this.Instance<IUserRepository>().Get(QueryManager.Create<UserQuery>(r => r.SysNo == user.CurrentValue.SysNo));
         }
 
         #endregion
@@ -130,7 +128,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return null;
             }
-            return this.Instance<IAuthorityRepository>().Get(QueryFactory.Create<AuthorityQuery>(r => r.Code == authority.CurrentValue.Code));
+            return this.Instance<IAuthorityRepository>().Get(QueryManager.Create<AuthorityQuery>(r => r.Code == authority.CurrentValue.Code));
         }
 
         #endregion

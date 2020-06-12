@@ -2,9 +2,8 @@
 @{
     ViewBag.Title = "管理账户";
 }
-@using EZNEW.Application.Identity.User
-@using EZNEW.Framework.Extension;
-@using EZNEW.Framework.Serialize;
+@using EZNEW.Module.Sys
+@using EZNEW.Serialize;
 @{
     var statusValues = UserStatus.正常.GetType().GetEnumValueAndNames();
 }
@@ -82,7 +81,7 @@
     </script>
 
     <script type="text/javascript">
-        var userStatusDict = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+        var userStatusDict = JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
         $(function () {
             InitTable({
                 elem: 'demo',

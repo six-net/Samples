@@ -9,16 +9,16 @@ namespace Site.Console.Config
     {
         public static void Init()
         {
-            CacheManager.Config.GetCacheServerProxy = option =>
-            {
-                return new List<CacheServer>()
-                {
+            CacheManager.Configuration.ConfigureCacheServer(option =>
+           {
+               return new List<CacheServer>()
+               {
                     new CacheServer()
                     {
                         ServerType=CacheServerType.InMemory
                     }
-                };
-            };
+               };
+           });
         }
     }
 }

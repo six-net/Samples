@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 using EZNEW.AppServiceContract.Sys;
 using EZNEW.DTO.Sys.Cmd;
 using EZNEW.DTO.Sys.Query.Filter;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework.Response;
+using EZNEW.Paging;
+using EZNEW.Response;
 using EZNEW.ViewModel.Sys.Filter;
 using EZNEW.ViewModel.Sys.Request;
 using EZNEW.ViewModel.Sys.Response;

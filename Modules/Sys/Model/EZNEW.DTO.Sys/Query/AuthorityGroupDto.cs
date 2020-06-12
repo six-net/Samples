@@ -1,4 +1,4 @@
-using EZNEW.Application.Identity.Auth;
+using EZNEW.Module.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;

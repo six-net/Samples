@@ -1,10 +1,6 @@
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Framework.Paging;
-using System;
+using EZNEW.Module.Sys;
+using EZNEW.Paging;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EZNEW.DTO.Sys.Query.Filter
 {

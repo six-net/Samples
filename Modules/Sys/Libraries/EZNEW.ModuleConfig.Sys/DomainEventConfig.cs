@@ -1,12 +1,8 @@
-﻿using EZNEW.Application.Identity.User;
+﻿using EZNEW.Module.Sys;
 using EZNEW.Cache;
 using EZNEW.Develop.Domain.Event;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.DTO.Sys.Query;
-using EZNEW.Framework.Extension;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EZNEW.ModuleConfig.Sys

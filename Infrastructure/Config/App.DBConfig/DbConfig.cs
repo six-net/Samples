@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using EZNEW.Develop.Command;
 using Microsoft.Extensions.Configuration;
-using EZNEW.Framework.IoC;
 using EZNEW.Data.SqlServer;
 using EZNEW.Data;
+using EZNEW.DependencyInjection;
 
 namespace App.DBConfig
 {
@@ -15,7 +15,7 @@ namespace App.DBConfig
         public static void Init()
         {
             DataBaseEngineConfig();//数据库执行器
-            DataManager.GetDBServer = GetServerInfo;//获取数据连接信息方法
+            DataManager.ConfigureDatabaseServer(GetServerInfo);//获取数据连接信息方法
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace App.DBConfig
         /// </summary>
         static void DataBaseEngineConfig()
         {
-            DataManager.RegisterDBEngine(ServerType.SQLServer, new SqlServerEngine());
+            DataManager.ConfigureDatabaseEngine(DatabaseServerType.SQLServer, new SqlServerEngine());
         }
 
         /// <summary>
@@ -31,12 +31,12 @@ namespace App.DBConfig
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
-        static List<ServerInfo> GetServerInfo(ICommand command)
+        static List<DatabaseServer> GetServerInfo(ICommand command)
         {
-            List<ServerInfo> servers = new List<ServerInfo>();
-            servers.Add(new ServerInfo()
+            List<DatabaseServer> servers = new List<DatabaseServer>();
+            servers.Add(new DatabaseServer()
             {
-                ServerType = ServerType.SQLServer,
+                ServerType = DatabaseServerType.SQLServer,
                 ConnectionString = ContainerManager.Resolve<IConfiguration>().GetConnectionString("DefaultConnection")
             });
             return servers;

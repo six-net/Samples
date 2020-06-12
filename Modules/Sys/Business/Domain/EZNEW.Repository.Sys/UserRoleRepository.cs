@@ -1,17 +1,13 @@
-using EZNEW.DataAccessContract.Sys;
-using EZNEW.Domain.Sys.Model;
-using EZNEW.Domain.Sys.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Query.Sys;
 using EZNEW.Entity.Sys;
 using EZNEW.Develop.CQuery;
-using EZNEW.Develop.UnitOfWork;
 using EZNEW.Develop.Domain.Repository;
+using EZNEW.DataAccessContract.Sys;
+using EZNEW.Domain.Sys.Model;
+using EZNEW.Domain.Sys.Repository;
 
 namespace EZNEW.Repository.Sys
 {
@@ -32,7 +28,7 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             IEnumerable<long> userIds = datas.Select(c => c.SysNo).Distinct();
-            IQuery query = QueryFactory.Create<UserRoleQuery>(c => userIds.Contains(c.UserSysNo));
+            IQuery query = QueryManager.Create<UserRoleQuery>(c => userIds.Contains(c.UserSysNo));
             return query;
         }
 
@@ -48,7 +44,7 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             IEnumerable<long> roleIds = datas.Select(c => c.SysNo).Distinct();
-            IQuery query = QueryFactory.Create<UserRoleQuery>(c => roleIds.Contains(c.RoleSysNo));
+            IQuery query = QueryManager.Create<UserRoleQuery>(c => roleIds.Contains(c.RoleSysNo));
             return query;
         }
 
@@ -92,9 +88,9 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var copyQuery = query.Copy();
-            copyQuery.QueryFields.Clear();
+            copyQuery.ClearQueryFields();
             copyQuery.AddQueryFields<UserQuery>(c => c.SysNo);
-            var removeQuery = QueryFactory.Create<UserRoleQuery>();
+            var removeQuery = QueryManager.Create<UserRoleQuery>();
             removeQuery.And<UserRoleQuery>(ur => ur.UserSysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;
         }
@@ -111,9 +107,9 @@ namespace EZNEW.Repository.Sys
                 return null;
             }
             var copyQuery = query.Copy();
-            copyQuery.QueryFields.Clear();
+            copyQuery.ClearQueryFields();
             copyQuery.AddQueryFields<RoleQuery>(c => c.SysNo);
-            var removeQuery = QueryFactory.Create<UserRoleQuery>();
+            var removeQuery = QueryManager.Create<UserRoleQuery>();
             removeQuery.And<UserRoleQuery>(ur => ur.RoleSysNo, CriteriaOperator.In, copyQuery);
             return removeQuery;
         }

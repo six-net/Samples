@@ -1,21 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EZNEW.Mvc.CustomModelDisplayName;
-using EZNEW.Mvc.DataAnnotationsModelValidatorConfig;
 using EZNEW.Web.Mvc;
+using EZNEW.Web.Mvc.Display;
+using EZNEW.Web.Mvc.Validation;
 using EZNEW.Web.Security.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Site.Console.Config;
 using Site.Console.Controllers;
 using Site.Console.Filters;
@@ -33,7 +25,7 @@ namespace Site.Console
             services.AddMvc(options =>
             {
                 options.ModelValidatorProviders.Add(new CustomDataAnnotationsModelValidatorProvider());
-                options.ModelMetadataDetailsProviders.Add(new MvcCustomModelDisplayProvider());
+                options.ModelMetadataDetailsProviders.Add(new CustomModelDisplayProvider());
                 options.Filters.Add<OperationAuthorizeFilter>();
                 options.Filters.Add<ConsoleExceptionFilter>();
             })
@@ -95,7 +87,6 @@ namespace Site.Console
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             AppConfig.Init();
-            CacheDataManager.InitData();
         }
     }
 }

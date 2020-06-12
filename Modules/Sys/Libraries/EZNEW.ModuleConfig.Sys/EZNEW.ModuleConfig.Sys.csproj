@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="EZNEW.Cache" Version="1.1.3" />
-    <PackageReference Include="EZNEW.Data" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +21,7 @@
     <ProjectReference Include="..\..\Service\EZNEW.AppService.Sys\EZNEW.AppService.Sys.csproj" />
     <ProjectReference Include="..\..\Service\EZNEW.AppServiceContract.Sys\EZNEW.AppServiceContract.Sys.csproj" />
     <ProjectReference Include="..\..\Business\EZNEW.Business.Sys\EZNEW.Business.Sys.csproj" />
+    <ProjectReference Include="..\EZNEW.Module.Sys\EZNEW.Module.Sys.csproj" />
   </ItemGroup>
 
   <ItemGroup>

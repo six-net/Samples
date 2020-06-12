@@ -1,6 +1,5 @@
-@using EZNEW.Application.Identity.Auth
-@using EZNEW.Framework.Extension;
-@using EZNEW.Framework.Serialize;
+@using EZNEW.Module.Sys
+@using EZNEW.Serialize;
 @{
     ViewData["Title"] = "授权管理";
     var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
@@ -124,8 +123,8 @@
         var authStatusDict = new Object();
         var authGroupStatusDict = {};
         $(function () {
-            authStatusDict = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
-            authGroupStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(groupStatusValues))');
+            authStatusDict = JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
+            authGroupStatusDict=JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(groupStatusValues))');
             InitGroupDataManage({
                 groupData: {
                     loadDataUrl: '@Url.Action("SearchAuthorityGroup", "Authority")',

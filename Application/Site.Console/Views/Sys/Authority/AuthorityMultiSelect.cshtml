@@ -1,6 +1,5 @@
-@using EZNEW.Application.Identity.Auth
-@using EZNEW.Framework.Extension;
-@using EZNEW.Framework.Serialize;
+@using EZNEW.Module.Sys
+@using EZNEW.Serialize;
 @{
     ViewBag.Title = "权限选择";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -111,7 +110,7 @@
         ]];
 
         $(function () {
-            authStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            authStatusDict=JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
             InitGroupMultSelect({
                 objectTag: "Authority",
                 groupData: {

@@ -1,15 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EZNEW.BusinessContract.Sys;
 using EZNEW.DTO.Sys.Query;
 using EZNEW.DTO.Sys.Cmd;
 using EZNEW.DTO.Sys.Query.Filter;
-using EZNEW.Framework.Paging;
 using EZNEW.AppServiceContract.Sys;
-using EZNEW.Framework.Response;
+using EZNEW.Paging;
+using EZNEW.Response;
 
 namespace EZNEW.AppService.Sys
 {

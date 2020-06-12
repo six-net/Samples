@@ -1,17 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using EZNEW.Module.Sys;
+using EZNEW.Code;
+using EZNEW.ValueType;
 using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using EZNEW.Framework.Extension;
-using System.Collections.Generic;
-using System.Linq;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Application.Identity;
-using EZNEW.Framework.Code;
-using System.Threading.Tasks;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -259,7 +255,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return group.CurrentValue;
             }
-            return this.Instance<IAuthorityOperationGroupRepository>().Get(QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.SysNo == group.CurrentValue.SysNo));
+            return this.Instance<IAuthorityOperationGroupRepository>().Get(QueryManager.Create<AuthorityOperationGroupQuery>(r => r.SysNo == group.CurrentValue.SysNo));
         }
 
         #endregion
@@ -283,7 +279,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 throw new Exception("请设置操作所属分组");
             }
-            IQuery groupQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(c => c.SysNo == group.CurrentValue.SysNo);
+            IQuery groupQuery = QueryManager.Create<AuthorityOperationGroupQuery>(c => c.SysNo == group.CurrentValue.SysNo);
             if (!this.Instance<IAuthorityOperationGroupRepository>().Exist(groupQuery))
             {
                 throw new Exception("请设置正确的分组");
@@ -305,8 +301,8 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return authoritys.CurrentValue;
             }
-            IQuery query = QueryFactory.Create();
-            IQuery bindQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
+            IQuery query = QueryManager.Create();
+            IQuery bindQuery = QueryManager.Create<AuthorityBindOperationQuery>();
             bindQuery.AddQueryFields<AuthorityBindOperationQuery>(a => a.AuthoritySysNo);
             bindQuery.And<AuthorityBindOperationQuery>(a => a.AuthorityOperationSysNo == SysNo);
             query.And<AuthorityQuery>(a => a.Code, CriteriaOperator.In, bindQuery);
@@ -340,7 +336,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public static long GenerateAuthorityOperationId()
         {
-            return SerialNumber.GetSerialNumber(IdentityApplicationHelper.GetIdGroupCode(IdentityGroup.授权操作));
+            return SysManager.GetId(SysModuleObject.AuthorityOperation);
         }
 
         #endregion

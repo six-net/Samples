@@ -1,10 +1,8 @@
 ﻿using EZNEW.Develop.CQuery;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework.Response;
-using System;
+using EZNEW.Paging;
+using EZNEW.Response;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EZNEW.Domain.Sys.Service
 {

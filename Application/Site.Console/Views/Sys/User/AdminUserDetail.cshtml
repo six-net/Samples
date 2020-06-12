@@ -3,10 +3,9 @@
     ViewBag.Title = "用户详情";
 }
 @using EZNEW.ViewModel.Sys.Response
-@using EZNEW.Framework.Extension
-@using EZNEW.Application.Identity.User;
-@using EZNEW.Application.Identity.Auth;
-@using EZNEW.Framework.Serialize;
+@using EZNEW.Module.Sys;
+@using EZNEW.Module.Sys;
+@using EZNEW.Serialize;
 @model AdminUserViewModel
 @{
     var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
@@ -194,11 +193,11 @@
         var nowAuthNode = null;
         var authStatusDict = new Object();
         var authGroupTree = null;
-        var nowUser = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(Model))');
+        var nowUser = JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(Model))');
         var lockStatus =@((int)UserStatus.锁定);
         var unlockStatus=@((int)UserStatus.正常);
         $(function () {
-            authStatusDict=JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            authStatusDict=JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
             InitTable({
                 elem: 'role_table',
                 toolbar: '#roletable_toolbar',

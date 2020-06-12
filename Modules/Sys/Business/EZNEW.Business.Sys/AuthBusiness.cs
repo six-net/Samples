@@ -1,14 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework;
 using EZNEW.Develop.CQuery;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework.Response;
-using EZNEW.Develop.UnitOfWork;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Service;
 using EZNEW.Domain.Sys.Service.Param;
@@ -16,11 +9,13 @@ using EZNEW.DTO.Sys.Query.Filter;
 using EZNEW.Query.Sys;
 using EZNEW.DTO.Sys.Cmd;
 using EZNEW.DTO.Sys.Query;
-using EZNEW.Domain.Sys.Repository;
 using EZNEW.BusinessContract.Sys;
-using EZNEW.Framework.IoC;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
+using EZNEW.Module.Sys;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.Develop.UnitOfWork;
+using EZNEW.Paging;
 
 namespace EZNEW.Business.Sys
 {
@@ -51,7 +46,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result<AuthorityDto> SaveAuthority(SaveAuthorityCmdDto saveInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 if (saveInfo == null)
                 {
@@ -139,7 +134,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result DeleteAuthority(DeleteAuthorityCmdDto deleteInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -167,7 +162,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result ModifyAuthorityStatus(ModifyAuthorityStatusCmdDto statusInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 if (statusInfo == null || statusInfo.AuthorityStatusInfo == null)
                 {
@@ -247,7 +242,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result<AuthorityGroupDto>.FailedResult("分组信息不完整");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var saveResult = authorityGroupService.SaveAuthorityGroup(saveInfo.AuthorityGroup.MapTo<AuthorityGroup>());
                 if (!saveResult.Success)
@@ -325,7 +320,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result DeleteAuthorityGroup(DeleteAuthorityGroupCmdDto deleteInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -357,7 +352,7 @@ namespace EZNEW.Business.Sys
         /// <returns></returns>
         public Result ModifyAuthorityGroupSort(ModifyAuthorityGroupSortCmdDto sortInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -420,7 +415,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result<AuthorityOperationGroupDto>.FailedResult("操作分组信息不完整");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var saveResult = authorityOperationGroupService.SaveAuthorityOperationGroup(saveInfo.AuthorityOperationGroup.MapTo<AuthorityOperationGroup>());
                 if (!saveResult.Success)
@@ -499,7 +494,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result DeleteAuthorityOperationGroup(DeleteAuthorityOperationGroupCmdDto deleteInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -535,7 +530,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要修改的信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var modifyResult = authorityOperationGroupService.ModifySort(sortInfo.AuthorityOperationGroupSysNo, sortInfo.NewSort);
                 if (!modifyResult.Success)
@@ -584,7 +579,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result<AuthorityOperationDto>.FailedResult("授权操作信息不完整");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var saveResult = authorityOperationService.SaveAuthorityOperation(saveInfo.AuthorityOperation.MapTo<AuthorityOperation>());
                 if (!saveResult.Success)
@@ -662,7 +657,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result DeleteAuthorityOperation(DeleteAuthorityOperationCmdDto deleteInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -694,7 +689,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要修改的状态信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 修改状态信息
 
@@ -752,7 +747,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要修改的信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var modifyResult = authorityBindAuthorityOperationService.ModifyAuthorityAndAuthorityOperationBind(bindInfo.MapTo<ModifyAuthorityAndAuthorityOperationBind>());
                 if (!modifyResult.Success)
@@ -781,7 +776,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要修改的角色授权信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var modifyResult = authorizeService.ModifyRoleAuthorize(authInfo.MapTo<ModifyRoleAuthorize>());
                 if (!modifyResult.Success)
@@ -808,7 +803,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要修改的用户授权信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var modifyResult = authorizeService.ModifyUserAuthorize(authorizeInfo.UserAuthorizes.Select(c => c.MapTo<UserAuthorize>()));
                 if (!modifyResult.Success)
@@ -835,7 +830,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何用户信息");
             }
-            using (var work = WorkFactory.Create())
+            using (var work = WorkManager.Create())
             {
                 var result = authorizeService.ClearUserAuthorize(userSysNos);
                 if (!result.Success)
@@ -866,7 +861,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何角色信息");
             }
-            using (var work = WorkFactory.Create())
+            using (var work = WorkManager.Create())
             {
                 var result = authorizeService.ClearRoleAuthorize(roleSysNos);
                 if (!result.Success)
@@ -921,7 +916,7 @@ namespace EZNEW.Business.Sys
 
             if (useBaseFilter)
             {
-                query = QueryFactory.Create<AuthorityQuery>(filter);
+                query = QueryManager.Create<AuthorityQuery>(filter);
 
                 #region 数据筛选
 
@@ -1015,7 +1010,7 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery query = CreateAuthorityQueryObject(filter, true) ?? QueryFactory.Create<AuthorityQuery>();
+            IQuery query = CreateAuthorityQueryObject(filter, true) ?? QueryManager.Create<AuthorityQuery>();
 
             #region 授权操作筛选
 
@@ -1025,7 +1020,7 @@ namespace EZNEW.Business.Sys
                 if (operationQuery != null)
                 {
                     //功能绑定权限
-                    IQuery authBindOperationQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
+                    IQuery authBindOperationQuery = QueryManager.Create<AuthorityBindOperationQuery>();
                     authBindOperationQuery.EqualInnerJoin(operationQuery);
                     query.EqualInnerJoin(authBindOperationQuery);
                 }
@@ -1047,7 +1042,7 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery authQuery = CreateAuthorityQueryObject(filter, true) ?? QueryFactory.Create<AuthorityQuery>();//权限筛选
+            IQuery authQuery = CreateAuthorityQueryObject(filter, true) ?? QueryManager.Create<AuthorityQuery>();//权限筛选
 
             #region 角色筛选
 
@@ -1056,7 +1051,7 @@ namespace EZNEW.Business.Sys
                 IQuery roleFilter = this.Instance<IRoleBusiness>().CreateQueryObject(filter.RoleFilter);
                 if (roleFilter != null)
                 {
-                    IQuery roleBindAuthQuery = QueryFactory.Create<RoleAuthorizeQuery>();//角色&权限绑定
+                    IQuery roleBindAuthQuery = QueryManager.Create<RoleAuthorizeQuery>();//角色&权限绑定
                     roleBindAuthQuery.EqualInnerJoin(roleFilter);//角色&权限绑定->角色筛选
                     authQuery.EqualInnerJoin(roleBindAuthQuery);//权限筛选->角色&权限绑定
                 }
@@ -1078,7 +1073,7 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery query = CreateAuthorityQueryObject(filter, true) ?? QueryFactory.Create<AuthorityQuery>();
+            IQuery query = CreateAuthorityQueryObject(filter, true) ?? QueryManager.Create<AuthorityQuery>();
 
             #region 用户授权筛选
 
@@ -1089,14 +1084,14 @@ namespace EZNEW.Business.Sys
                 {
                     userQuery.AddQueryFields<UserQuery>(c => c.SysNo);
 
-                    IQuery userOrRoleBindAuthQuery = QueryFactory.Create();//用户和角色授权权限
+                    IQuery userOrRoleBindAuthQuery = QueryManager.Create();//用户和角色授权权限
 
                     #region 用户授权
 
-                    IQuery userBindAuthQuery = QueryFactory.Create<UserAuthorizeQuery>(c => c.Disable == false);
+                    IQuery userBindAuthQuery = QueryManager.Create<UserAuthorizeQuery>(c => c.Disable == false);
                     userBindAuthQuery.In<UserAuthorizeQuery>(c => c.UserSysNo, userQuery);
                     userBindAuthQuery.AddQueryFields<UserAuthorizeQuery>(c => c.AuthoritySysNo);
-                    IQuery userAuthQuery = QueryFactory.Create<AuthorityQuery>();
+                    IQuery userAuthQuery = QueryManager.Create<AuthorityQuery>();
                     userAuthQuery.In<AuthorityQuery>(c => c.SysNo, userBindAuthQuery);
                     userOrRoleBindAuthQuery.And(userAuthQuery);
 
@@ -1105,20 +1100,20 @@ namespace EZNEW.Business.Sys
                     #region 角色授权
 
                     //用户绑定的角色
-                    var userRoleBindQuery = QueryFactory.Create<UserRoleQuery>();
+                    var userRoleBindQuery = QueryManager.Create<UserRoleQuery>();
                     userRoleBindQuery.In<UserRoleQuery>(c => c.UserSysNo, userQuery);
                     userRoleBindQuery.AddQueryFields<UserRoleQuery>(c => c.RoleSysNo);
                     //包括所有上级角色
-                    var roleQuery = QueryFactory.Create<RoleQuery>(r => r.Status == RoleStatus.正常);
+                    var roleQuery = QueryManager.Create<RoleQuery>(r => r.Status == RoleStatus.正常);
                     roleQuery.In<RoleQuery>(r => r.SysNo, userRoleBindQuery);
                     roleQuery.SetRecurve<RoleQuery>(r => r.SysNo, r => r.Parent, RecurveDirection.Up);
                     roleQuery.AddQueryFields<RoleQuery>(r => r.SysNo);
 
                     //角色授权
-                    var roleAuthBindQuery = QueryFactory.Create<RoleAuthorizeQuery>();
+                    var roleAuthBindQuery = QueryManager.Create<RoleAuthorizeQuery>();
                     roleAuthBindQuery.In<RoleAuthorizeQuery>(c => c.RoleSysNo, roleQuery);
                     roleAuthBindQuery.AddQueryFields<RoleAuthorizeQuery>(c => c.AuthoritySysNo);
-                    var roleAuthQuery = QueryFactory.Create<AuthorityQuery>();
+                    var roleAuthQuery = QueryManager.Create<AuthorityQuery>();
                     roleAuthQuery.In<AuthorityQuery>(c => c.SysNo, roleAuthBindQuery);
                     userOrRoleBindAuthQuery.Or(roleAuthQuery);
 
@@ -1128,7 +1123,7 @@ namespace EZNEW.Business.Sys
 
                     #region 用户禁用授权
 
-                    IQuery userDisableAuthQuery = QueryFactory.Create<UserAuthorizeQuery>(c => c.Disable == true);
+                    IQuery userDisableAuthQuery = QueryManager.Create<UserAuthorizeQuery>(c => c.Disable == true);
                     userDisableAuthQuery.In<UserAuthorizeQuery>(c => c.UserSysNo, userQuery);
                     userDisableAuthQuery.AddQueryFields<UserAuthorizeQuery>(c => c.AuthoritySysNo);
                     query.NotIn<AuthorityQuery>(c => c.SysNo, userDisableAuthQuery);
@@ -1157,7 +1152,7 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<AuthorityGroupQuery>(filter);
+            IQuery query = QueryManager.Create<AuthorityGroupQuery>(filter);
             if (!filter.SysNos.IsNullOrEmpty())
             {
                 query.In<AuthorityGroupQuery>(c => c.SysNo, filter.SysNos);
@@ -1208,7 +1203,7 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationGroupQuery>(filter);
+            IQuery query = QueryManager.Create<AuthorityOperationGroupQuery>(filter);
             if (!filter.SysNos.IsNullOrEmpty())
             {
                 query.In<AuthorityOperationGroupQuery>(c => c.SysNo, filter.SysNos);
@@ -1263,7 +1258,7 @@ namespace EZNEW.Business.Sys
 
             if (useBaseFilter)
             {
-                query = QueryFactory.Create<AuthorityOperationQuery>(filter);
+                query = QueryManager.Create<AuthorityOperationQuery>(filter);
 
                 #region 数据筛选
 
@@ -1352,17 +1347,17 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery query = CreateAuthorityOperationQueryObject(filter, true) ?? QueryFactory.Create<AuthorityOperationQuery>();
+            IQuery query = CreateAuthorityOperationQueryObject(filter, true) ?? QueryManager.Create<AuthorityOperationQuery>();
 
             #region 权限筛选
 
             if (filter.AuthorityFilter != null)
             {
                 IQuery authorityQuery = CreateAuthorityQueryObject(filter.AuthorityFilter);
-                if (authorityQuery != null && authorityQuery.Criterias.Count > 0)
+                if (authorityQuery != null && !authorityQuery.Criterias.IsNullOrEmpty())
                 {
                     //权限和操作绑定
-                    IQuery authBindOperationQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
+                    IQuery authBindOperationQuery = QueryManager.Create<AuthorityBindOperationQuery>();
                     authBindOperationQuery.EqualInnerJoin(authorityQuery);
                     query.EqualInnerJoin(authBindOperationQuery);
                 }
@@ -1384,9 +1379,9 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery query = CreateAuthorityOperationQueryObject(filter, true) ?? QueryFactory.Create<AuthorityOperationQuery>();
+            IQuery query = CreateAuthorityOperationQueryObject(filter, true) ?? QueryManager.Create<AuthorityOperationQuery>();
             //用户授权的操作或者无限制的操作
-            var authAndUnlimitedOperationQuery = QueryFactory.Create<AuthorityOperationQuery>();
+            var authAndUnlimitedOperationQuery = QueryManager.Create<AuthorityOperationQuery>();
             if (filter.UserFilter != null)
             {
                 //用户权限
@@ -1396,7 +1391,7 @@ namespace EZNEW.Business.Sys
                     Status = AuthorityStatus.启用
                 });
                 //权限绑定操作
-                var authBindOperationQuery = QueryFactory.Create<AuthorityBindOperationQuery>();
+                var authBindOperationQuery = QueryManager.Create<AuthorityBindOperationQuery>();
                 authBindOperationQuery.EqualInnerJoin(userAuthorityQuery);
                 authBindOperationQuery.AddQueryFields<AuthorityBindOperationQuery>(a => a.AuthorityOperationSysNo);
                 authAndUnlimitedOperationQuery.In<AuthorityOperationQuery>(a => a.SysNo, authBindOperationQuery);

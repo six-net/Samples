@@ -1,17 +1,11 @@
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework;
-using EZNEW.Framework.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.Response;
-using EZNEW.Develop.CQuery;
-using EZNEW.Query.Sys;
 using EZNEW.Develop.UnitOfWork;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {

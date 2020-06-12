@@ -1,19 +1,15 @@
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Framework.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using EZNEW.Framework;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework.Paging;
 using EZNEW.Domain.Sys.Service.Param;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Framework.Response;
+using EZNEW.Module.Sys;
+using EZNEW.DependencyInjection;
+using EZNEW.Paging;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -79,7 +75,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 throw new Exception("没有指定任何要删除的权限");
             }
-            IQuery delQuery = QueryFactory.Create<AuthorityQuery>(a => sysNos.Contains(a.SysNo));
+            IQuery delQuery = QueryManager.Create<AuthorityQuery>(a => sysNos.Contains(a.SysNo));
             authRepository.Remove(delQuery);
         }
 
@@ -154,7 +150,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery authQuery = QueryFactory.Create<AuthorityQuery>(a => a.Code == authCode);
+            IQuery authQuery = QueryManager.Create<AuthorityQuery>(a => a.Code == authCode);
             return GetAuthority(authQuery);
         }
 
@@ -169,7 +165,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<AuthorityQuery>(a => a.SysNo == sysNo);
+            IQuery query = QueryManager.Create<AuthorityQuery>(a => a.SysNo == sysNo);
             return GetAuthority(query);
         }
 
@@ -200,7 +196,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<Authority>(0);
             }
-            IQuery query = QueryFactory.Create<AuthorityQuery>(c => codes.Contains(c.Code));
+            IQuery query = QueryManager.Create<AuthorityQuery>(c => codes.Contains(c.Code));
             return GetAuthorityList(query);
         }
 
@@ -217,7 +213,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         {
             var authorityPaging = authRepository.GetPaging(query);
             var authorityList = LoadOtherObjectData(authorityPaging, query);
-            return new Paging<Authority>(authorityPaging.Page, authorityPaging.PageSize, authorityPaging.TotalCount, authorityList);
+            return Pager.Create<Authority>(authorityPaging.Page, authorityPaging.PageSize, authorityPaging.TotalCount, authorityList);
         }
 
         #endregion
@@ -236,7 +232,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<AuthorityQuery>(c => c.Code == code && c.SysNo != nowSysNo);
+            IQuery query = QueryManager.Create<AuthorityQuery>(c => c.Code == code && c.SysNo != nowSysNo);
             return authRepository.Exist(query);
         }
 
@@ -256,7 +252,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<AuthorityQuery>(c => c.Name == name && c.SysNo != nowSysNo);
+            IQuery query = QueryManager.Create<AuthorityQuery>(c => c.Name == name && c.SysNo != nowSysNo);
             return authRepository.Exist(query);
         }
 

@@ -6,49 +6,49 @@
           {
             "name": "AuthGroup",
             "display": {
-              "displayTxt": "权限分组"
+              "displayName": "权限分组"
             }
           },
           {
             "name": "AuthType",
             "display": {
-              "displayTxt": "类型"
+              "displayName": "类型"
             }
           },
           {
             "name": "Code",
             "display": {
-              "displayTxt": "编码"
+              "displayName": "编码"
             }
           },
           {
             "name": "CreateDate",
             "display": {
-              "displayTxt": "添加时间"
+              "displayName": "添加时间"
             }
           },
           {
             "name": "Name",
             "display": {
-              "displayTxt": "名称"
+              "displayName": "名称"
             }
           },
           {
             "name": "Remark",
             "display": {
-              "displayTxt": "描述"
+              "displayName": "描述"
             }
           },
           {
             "name": "Sort",
             "display": {
-              "displayTxt": "排序"
+              "displayName": "排序"
             }
           },
           {
             "name": "Status",
             "display": {
-              "displayTxt": "状态"
+              "displayName": "状态"
             }
           }
         ]

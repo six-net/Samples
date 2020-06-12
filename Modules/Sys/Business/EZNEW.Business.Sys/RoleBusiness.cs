@@ -1,23 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework;
-using EZNEW.Framework.Response;
 using EZNEW.Develop.UnitOfWork;
 using EZNEW.DTO.Sys.Cmd;
 using EZNEW.DTO.Sys.Query;
-using EZNEW.Domain.Sys.Repository;
 using EZNEW.BusinessContract.Sys;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Service;
 using EZNEW.DTO.Sys.Query.Filter;
 using EZNEW.Query.Sys;
-using EZNEW.Framework.IoC;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.Paging;
 
 namespace EZNEW.Business.Sys
 {
@@ -46,7 +41,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result<RoleDto>.FailedResult("没有指定任何要保存的信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var roleResult = roleService.SaveRole(saveInfo.Role.MapTo<Role>());
                 if (!roleResult.Success)
@@ -94,7 +89,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result DeleteRole(DeleteRoleCmdDto deleteInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -152,7 +147,7 @@ namespace EZNEW.Business.Sys
         /// <returns></returns>
         public Result ModifyRoleSort(ModifyRoleSortCmdDto sortInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -206,7 +201,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有任何要操作的角色");
             }
-            using (var work = WorkFactory.Create())
+            using (var work = WorkManager.Create())
             {
                 var result = userRoleService.ClearRoleUser(roleSysNos);
                 if (!result.Success)
@@ -240,7 +235,7 @@ namespace EZNEW.Business.Sys
             IQuery query = null;
             if (useBaseFilter)
             {
-                query = QueryFactory.Create<RoleQuery>(filter);
+                query = QueryManager.Create<RoleQuery>(filter);
 
                 #region 数据筛选
 
@@ -331,7 +326,7 @@ namespace EZNEW.Business.Sys
                 return null;
             }
 
-            IQuery roleQuery = CreateQueryObject(userRoleFilter, true) ?? QueryFactory.Create<RoleQuery>();
+            IQuery roleQuery = CreateQueryObject(userRoleFilter, true) ?? QueryManager.Create<RoleQuery>();
 
             #region 用户筛选
 
@@ -340,7 +335,7 @@ namespace EZNEW.Business.Sys
                 IQuery userQuery = this.Instance<IUserBusiness>().CreateQueryObject(userRoleFilter.UserFilter);
                 if (userQuery != null)
                 {
-                    IQuery userRoleQuery = QueryFactory.Create<UserRoleQuery>();
+                    IQuery userRoleQuery = QueryManager.Create<UserRoleQuery>();
                     userRoleQuery.EqualInnerJoin(userQuery);
                     roleQuery.EqualInnerJoin(userRoleQuery);
                 }

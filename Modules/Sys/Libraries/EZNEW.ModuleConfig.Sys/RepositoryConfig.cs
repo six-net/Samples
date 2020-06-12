@@ -10,7 +10,7 @@ namespace EZNEW.ModuleConfig.Sys
     /// <summary>
     /// repository config
     /// </summary>
-    public static class SysModuleRepositoryConfig
+    public static class RepositoryConfig
     {
         public static void Init()
         {

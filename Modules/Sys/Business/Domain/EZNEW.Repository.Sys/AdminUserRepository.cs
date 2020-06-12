@@ -2,11 +2,7 @@ using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 
 namespace EZNEW.Repository.Sys
 {

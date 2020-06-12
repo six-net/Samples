@@ -1,10 +1,7 @@
-﻿using EZNEW.Framework.Drawing;
-using EZNEW.Framework.Extension;
+﻿using EZNEW.Drawing.VerificationCode;
 using EZNEW.Web.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Site.Console.Util
 {
@@ -16,7 +13,7 @@ namespace Site.Console.Util
         /// <summary>
         /// 登陆验证码Cookie键值
         /// </summary>
-        static readonly string LoginVerificationCodeKey = Client.Host + "_eznew.net".MD5();
+        static readonly string LoginVerificationCodeKey = HttpClientHelper.Host + "_eznew.net".MD5();
 
         #region 登陆
 
@@ -26,11 +23,11 @@ namespace Site.Console.Util
         /// <returns>登陆验证码图片数据</returns>
         public static byte[] RefreshLoginCode()
         {
-            var codeObj = VerificationCodeFactory.GetVerificationCode();
-            codeObj.CodeType = VerificationCodeType.Number;
-            var byteValues = codeObj.CreateCode();
-            CookieHelper.SetCookieValue(LoginVerificationCodeKey, codeObj.Code);
-            return byteValues;
+            var codeProvider = VerificationCodeFactory.GetVerificationCodeProvider();
+            codeProvider.CodeType = VerificationCodeType.Number;
+            var codeResult = codeProvider.CreateCode();
+            CookieHelper.SetCookieValue(LoginVerificationCodeKey, codeResult.Code);
+            return codeResult.FileBytes;
         }
 
         /// <summary>

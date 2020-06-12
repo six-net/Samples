@@ -1,10 +1,6 @@
-using EZNEW.Application.Identity.User;
-using EZNEW.Framework.ValueType;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EZNEW.Module.Sys;
+using EZNEW.Module.Sys;
+using EZNEW.ValueType;
 
 namespace EZNEW.DTO.Sys.Cmd
 {

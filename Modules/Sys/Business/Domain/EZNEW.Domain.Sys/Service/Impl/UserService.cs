@@ -3,18 +3,14 @@ using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Domain.Sys.Service.Param;
 using EZNEW.Query.Sys;
-using EZNEW.Framework;
-using EZNEW.Framework.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
-using EZNEW.Framework.ExpressionUtil;
-using EZNEW.Framework.Paging;
-using EZNEW.Application.Identity.User;
-using EZNEW.Framework.Response;
+using EZNEW.Module.Sys;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.ExpressionUtil;
+using EZNEW.Paging;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -142,7 +138,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns></returns>
         public Result<User> Login(UserLogin loginInfo)
         {
-            var userQuery = QueryFactory.Create<UserQuery>(u => u.UserName == loginInfo.UserName && u.Pwd == User.PasswordEncryption(loginInfo.Pwd));
+            var userQuery = QueryManager.Create<UserQuery>(u => u.UserName == loginInfo.UserName && u.Pwd == User.PasswordEncryption(loginInfo.Pwd));
             User user = userRepository.Get(userQuery);
             if (user == null || !user.AllowLogin())
             {
@@ -179,7 +175,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return null;
             }
-            IQuery query = QueryFactory.Create<UserQuery>(c => c.SysNo == userId);
+            IQuery query = QueryManager.Create<UserQuery>(c => c.SysNo == userId);
             return GetUser(query);
         }
 
@@ -208,7 +204,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return new List<User>(0);
             }
-            IQuery query = QueryFactory.Create<UserQuery>(c => userIds.Contains(c.SysNo));
+            IQuery query = QueryManager.Create<UserQuery>(c => userIds.Contains(c.SysNo));
             return GetUserList(query);
         }
 
@@ -247,7 +243,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #endregion
 
             //获取用户
-            IQuery query = QueryFactory.Create<UserQuery>(u => u.SysNo == modifyInfo.SysNo);
+            IQuery query = QueryManager.Create<UserQuery>(u => u.SysNo == modifyInfo.SysNo);
             User nowUser = userRepository.Get(query);
             if (nowUser == null)
             {
@@ -317,7 +313,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
-            IQuery query = QueryFactory.Create<UserQuery>(c => c.UserName == userName);
+            IQuery query = QueryManager.Create<UserQuery>(c => c.UserName == userName);
             if (excludeUserId.HasValue)
             {
                 query.And<UserQuery>(c => c.SysNo != excludeUserId);

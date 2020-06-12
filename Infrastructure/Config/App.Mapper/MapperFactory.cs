@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using AutoMapper;
-using EZNEW.Framework.ObjectMap;
 using EZNEW.ModuleConfig.Sys;
 
 namespace App.Mapper
 {
     public static class MapperFactory
     {
-        public static IObjectMap CreateMapper()
+        public static EZNEW.Mapper.IMapper CreateMapper()
         {
             Action<IMapperConfigurationExpression> configuration = ObjectMapConfig;
             ModuleConfig(ref configuration);
             var autoMapper = new AutoMapMapper();
             autoMapper.Register(configuration);
-            ObjectMapManager.ObjectMapper = autoMapper;
+            EZNEW.Mapper.ObjectMapper.Current = autoMapper;
             return autoMapper;
         }
 

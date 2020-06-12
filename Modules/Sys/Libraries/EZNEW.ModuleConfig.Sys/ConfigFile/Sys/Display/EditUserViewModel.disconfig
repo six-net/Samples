@@ -6,61 +6,61 @@
         {
           "name": "UserName",
           "display": {
-            "displayTxt": "登陆名"
+            "displayName": "登陆名"
           }
         },
         {
           "name": "Status",
           "display": {
-            "displayTxt": "状态"
+            "displayName": "状态"
           }
         },
         {
           "name": "RealName",
           "display": {
-            "displayTxt": "姓名"
+            "displayName": "姓名"
           }
         },
         {
           "name": "SuperUser",
           "display": {
-            "displayTxt": "超级用户"
+            "displayName": "超级用户"
           }
         },
         {
           "name": "QQ",
           "display": {
-            "displayTxt": "QQ"
+            "displayName": "QQ"
           }
         },
         {
           "name": "Pwd",
           "display": {
-            "displayTxt": "密码"
+            "displayName": "密码"
           }
         },
         {
           "name": "Mobile",
           "display": {
-            "displayTxt": "手机"
+            "displayName": "手机"
           }
         },
         {
           "name": "LastLoginDate",
           "display": {
-            "displayTxt": "最近登陆时间"
+            "displayName": "最近登陆时间"
           }
         },
         {
           "name": "Email",
           "display": {
-            "displayTxt": "邮箱"
+            "displayName": "邮箱"
           }
         },
         {
           "name": "CreateDate",
           "display": {
-            "displayTxt": "添加时间"
+            "displayName": "添加时间"
           }
         }
       ]

@@ -1,4 +1,4 @@
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 using System;
 using Microsoft.AspNetCore.Mvc;
 

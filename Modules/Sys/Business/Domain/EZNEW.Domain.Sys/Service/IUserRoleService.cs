@@ -1,8 +1,7 @@
 ﻿using EZNEW.Domain.Sys.Model;
-using EZNEW.Framework.Response;
+using EZNEW.Response;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EZNEW.Domain.Sys.Service
 {

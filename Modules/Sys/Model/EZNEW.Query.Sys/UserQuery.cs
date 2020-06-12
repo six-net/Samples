@@ -1,12 +1,9 @@
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 using EZNEW.Develop.CQuery;
 using EZNEW.Entity.Sys;
-using EZNEW.Framework.ValueType;
+using EZNEW.Module.Sys;
+using EZNEW.ValueType;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EZNEW.Query.Sys
 {

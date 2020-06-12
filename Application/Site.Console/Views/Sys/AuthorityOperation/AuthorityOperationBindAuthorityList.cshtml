@@ -2,9 +2,8 @@
     ViewBag.Title = "操作权限";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using EZNEW.Framework.Extension;
-@using EZNEW.Application.Identity.Auth;
-@using EZNEW.Framework.Serialize;
+@using EZNEW.Module.Sys;
+@using EZNEW.Serialize;
 @{
     var statusValues = AuthorityStatus.启用.GetType().GetEnumValueAndNames();
 }
@@ -54,7 +53,7 @@
     <script type="text/javascript">
         var authStatusDict = new Object();
         $(function () {
-            authStatusDict = JSON.parse('@Html.Raw(JsonSerialize.ObjectToJson(statusValues))');
+            authStatusDict = JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
             InitTable({
                 elem: 'demo',
                 defaultToolbar: [],

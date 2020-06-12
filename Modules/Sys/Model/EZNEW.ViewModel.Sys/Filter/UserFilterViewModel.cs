@@ -1,10 +1,7 @@
-using EZNEW.Application.Identity.User;
-using EZNEW.Framework.Paging;
+using EZNEW.Module.Sys;
+using EZNEW.Paging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EZNEW.ViewModel.Sys.Filter
 {

@@ -1,25 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EZNEW.Framework.Extension;
 using EZNEW.Develop.CQuery;
-using EZNEW.Framework.Response;
 using EZNEW.Develop.UnitOfWork;
-using EZNEW.Framework.Paging;
-using EZNEW.Framework;
 using EZNEW.Domain.Sys.Service;
-using EZNEW.Domain.Sys.Repository;
 using EZNEW.DTO.Sys.Query;
 using EZNEW.Domain.Sys.Service.Param;
 using EZNEW.DTO.Sys.Query.Filter;
 using EZNEW.Query.Sys;
 using EZNEW.BusinessContract.Sys;
-using EZNEW.DTO.Sys;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.DTO.Sys.Cmd;
-using EZNEW.Framework.IoC;
+using EZNEW.DependencyInjection;
+using EZNEW.Response;
+using EZNEW.Paging;
 
 namespace EZNEW.Business.Sys
 {
@@ -48,7 +42,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result<UserDto>.FailedResult("没有指定任何要保存的用户信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var user = saveInfo.User.MapTo<User>();
                 var userSaveResult = userService.SaveUser(user);
@@ -131,7 +125,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要删除的用户信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 var deleteResult = userService.DeleteUser(deleteInfo.UserIds);
                 if (!deleteResult.Success)
@@ -183,7 +177,7 @@ namespace EZNEW.Business.Sys
         /// <returns></returns>
         public Result ModifyPassword(ModifyPasswordCmdDto modifyInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 #region 参数判断
 
@@ -215,7 +209,7 @@ namespace EZNEW.Business.Sys
         /// <returns>执行结果</returns>
         public Result ModifyStatus(ModifyUserStatusCmdDto statusInfo)
         {
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 if (statusInfo == null || statusInfo.UserId <= 0)
                 {
@@ -249,7 +243,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有指定任何要修改的绑定信息");
             }
-            using (var businessWork = WorkFactory.Create())
+            using (var businessWork = WorkManager.Create())
             {
                 //解绑
                 if (!bindInfo.UnBinds.IsNullOrEmpty())
@@ -282,7 +276,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result.FailedResult("没有任何要操作的用户");
             }
-            using (var work = WorkFactory.Create())
+            using (var work = WorkManager.Create())
             {
                 var result = userRoleService.ClearUserRole(userSysNos);
                 if (!result.Success)
@@ -317,7 +311,7 @@ namespace EZNEW.Business.Sys
 
             if (useBaseFilter)
             {
-                query = QueryFactory.Create<UserQuery>(filter);
+                query = QueryManager.Create<UserQuery>(filter);
 
                 #region 数据筛选
 
@@ -405,17 +399,17 @@ namespace EZNEW.Business.Sys
             {
                 return null;
             }
-            IQuery userQuery = CreateQueryObject(adminUserFilter, true) ?? QueryFactory.Create<UserQuery>();
+            IQuery userQuery = CreateQueryObject(adminUserFilter, true) ?? QueryManager.Create<UserQuery>();
 
             #region 角色筛选
 
             if (adminUserFilter.RoleFilter != null)
             {
                 IQuery roleQuery = this.Instance<IRoleBusiness>().CreateQueryObject(adminUserFilter.RoleFilter);
-                if (roleQuery != null && roleQuery.Criterias.Count > 0)
+                if (roleQuery != null && !roleQuery.Criterias.IsNullOrEmpty())
                 {
                     roleQuery.AddQueryFields<RoleQuery>(c => c.SysNo);
-                    IQuery userRoleQuery = QueryFactory.Create<UserRoleQuery>();
+                    IQuery userRoleQuery = QueryManager.Create<UserRoleQuery>();
                     userRoleQuery.And<UserRoleQuery>(u => u.RoleSysNo, CriteriaOperator.In, roleQuery);
                     userRoleQuery.AddQueryFields<UserRoleQuery>(u => u.UserSysNo);
                     userQuery.And<UserQuery>(c => c.SysNo, CriteriaOperator.In, userRoleQuery);

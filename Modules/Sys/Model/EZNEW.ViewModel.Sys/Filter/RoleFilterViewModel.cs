@@ -1,4 +1,4 @@
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 using System;
 using System.Collections.Generic;
 using System.Text;

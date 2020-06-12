@@ -31,6 +31,9 @@
             @using (Html.AjaxBeginForm("Login", "Account", new AjaxFormOptions() { OnSuccess = "LoginSuccess", OnBegin = "LoginBegin", HttpMethod = "Post" }, new { id = "loginform" }))
             {
                 <div class="layui-form-item">
+                    <h3 style="color:red;font-weight:bold;text-align:center">演示程序,请勿直接用于生产应用</h3>
+                </div>
+                <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-username"></label>
                     @Html.TextBoxFor(c => c.LoginName, new { placeholder = "用户名", @class = "layui-input" })
                 </div>

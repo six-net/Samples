@@ -1,4 +1,4 @@
-using EZNEW.Application.Identity.User;
+using EZNEW.Module.Sys;
 using EZNEW.Develop.CQuery;
 using EZNEW.Entity.Sys;
 using System;

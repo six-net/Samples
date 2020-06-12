@@ -6,25 +6,25 @@
         {
           "name": "Name",
           "display": {
-            "displayTxt": "名称"
+            "displayName": "名称"
           }
         },
         {
           "name": "Remark",
           "display": {
-            "displayTxt": "说明"
+            "displayName": "说明"
           }
         },
         {
           "name": "Status",
           "display": {
-            "displayTxt": "状态"
+            "displayName": "状态"
           }
         },
         {
           "name": "Parent",
           "display": {
-            "displayTxt": "上级"
+            "displayName": "上级"
           }
         }
       ]

@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using EZNEW.Develop.Entity;
-using EZNEW.Framework.Extension;
 
 namespace EZNEW.Entity.Sys
 {

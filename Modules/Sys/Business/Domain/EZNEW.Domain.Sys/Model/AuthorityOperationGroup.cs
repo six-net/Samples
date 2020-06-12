@@ -1,17 +1,13 @@
 using System;
+using System.Collections.Generic;
+using EZNEW.Module.Sys;
 using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Develop.CQuery;
 using EZNEW.Query.Sys;
-using EZNEW.Framework.Extension;
-using System.Collections.Generic;
-using EZNEW.Framework.ValueType;
-using EZNEW.Framework;
-using EZNEW.Application.Identity.Auth;
-using EZNEW.Application.Identity;
-using EZNEW.Framework.Code;
-using System.Threading.Tasks;
 using EZNEW.Develop.Command.Modify;
+using EZNEW.Code;
+using EZNEW.ValueType;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -113,18 +109,6 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 功能方法
 
-        #region 保存分组
-
-        /// <summary>
-        /// 保存分组
-        /// </summary>
-        public override async Task SaveAsync()
-        {
-            await repository.SaveAsync(this).ConfigureAwait(false);
-        }
-
-        #endregion
-
         #region 设置上级分组
 
         /// <summary>
@@ -145,7 +129,7 @@ namespace EZNEW.Domain.Sys.Model
                 throw new Exception("不能将分组本身设置为上级分组");
             }
             //排序
-            IQuery sortQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.Parent == parentSysNo);
+            IQuery sortQuery = QueryManager.Create<AuthorityOperationGroupQuery>(r => r.Parent == parentSysNo);
             sortQuery.AddQueryFields<AuthorityOperationGroupQuery>(c => c.Sort);
             int maxSortIndex = repository.Max<int>(sortQuery);
             Sort = maxSortIndex + 1;
@@ -190,7 +174,7 @@ namespace EZNEW.Domain.Sys.Model
             }
             Sort = newSort;
             //其它分组顺延
-            IQuery sortQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
+            IQuery sortQuery = QueryManager.Create<AuthorityOperationGroupQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
             IModify modifyExpression = ModifyFactory.Create();
             modifyExpression.Add<AuthorityOperationGroupQuery>(r => r.Sort, 1);
             repository.Modify(modifyExpression, sortQuery);
@@ -213,7 +197,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return;
             }
-            IQuery query = QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.Parent == SysNo);
+            IQuery query = QueryManager.Create<AuthorityOperationGroupQuery>(r => r.Parent == SysNo);
             List<AuthorityOperationGroup> childGroupList = repository.GetList(query);
             foreach (var group in childGroupList)
             {
@@ -239,7 +223,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return parent.CurrentValue;
             }
-            IQuery parentQuery = QueryFactory.Create<AuthorityOperationGroupQuery>(r => r.SysNo == parent.CurrentValue.SysNo);
+            IQuery parentQuery = QueryManager.Create<AuthorityOperationGroupQuery>(r => r.SysNo == parent.CurrentValue.SysNo);
             return repository.Get(parentQuery);
         }
 
@@ -270,7 +254,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public static long GenerateAuthorityOperationGroupId()
         {
-            return SerialNumber.GetSerialNumber(IdentityApplicationHelper.GetIdGroupCode(IdentityGroup.授权操作分组));
+            return SysManager.GetId(SysModuleObject.AuthorityOperationGroup);
         }
 
         #endregion
@@ -295,7 +279,7 @@ namespace EZNEW.Domain.Sys.Model
 
         protected override string GetIdentityValue()
         {
-            throw new NotImplementedException();
+            return SysNo.ToString();
         }
 
         #endregion

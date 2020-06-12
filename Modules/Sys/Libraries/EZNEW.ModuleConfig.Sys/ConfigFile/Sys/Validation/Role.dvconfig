@@ -1,8 +1,8 @@
 ﻿{
-  "rules": [
+  "types": [
     {
       "typeName": "EZNEW.Domain.Sys.Model.Role,EZNEW.Domain.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-      "rules": [
+      "properties": [
         {
           "name": "Name",
           "rules": [

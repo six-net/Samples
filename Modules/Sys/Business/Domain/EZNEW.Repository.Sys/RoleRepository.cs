@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Entity.Sys;
-using EZNEW.Framework.Extension;
 using EZNEW.DataAccessContract.Sys;
 using EZNEW.Query.Sys;
 using EZNEW.Develop.Domain.Repository;
@@ -33,13 +30,13 @@ namespace EZNEW.Repository.Sys
                 return new List<Role>(0);
             }
             var userRoleDal = this.Instance<IUserRoleDataAccess>();
-            List<UserRoleEntity> userRoleBindList = userRoleDal.GetList(QueryFactory.Create<UserRoleQuery>(u => u.UserSysNo == userId));
+            List<UserRoleEntity> userRoleBindList = userRoleDal.GetList(QueryManager.Create<UserRoleQuery>(u => u.UserSysNo == userId));
             if (userRoleBindList.IsNullOrEmpty())
             {
                 return new List<Role>(0);
             }
             IEnumerable<long> roleIds = userRoleBindList.Select(c => c.RoleSysNo).Distinct().ToList();
-            IQuery roleQuery = QueryFactory.Create<RoleQuery>(r => roleIds.Contains(r.SysNo));
+            IQuery roleQuery = QueryManager.Create<RoleQuery>(r => roleIds.Contains(r.SysNo));
             return GetList(roleQuery);
         }
 

@@ -1,13 +1,10 @@
-using EZNEW.Framework.Drawing;
-using EZNEW.Framework.IoC;
-using EZNEW.Framework.Serialize;
-using EZNEW.Web.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using EZNEW.Web.DI;
 using EZNEW.VerificationCode.SkiaSharp;
+using EZNEW.DependencyInjection;
+using EZNEW.Web.DependencyInjection;
+using EZNEW.Drawing.VerificationCode;
+
 namespace App.IoC
 {
     public class ContainerFactory : IServiceProviderFactory<IDIContainer>
@@ -18,8 +15,8 @@ namespace App.IoC
         /// <param name="container"></param>
         static void RegisterServices(IDIContainer container)
         {
-            WebDependencyInjectionManager.RegisterDefaultService();
-            container.Register(typeof(VerificationCodeBase), typeof(SkiaSharpVerificationCode));
+            WebDependencyInjectionManager.ConfigureDefaultWebService();
+            container.Register(typeof(VerificationCodeProvider), typeof(SkiaSharpVerificationCode));
         }
 
         public IDIContainer CreateBuilder(IServiceCollection services)
