@@ -21,8 +21,8 @@ If you have any questions or Suggestions, you can report to us via email,to the 
 
 These are some other repos for related projects:
 
-  * [EZNEW.Develop](https://gitee.com/eznew-net/EZNEW.Develop)-a .NET domain-driven development framework
-  * [EZNEW.Data](https://gitee.com/eznew-net/EZNEW.Data)-provide data access support for EZNEW.Develop
-  * [EZNEW.Data.SqlServer](https://gitee.com/eznew-net/EZNEW.Data.SqlServer)-provides support for SQLServer database access
-  * [EZNEW.Data.MySQL](https://gitee.com/eznew-net/EZNEW.Data.MySQL)-provides support for MySQL database access
-  * [EZNEW.Framework](https://gitee.com/eznew-net/EZNEW.Framework)-common development tool libraries
+  * [EZNEW](https://github.com/eznew-net/EZNEW)-A simple, easy-to-use, flexible, and efficient .NET development framework
+  * [EZNEW.Data.SqlServer](https://github.com/eznew-net/EZNEW.Data.SqlServer)-Provides access to SQL Server databases based on the EZNEW development framework
+  * [EZNEW.Data.MySQL](https://github.com/eznew-net/EZNEW.Data.MySQL)-Provides access to MySQL databases based on the EZNEW development framework
+  * [EZNEW.Data.Oracle](https://github.com/eznew-net/EZNEW.Data.Oracle)-Provides access to Oracle databases based on the EZNEW development framework
+  * [EZNEW.Web](https://github.com/eznew-net/EZNEW.Web)-ASP.NET development tool library
