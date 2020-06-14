@@ -8,7 +8,7 @@ using System.Text;
 namespace EZNEW.ModuleConfig.Sys
 {
     /// <summary>
-    /// repository config
+    /// Repository config
     /// </summary>
     public static class RepositoryConfig
     {

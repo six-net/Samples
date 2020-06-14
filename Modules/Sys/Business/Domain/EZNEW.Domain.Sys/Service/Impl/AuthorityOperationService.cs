@@ -229,7 +229,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         {
             var authorityOperationPaging = authorityOperationRepository.GetPaging(query);
             var authorityOperationList = LoadOtherObjectData(authorityOperationPaging, query);
-            return Pager.Create<AuthorityOperation>(authorityOperationPaging.Page, authorityOperationPaging.PageSize, authorityOperationPaging.TotalCount, authorityOperationList);
+            return Pager.Create(authorityOperationPaging.Page, authorityOperationPaging.PageSize, authorityOperationPaging.TotalCount, authorityOperationList);
         }
 
         #endregion

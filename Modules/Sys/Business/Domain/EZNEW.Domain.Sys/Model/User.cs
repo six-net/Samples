@@ -308,6 +308,15 @@ namespace EZNEW.Domain.Sys.Model
 
         #endregion
 
+        #region 获取对象标识值
+
+        protected override string GetIdentityValue()
+        {
+            return SysNo.ToString();
+        }
+
+        #endregion
+
         #endregion
 
         #region 静态方法
@@ -343,11 +352,6 @@ namespace EZNEW.Domain.Sys.Model
                     break;
             }
             return user;
-        }
-
-        protected override string GetIdentityValue()
-        {
-            return SysNo.ToString();
         }
 
         #endregion

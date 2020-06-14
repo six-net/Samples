@@ -217,7 +217,6 @@ namespace EZNEW.Domain.Sys.Model
             return authority;
         }
 
-
         #endregion
 
         #endregion

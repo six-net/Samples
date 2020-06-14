@@ -11,7 +11,6 @@ using EZNEW.DTO.Sys.Cmd;
 using EZNEW.DTO.Sys.Query;
 using EZNEW.BusinessContract.Sys;
 using EZNEW.Module.Sys;
-using EZNEW.Module.Sys;
 using EZNEW.DependencyInjection;
 using EZNEW.Response;
 using EZNEW.Develop.UnitOfWork;

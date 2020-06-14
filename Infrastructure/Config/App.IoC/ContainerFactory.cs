@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using EZNEW.VerificationCode.SkiaSharp;
 using EZNEW.DependencyInjection;
 using EZNEW.Web.DependencyInjection;

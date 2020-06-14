@@ -146,6 +146,15 @@ namespace EZNEW.Domain.Sys.Model
 
         #endregion
 
+        #region 获取对象标识值
+
+        protected override string GetIdentityValue()
+        {
+            return $"{User?.SysNo}_{Authority?.SysNo}";
+        } 
+
+        #endregion
+
         #endregion
 
         #region 静态方法
@@ -167,11 +176,6 @@ namespace EZNEW.Domain.Sys.Model
                 Authority = authority,
                 Disable = disable
             };
-        }
-
-        protected override string GetIdentityValue()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

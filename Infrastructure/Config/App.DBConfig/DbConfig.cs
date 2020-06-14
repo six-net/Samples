@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using EZNEW.Develop.Command;
 using Microsoft.Extensions.Configuration;
 using EZNEW.Data.SqlServer;
 using EZNEW.Data;
 using EZNEW.DependencyInjection;
+using EZNEW.Develop.Command;
 
 namespace App.DBConfig
 {
