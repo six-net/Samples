@@ -1,11 +1,11 @@
-using EZNEW.AppServiceContract.Sys;
 using System.Collections.Generic;
 using EZNEW.BusinessContract.Sys;
-using EZNEW.DTO.Sys.Query;
 using EZNEW.DTO.Sys.Cmd;
-using EZNEW.DTO.Sys.Query.Filter;
-using EZNEW.Paging;
 using EZNEW.Response;
+using EZNEW.Paging;
+using EZNEW.DTO.Sys;
+using EZNEW.DTO.Sys.Filter;
+using EZNEW.AppServiceContract.Sys;
 
 namespace EZNEW.AppService.Sys
 {
@@ -14,7 +14,10 @@ namespace EZNEW.AppService.Sys
     /// </summary>
     public class RoleAppService : IRoleAppService
     {
-        IRoleBusiness roleBusiness = null;
+        /// <summary>
+        /// 角色业务
+        /// </summary>
+        readonly IRoleBusiness roleBusiness = null;
 
         public RoleAppService(IRoleBusiness roleBusiness)
         {
@@ -27,10 +30,10 @@ namespace EZNEW.AppService.Sys
         /// 保存角色
         /// </summary>
         /// <param name="saveInfo">角色保存信息</param>
-        /// <returns>执行结果</returns>
-        public Result<RoleDto> SaveRole(SaveRoleCmdDto saveInfo)
+        /// <returns>返回执行结果</returns>
+        public Result<RoleDto> SaveRole(SaveRoleDto saveRoleDto)
         {
-            return roleBusiness.SaveRole(saveInfo);
+            return roleBusiness.SaveRole(saveRoleDto);
         }
 
         #endregion
@@ -40,8 +43,8 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 获取角色
         /// </summary>
-        /// <param name="filter">查询对象</param>
-        /// <returns></returns>
+        /// <param name="filter">角色筛选信息</param>
+        /// <returns>返回角色</returns>
         public RoleDto GetRole(RoleFilterDto filter)
         {
             return roleBusiness.GetRole(filter);
@@ -54,11 +57,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 删除角色
         /// </summary>
-        /// <param name="deleteInfo">删除信息</param>
-        /// <returns>执行结果</returns>
-        public Result DeleteRole(DeleteRoleCmdDto deleteInfo)
+        /// <param name="removeRoleDto">角色删除信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result RemoveRole(RemoveRoleDto removeRoleDto)
         {
-            return roleBusiness.DeleteRole(deleteInfo);
+            return roleBusiness.RemoveRole(removeRoleDto);
         }
 
         #endregion
@@ -68,8 +71,8 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 获取角色列表
         /// </summary>
-        /// <param name="filter">查询对象</param>
-        /// <returns></returns>
+        /// <param name="filter">角色删除信息</param>
+        /// <returns>返回角色列表</returns>
         public List<RoleDto> GetRoleList(RoleFilterDto filter)
         {
             return roleBusiness.GetRoleList(filter);
@@ -82,8 +85,8 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 获取角色分页
         /// </summary>
-        /// <param name="filter">查询对象</param>
-        /// <returns></returns>
+        /// <param name="filter">角色删除信息</param>
+        /// <returns>返回角色分页</returns>
         public IPaging<RoleDto> GetRolePaging(RoleFilterDto filter)
         {
             return roleBusiness.GetRolePaging(filter);
@@ -96,11 +99,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 修改角色排序
         /// </summary>
-        /// <param name="sortInfo">排序修改信息</param>
-        /// <returns></returns>
-        public Result ModifyRoleSort(ModifyRoleSortCmdDto sortInfo)
+        /// <param name="modifyRoleSortDto">角色排序修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyRoleSort(ModifyRoleSortDto modifyRoleSortDto)
         {
-            return roleBusiness.ModifyRoleSort(sortInfo);
+            return roleBusiness.ModifyRoleSort(modifyRoleSortDto);
         }
 
         #endregion
@@ -110,11 +113,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 验证角色名称是否存在
         /// </summary>
-        /// <param name="existInfo">验证信息</param>
-        /// <returns></returns>
-        public bool ExistRoleName(ExistRoleNameCmdDto existInfo)
+        /// <param name="existInfo">角色名称验证信息</param>
+        /// <returns>返回角色名称是否存在</returns>
+        public bool ExistRoleName(ExistRoleNameDto existRoleNameDto)
         {
-            return roleBusiness.ExistRoleName(existInfo);
+            return roleBusiness.ExistRoleName(existRoleNameDto);
         }
 
         #endregion
@@ -124,11 +127,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 清除角色下所有的用户
         /// </summary>
-        /// <param name="roleSysNos">角色编号</param>
-        /// <returns></returns>
-        public Result ClearRoleUser(IEnumerable<long> roleSysNos)
+        /// <param name="roleIds">角色编号</param>
+        /// <returns>返回执行结果</returns>
+        public Result ClearUser(IEnumerable<long> roleIds)
         {
-            return roleBusiness.ClearRoleUser(roleSysNos);
+            return roleBusiness.ClearUser(roleIds);
         }
 
         #endregion

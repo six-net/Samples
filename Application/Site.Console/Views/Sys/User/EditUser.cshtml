@@ -3,19 +3,19 @@
     ViewBag.Title = "编辑用户";
 }
 @using EZNEW.Web.Utility;
-@using EZNEW.ViewModel.Sys.Request
+@using EZNEW.ViewModel.Sys;
 @using EZNEW.Module.Sys;
-@model EditUserViewModel
+@model UserViewModel
 @{
-    bool isAdd = Model == null || Model.SysNo <= 0;
+    bool isAdd = Model?.Id < 1;
 }
 
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("Edituser", "User", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "UserSuccessCallback", OnFailure = "UserFailedCallback" }, new { id = "default-form", @class = "pdt-10" }))
+            @using (Html.AjaxBeginForm("EditUser", "User", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "UserSuccessCallback", OnFailure = "UserFailedCallback" }, new { id = "default-form", @class = "pdt-10" }))
             {
-                @Html.Hidden("SysNo", null, new { id = "SysNo" })
+                @Html.Hidden("Id", null, new { id = "Id" })
                 @if (isAdd)
                 {
                     <div class="layui-form-item">
@@ -49,12 +49,12 @@
                 @if (isAdd)
                 {
                     <div class="layui-form-item">
-                        <label class="layui-form-label">@Html.LabelFor(c => c.Pwd)</label>
+                        <label class="layui-form-label">@Html.LabelFor(c => c.Password)</label>
                         <div class="layui-input-inline w-200">
-                            @Html.PasswordFor(a => a.Pwd, new { @class = "layui-input", autocomplete = "off" })
+                            @Html.PasswordFor(a => a.Password, new { @class = "layui-input", autocomplete = "off" })
                         </div>
                         <div class="layui-form-mid form-validate-msg">
-                            @Html.DefaultValidationMessageFor(c => c.Pwd, "", new { @class = "form-validate-msg" })
+                            @Html.DefaultValidationMessageFor(c => c.Password, "", new { @class = "form-validate-msg" })
                         </div>
                     </div>
                 }
@@ -63,7 +63,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">@Html.LabelFor(c => c.Status)</label>
                         <div class="layui-input-inline w-200">
-                            @Html.EnumToSelect(a => a.Status, RoleStatus.正常, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                            @Html.EnumToSelect(a => a.Status, RoleStatus.Enable, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
                         </div>
                     </div>
                 }
@@ -111,7 +111,7 @@
 
 @section Scripts{
     <script type="text/javascript">
-        var userDetailUrl = '@Url.Action("AdminUserDetail","User",new { id="_id"})';
+        var userDetailUrl = '@Url.Action("UserDetail","User",new { id="_id"})';
         $(function () {
             BindDefaultFormSubmitEnterEvent();
         });
@@ -123,7 +123,7 @@
             }
             ResultMsg(res);
             if (res.Success) {
-                window.top.RedirectCurrentPage(userDetailUrl.replace('_id', res.Data.SysNo), '用户详情');
+                window.top.RedirectCurrentPage(userDetailUrl.replace('_id', res.Data.Id), '用户详情');
             }
         }
 

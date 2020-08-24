@@ -1,9 +1,10 @@
-﻿using EZNEW.Develop.CQuery;
+﻿using System.Collections.Generic;
+using EZNEW.Develop.CQuery;
 using EZNEW.Domain.Sys.Model;
-using EZNEW.Domain.Sys.Service.Param;
+using EZNEW.Domain.Sys.Parameter;
+using EZNEW.Domain.Sys.Parameter.Filter;
 using EZNEW.Paging;
 using EZNEW.Response;
-using System.Collections.Generic;
 
 namespace EZNEW.Domain.Sys.Service
 {
@@ -18,8 +19,8 @@ namespace EZNEW.Domain.Sys.Service
         /// 保存用户信息
         /// </summary>
         /// <param name="user">用户信息</param>
-        /// <returns></returns>
-        Result<User> SaveUser(User user);
+        /// <returns>返回执行结果</returns>
+        Result<User> Save(User user);
 
         #endregion
 
@@ -28,16 +29,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="users">要删除的用户信息</param>
-        /// <returns></returns>
-        Result DeleteUser(IEnumerable<User> users);
-
-        /// <summary>
-        /// 删除用户
-        /// </summary>
         /// <param name="userIds">用户编号</param>
-        /// <returns></returns>
-        Result DeleteUser(IEnumerable<long> userIds);
+        /// <returns>返回执行结果</returns>
+        Result Remove(IEnumerable<long> userIds);
 
         #endregion
 
@@ -46,27 +40,27 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="user">登录用户信息</param>
-        /// <returns></returns>
-        Result<User> Login(UserLogin loginInfo);
+        /// <param name="loginInfo">用户登录信息</param>
+        /// <returns>返回登录结果</returns>
+        Result<User> Login(Login loginInfo);
 
         #endregion
 
         #region 获取用户信息
 
         /// <summary>
-        /// 获取用户
+        /// 获取用户信息
         /// </summary>
-        /// <param name="query">查询对象</param>
-        /// <returns></returns>
-        User GetUser(IQuery query);
+        /// <param name="userId">用户编号</param>
+        /// <returns>返回用户</returns>
+        User Get(long userId);
 
         /// <summary>
         /// 获取用户信息
         /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <returns></returns>
-        User GetUser(long userId);
+        /// <param name="userFilter">用户筛选信息</param>
+        /// <returns>返回用户</returns>
+        User Get(UserFilter userFilter);
 
         #endregion
 
@@ -75,27 +69,27 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 获取用户列表
         /// </summary>
-        /// <param name="query">筛选条件</param>
-        /// <returns></returns>
-        List<User> GetUserList(IQuery query);
+        /// <param name="userFilter">用户筛选条件</param>
+        /// <returns>返回用户列表</returns>
+        List<User> GetList(UserFilter userFilter);
 
         /// <summary>
         /// 获取用户列表
         /// </summary>
         /// <param name="userIds">用户编号</param>
-        /// <returns></returns>
-        List<User> GetUserList(IEnumerable<long> userIds);
+        /// <returns>返回用户列表</returns>
+        List<User> GetList(IEnumerable<long> userIds);
 
         #endregion
 
         #region 获取用户分页
 
         /// <summary>
-        /// 获取用户分页
+        /// 获取用户分页信息
         /// </summary>
-        /// <param name="query">筛选信息</param>
-        /// <returns></returns>
-        IPaging<User> GetUserPaging(IQuery query);
+        /// <param name="userFilter">用户筛选信息</param>
+        /// <returns>返回用户分页信息</returns>
+        IPaging<User> GetPaging(UserFilter userFilter);
 
         #endregion
 
@@ -104,9 +98,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="modifyInfo">修改信息</param>
-        /// <returns></returns>
-        Result ModifyPassword(ModifyUserPassword modifyInfo);
+        /// <param name="modifyUserPassword">用户密码修改信息</param>
+        /// <returns>返回执行结果</returns>
+        Result ModifyPassword(ModifyUserPassword modifyUserPassword);
 
         #endregion
 
@@ -115,9 +109,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 修改用户状态
         /// </summary>
-        /// <param name="userStatus">状态信息</param>
-        /// <returns>执行结果</returns>
-        Result ModifyStatus(params UserStatusInfo[] userStatus);
+        /// <param name="modifyUserStatus">用户状态修改信息</param>
+        /// <returns>返回执行结果</returns>
+        Result ModifyStatus(ModifyUserStatus modifyUserStatus);
 
         #endregion
 
@@ -127,9 +121,9 @@ namespace EZNEW.Domain.Sys.Service
         /// 验证用户名是否存在
         /// </summary>
         /// <param name="userName">用户名</param>
-        /// <param name="excludeUserId">检查除指定用户以外的用户信息</param>
-        /// <returns></returns>
-        bool ExistUserName(string userName, long? excludeUserId = null);
+        /// <param name="excludeUserId">需要排除的用户编号</param>
+        /// <returns>返回用户名是否存在</returns>
+        bool ExistName(string userName, long? excludeUserId = null);
 
         #endregion
     }

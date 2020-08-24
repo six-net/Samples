@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using EZNEW.Module.Sys;
-using EZNEW.Develop.Command.Modify;
-using EZNEW.Code;
 using EZNEW.ValueType;
+using EZNEW.Code;
+using EZNEW.Develop.Command.Modify;
+using EZNEW.Entity.Sys;
+using EZNEW.Module.Sys;
 using EZNEW.Develop.CQuery;
 using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Query.Sys;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -42,28 +42,17 @@ namespace EZNEW.Domain.Sys.Model
         /// <summary>
         /// 角色编号
         /// </summary>
-        public long SysNo
-        {
-            get;
-            protected set;
-        }
+        public long Id { get; set; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name
-        {
-            get; set;
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// 等级
         /// </summary>
-        public int Level
-        {
-            get;
-            protected set;
-        }
+        public int Level { get; set; }
 
         /// <summary>
         /// 上级
@@ -83,114 +72,22 @@ namespace EZNEW.Domain.Sys.Model
         /// <summary>
         /// 排序
         /// </summary>
-        public int Sort
-        {
-            get;
-            protected set;
-        }
+        public int Sort { get; set; }
 
         /// <summary>
         /// 状态
         /// </summary>
-        public RoleStatus Status
-        {
-            get; set;
-        } = RoleStatus.正常;
+        public RoleStatus Status { get; set; }
 
         /// <summary>
         /// 添加时间
         /// </summary>
-        public DateTime CreateDate
-        {
-            get; set;
-        } = DateTime.Now;
+        public DateTime CreateDate { get; set; }
 
         /// <summary>
         /// 备注信息
         /// </summary>
-        public string Remark
-        {
-            get; set;
-        }
-
-        #endregion
-
-        #region 方法
-
-        #region 功能方法
-
-        #region 设置上级角色
-
-        /// <summary>
-        /// 设置上级角色
-        /// </summary>
-        /// <param name="role">上级角色</param>
-        public void SetParentRole(Role parentRole)
-        {
-            int parentLevel = 0;
-            long parentSysNo = 0;
-            if (parentRole != null)
-            {
-                parentLevel = parentRole.Level;
-                parentSysNo = parentRole.SysNo;
-            }
-            if (parentSysNo == SysNo && !IdentityValueIsNone())
-            {
-                throw new Exception("不能将角色本身设置为自己的上级角色");
-            }
-            //排序
-            IQuery sortQuery = QueryManager.Create<RoleQuery>(r => r.Parent == parentSysNo);
-            sortQuery.AddQueryFields<RoleQuery>(c => c.Sort);
-            int maxSortIndex = repository.Max<int>(sortQuery);
-            Sort = maxSortIndex + 1;
-            parent.SetValue(parentRole, true);
-            //等级
-            int newLevel = parentLevel + 1;
-            bool modifyChild = newLevel != Level;
-            Level = newLevel;
-            if (modifyChild)
-            {
-                //修改所有子集信息
-                ModifyChildRole();
-            }
-        }
-
-        #endregion
-
-        #region 修改排序
-
-        /// <summary>
-        /// 修改排序
-        /// </summary>
-        /// <param name="newSort">新排序,排序编号必须大于0</param>
-        public void ModifySort(int newSort)
-        {
-            if (newSort <= 0)
-            {
-                throw new Exception("请填写正确的角色排序");
-            }
-            Sort = newSort;
-            //其它角色顺延
-            IQuery sortQuery = QueryManager.Create<RoleQuery>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.SysNo) && r.Sort >= newSort);
-            IModify modifyExpression = ModifyFactory.Create();
-            modifyExpression.Add<RoleQuery>(r => r.Sort, 1);
-            repository.Modify(modifyExpression, sortQuery);
-        }
-
-        #endregion
-
-        #region 初始化标识信息
-
-        /// <summary>
-        /// 初始化标识信息
-        /// </summary>
-        public override void InitIdentityValue()
-        {
-            base.InitIdentityValue();
-            SysNo = GenerateRoleId();
-        }
-
-        #endregion
+        public string Remark { get; set; }
 
         #endregion
 
@@ -203,6 +100,8 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         void Initialization()
         {
+            CreateDate = DateTime.Now;
+            Status = RoleStatus.Enable;
             parent = new LazyMember<Role>(LoadParentRole);
             repository = this.Instance<IRoleRepository>();
         }
@@ -225,7 +124,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return null;
             }
-            return repository.Get(QueryManager.Create<RoleQuery>(r => r.SysNo == parent.CurrentValue.SysNo));
+            return repository.Get(QueryManager.Create<RoleEntity>(r => r.Id == parent.CurrentValue.Id));
         }
 
         #endregion
@@ -241,7 +140,7 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return;
             }
-            IQuery query = QueryManager.Create<RoleQuery>(r => r.Parent == SysNo);
+            IQuery query = QueryManager.Create<RoleEntity>(r => r.Parent == Id);
             List<Role> childRoleList = repository.GetList(query);
             foreach (var role in childRoleList)
             {
@@ -260,16 +159,20 @@ namespace EZNEW.Domain.Sys.Model
         /// <returns></returns>
         public override bool IdentityValueIsNone()
         {
-            return SysNo <= 0;
+            return Id < 1;
         }
 
         #endregion
 
-        #region 获取对象标识值
+        #region 获取对象标识信息
 
+        /// <summary>
+        /// 获取对象标识信息
+        /// </summary>
+        /// <returns>返回对象标识</returns>
         protected override string GetIdentityValue()
         {
-            return SysNo.ToString();
+            return Id.ToString();
         }
 
         #endregion
@@ -299,17 +202,92 @@ namespace EZNEW.Domain.Sys.Model
         /// <param name="roleId">角色编号</param>
         /// <param name="name">角色名</param>
         /// <returns>角色对象</returns>
-        public static Role CreateRole(long roleId, string name = "")
+        public static Role Create(long roleId, string name = "")
         {
             var role = new Role()
             {
-                SysNo = roleId,
+                Id = roleId,
                 Name = name
             };
             return role;
         }
 
         #endregion
+
+        #endregion
+
+        #region 功能方法
+
+        #region 设置上级角色
+
+        /// <summary>
+        /// 设置上级角色
+        /// </summary>
+        /// <param name="role">上级角色</param>
+        public void SetParentRole(Role parentRole)
+        {
+            int parentLevel = 0;
+            long parentId = 0;
+            if (parentRole != null)
+            {
+                parentLevel = parentRole.Level;
+                parentId = parentRole.Id;
+            }
+            if (parentId == Id && !IdentityValueIsNone())
+            {
+                throw new Exception("不能将角色本身设置为自己的上级角色");
+            }
+            //排序
+            IQuery sortQuery = QueryManager.Create<RoleEntity>(r => r.Parent == parentId);
+            sortQuery.AddQueryFields<RoleEntity>(c => c.Sort);
+            int maxSortIndex = repository.Max<int>(sortQuery);
+            Sort = maxSortIndex + 1;
+            parent.SetValue(parentRole, true);
+            //等级
+            int newLevel = parentLevel + 1;
+            bool modifyChild = newLevel != Level;
+            Level = newLevel;
+            if (modifyChild)
+            {
+                //修改所有子集信息
+                ModifyChildRole();
+            }
+        }
+
+        #endregion
+
+        #region 修改排序
+
+        /// <summary>
+        /// 修改排序
+        /// </summary>
+        /// <param name="newSort">新排序,排序编号必须大于0</param>
+        public void ModifySort(int newSort)
+        {
+            if (newSort < 1)
+            {
+                throw new Exception("请填写正确的角色排序");
+            }
+            Sort = newSort;
+            //其它角色顺延
+            IQuery sortQuery = QueryManager.Create<RoleEntity>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.Id) && r.Sort >= newSort);
+            IModify modifyExpression = ModifyFactory.Create();
+            modifyExpression.Add<RoleEntity>(r => r.Sort, 1);
+            repository.Modify(modifyExpression, sortQuery);
+        }
+
+        #endregion
+
+        #region 初始化标识信息
+
+        /// <summary>
+        /// 初始化标识信息
+        /// </summary>
+        public override void InitIdentityValue()
+        {
+            base.InitIdentityValue();
+            Id = GenerateRoleId();
+        }
 
         #endregion
 

@@ -1,36 +1,22 @@
-﻿using AutoMapper;
-using EZNEW.Code;
+﻿using EZNEW.Configuration;
 using EZNEW.Module.Sys;
-using System;
-using System.Collections.Generic;
 
 namespace EZNEW.ModuleConfig.Sys
 {
-    public static class SysModuleConfig
+    public class SysModuleConfig : IModuleConfiguration
     {
-        /// <summary>
-        /// 初始化模块配置
-        /// </summary>
-        /// <param name="autoMapperConfiguration">Automapper configuration</param>
-        public static void Init(ref Action<IMapperConfigurationExpression> autoMapperConfiguration)
+        public void Init()
         {
-            //对象转换
-            if (autoMapperConfiguration == null)
-            {
-                autoMapperConfiguration = ObjectMapConfig.Configure;
-            }
-            else
-            {
-                autoMapperConfiguration += ObjectMapConfig.Configure;
-            }
-            //仓储配置
-            RepositoryConfig.Init();
+            //数据库配置
+            DataAccessConfig.Configure();
             //标识符生成配置
             SysManager.ConfigureIdentityKey();
+            //对象映射转换配置
+            ObjectMapConfig.Configure();
             //领域事件配置
-            DomainEventConfig.Init();
-            //数据库配置
-            DatabaseConfig.Init();
+            DomainEventConfig.Configure();
+            //仓储事件配置
+            RepositoryEventConfig.Configure();
         }
     }
 }

@@ -2,9 +2,9 @@
 @{
     ViewData["Title"] = "编辑角色";
 }
-@using EZNEW.ViewModel.Sys.Request
+@using EZNEW.ViewModel.Sys
 @using EZNEW.Module.Sys
-@model EditRoleViewModel
+@model RoleViewModel
 
 <environment>
     <link href="~/script/ztree/skin.css" rel="stylesheet" />
@@ -14,8 +14,8 @@
         <div class="layui-form">
             @using (Html.AjaxBeginForm("EditRole", "Role", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form", @class = "pdt-10" }))
             {
-                @Html.HiddenFor(c => c.SysNo)
-                @Html.HiddenFor(c => c.Parent.SysNo)
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.Parent.Id)
                 <div class="layui-form-item">
                     <label class="layui-form-label">上级角色</label>
                     <div class="layui-input-inline w-300 h-38">
@@ -32,7 +32,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态</label>
                     <div class="layui-input-inline w-200">
-                        @Html.EnumToSelect(a => a.Status, RoleStatus.正常, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                        @Html.EnumToSelect(a => a.Status, RoleStatus.Enable, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
                     </div>
                 </div>
             }
@@ -55,7 +55,7 @@
     <script type="text/javascript">
         DataObjectTag = "Role";
         var selectRoleTree = null;
-        var nowRoleId ='@(Model?.SysNo??0)'
+        var nowRoleId ='@(Model?.Id??0)'
         $(function () {
             InitRoleTreeData();
             BindDefaultFormSubmitEnterEvent();//绑定默认表单事件
@@ -70,9 +70,9 @@
                    if (!datas || datas.length < 1) {
                        return;
                    }
-                   $("#Parent_SysNo").val(datas[0].id);
+                   $("#Parent_Id").val(datas[0].id);
                 },
-                selectedValue: ['@(Model.Parent?.SysNo)'],
+                selectedValue: ['@(Model.Parent?.Id)'],
                 inputText: '@(Model.Parent?.Name)',
                 height: 200,
                 defaultNode: { id: 0, name: '一级角色', value: '0', isParent: true },

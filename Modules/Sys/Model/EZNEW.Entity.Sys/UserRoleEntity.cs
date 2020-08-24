@@ -11,30 +11,26 @@ namespace EZNEW.Entity.Sys
     [Entity("Sys_UserRole", "Sys", "用户角色")]
     public class UserRoleEntity : BaseEntity<UserRoleEntity>
     {
-        #region	字段
-
         /// <summary>
         /// 用户
         /// </summary>
         [EntityField(Description = "用户", PrimaryKey = true)]
-        [EntityRelation(typeof(UserEntity),"SysNo")]
-        public long UserSysNo
+        [EntityRelation(typeof(UserEntity), "Id")]
+        public long UserId
         {
-            get { return valueDict.GetValue<long>("UserSysNo"); }
-            set { valueDict.SetValue("UserSysNo", value); }
+            get { return valueDict.GetValue<long>("UserId"); }
+            set { valueDict.SetValue("UserId", value); }
         }
 
         /// <summary>
         /// 角色
         /// </summary>
         [EntityField(Description = "角色", PrimaryKey = true)]
-        [EntityRelation(typeof(RoleEntity), "SysNo")]
-        public long RoleSysNo
+        [EntityRelation(typeof(RoleEntity), "Id")]
+        public long RoleId
         {
-            get { return valueDict.GetValue<long>("RoleSysNo"); }
-            set { valueDict.SetValue("RoleSysNo", value); }
+            get { return valueDict.GetValue<long>("RoleId"); }
+            set { valueDict.SetValue("RoleId", value); }
         }
-
-        #endregion
     }
 }

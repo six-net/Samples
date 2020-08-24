@@ -1,7 +1,12 @@
-﻿using EZNEW.Drawing.VerificationCode;
+﻿using EZNEW.Drawing;
+using EZNEW.DataValidation;
 using EZNEW.Web.Utility;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using EZNEW.Drawing.VerificationCode;
 
 namespace Site.Console.Util
 {
@@ -23,11 +28,11 @@ namespace Site.Console.Util
         /// <returns>登陆验证码图片数据</returns>
         public static byte[] RefreshLoginCode()
         {
-            var codeProvider = VerificationCodeFactory.GetVerificationCodeProvider();
-            codeProvider.CodeType = VerificationCodeType.Number;
-            var codeResult = codeProvider.CreateCode();
-            CookieHelper.SetCookieValue(LoginVerificationCodeKey, codeResult.Code);
-            return codeResult.FileBytes;
+            var codeObj = VerificationCodeFactory.GetVerificationCodeProvider();
+            codeObj.CodeType = VerificationCodeType.Number;
+            var verificationValue = codeObj.CreateCode();
+            CookieHelper.SetCookieValue(LoginVerificationCodeKey, verificationValue.Code);
+            return verificationValue.FileBytes;
         }
 
         /// <summary>
@@ -46,7 +51,7 @@ namespace Site.Console.Util
         /// <returns></returns>
         public static bool CheckLoginCode(string code, bool caseSensitive = false)
         {
-            if (code.IsNullOrEmpty())
+            if (string.IsNullOrWhiteSpace(code))
             {
                 return false;
             }

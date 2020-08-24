@@ -1,0 +1,181 @@
+@using EZNEW.Serialize;
+@using EZNEW.Module.Sys;
+@{
+    ViewData["Title"] = "授权管理";
+    var statusValues = PermissionStatus.Enable.GetType().GetEnumValueAndNames();
+}
+<environment>
+    <link rel="stylesheet" href="~/script/ztree/skin.css" />
+</environment>
+
+<div id="page-body">
+    <div class="split-container bd-w-0" split-options='{"panels": [{ "size": 300,"min":300 }] }'>
+        <div class="split-panel">
+            <div class="content-panel">
+                <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
+                    @Html.AuthIcoButton("添加权限分组", "PermissionGroup", "EditPermissionGroup",
+                   new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addgroup" }
+                   , new { @class = "icon-plus" })
+                    @Html.AuthIcoButton("删除选中", "PermissionGroup", "RemovePermissionGroup",
+                   new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delgroup" }
+                   , new { @class = "icon-trash" })
+                </div>
+                <div class="content-panel-body">
+                    <div class="content-panel-body-inner">
+                        <ul id="group_tree" class="ztree"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="split-panel">
+            <div class="content-panel fiterhide" id="detail_container">
+                <div class="content-panel-head">
+                    <table cellpadding="0" cellspacing="0" class="detail-table">
+                        <tr>
+                            <td class="detail-td-tit">名称</td>
+                            <td class="detail-td-content" id="content-for-Name"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="detail-td-content">
+                                @Html.AuthIcoButton("编辑", "PermissionGroup", "EditPermissionGroup",
+                                new { @class = "layui-btn layui-btn-gprimary", id = "btn_editgroup" }
+                                , new { @class = "icon-edit" })
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="content-panel-body">
+                    <div class="layui-tab layui-tab-card content-panel mg-0 bd-lw-0" lay-filter="group_data_tab">
+                        <ul class="layui-tab-title content-panel-head">
+                            <li class="layui-this" lay-id="group_table_data_tab">授权操作</li>
+                        </ul>
+                        <div class="layui-tab-content content-panel-body pd-0">
+                            <div class="layui-tab-item layui-show content-panel">
+                                <div class="content-panel-head">
+                                    <div class="layui-row pd-0 mg-0">
+                                        <div class="column layui-form lis_search pd-0 pdb-10">
+                                            <div class="list_search_inputgroup">
+                                                <label class="layui-form-label">名称/编码</label>
+                                                <div class="layui-input-inline">
+                                                    <input type="text" id="search_namecodekey" placeholder="名称/编码"
+                                                           autocomplete="off" class="layui-input">
+                                                </div>
+                                            </div>
+                                            <div class="list_search_inputgroup mgl-5">
+                                                @Html.AuthIcoButton("搜索", "Permission", "SearchPermission",
+                                                new { @class = "layui-btn layui-btn-sm", id = "btn_search_group_table_data" }
+                                                , new { @class = "icon-search" })
+
+                                                @Html.AuthIcoButton("添加权限", "Permission", "EditPermission",
+                                                new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addgrouptabledata" }
+                                                , new { @class = "icon-plus" })
+
+                                                @Html.AuthIcoButton("删除选中", "Permission", "RemovePermission",
+                                                new { @class = "layui-btn layui-btn-sm layui-btn-danger", id = "btn_delgrouptabledata" }
+                                                , new { @class = "icon-trash" })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content-panel-body">
+                                    <table id="group_table_data" lay-filter="group_table_data"></table>
+                                </div>
+                                <div class="content-panel-foot pd-5 default_shadow_up h-38" id="group_table_data_pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <environment>
+        <script src="~/script/ztree/jquery.ztree.all.js"></script>
+        <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
+        <script src="~/script/page/groupdata.js"></script>
+    </environment>
+    <script type="text/html" id="group_table_toolbar">
+        @Html.AuthIcoButton("编辑", "Permission", "EditPermission",
+        new { @class = "layui-btn layui-btn-xs layui-btn-gprimary", lay_event = "edit" }
+        , new { @class = "icon-pencil" })
+
+        @Html.AuthIcoButton("绑定功能", "Permission", "PermissionOperationList",
+        new { @class = "layui-btn layui-btn-xs layui-btn-gsuccess", lay_event = "auth" }
+        , new { @class = "icon-check" })
+
+        @Html.AuthIcoButton("删除", "Permission", "RemovePermission",
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "remove" }
+        , new { @class = "icon-trash" })
+    </script>
+    <script type="text/html" id="auth_status">
+        {{permissionStatusDict[d.Status]}}
+    </script>
+    <script type="text/javascript">
+        var permissionStatusDict = new Object();
+        $(function () {
+            permissionStatusDict = JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
+            InitGroupDataManage({
+                groupData: {
+                    loadDataUrl: '@Url.Action("SearchPermissionGroup", "PermissionGroup")',
+                    deleteUrl: '@Url.Action("RemovePermissionGroup", "PermissionGroup")',
+                    sortUrl: '@Url.Action("ChangePermissionGroupSort", "PermissionGroup")',
+                    editUrl: '@Url.Action("EditPermissionGroup", "PermissionGroup")',
+                    groupName: '权限分组',
+                    objectTag:"PermissionGroup"
+                },
+                dataTable: {
+                    cols: [[
+                        { type: 'checkbox', fixed: 'left' }
+                        , { field: 'Name', title: '名称', width: 150 }
+                        , { field: 'Code', title: '编码', width: 200 }
+                        , { field: 'Status', align: 'center', title: '状态', width: 80, templet: '#auth_status' }
+                        , { field: 'Remark', title: '说明', minWidth: 150 }
+                        , { width: 215, align: 'center', fixed: 'right', toolbar: '#group_table_toolbar' }
+                    ]],
+                    where: function (data) {
+                        var key = $.trim($("#search_namecodekey").val());
+                        return {
+                            Group: data.Id,
+                            NameCodeMateKey:key
+                        };
+                    },
+                    loadDataUrl: '@Url.Action("SearchPermission", "Permission")',
+                    removeDataUrl: '@Url.Action("RemovePermission", "Permission")',
+                    addDataUrl: '@Url.Action("EditPermission", "Permission", new { groupId= "_groupid" })',
+                    toolBarEvent: function (obj, btn) {
+                        var data = obj.data;
+                        var layEvent = obj.event;
+                        switch (layEvent) {
+                            case "edit":
+                                OpenDialogPage({
+                                    title: '编辑权限',
+                                    content: '@Url.Action("EditPermission", "Permission", new { Id = "_id" })'.replace('_id', data.Id),
+                                    area: ['600px', '420px']
+                                });
+                                break;
+                            case "auth":
+                                OpenDialogPage({
+                                    content: '@Url.Action("PermissionOperationList", "Operation", new { Id = "_id" })'.replace('_id', data.Id),
+                                    area: ['700px', '500px'],
+                                    title: '【'+data.Name+'】绑定的功能操作',
+                                });
+                                break;
+                        }
+                    },
+                    dataTag: 'Permission',
+                    editWindowSize: ['600px', '420px']
+                },
+                detailContainer: {
+                    showDataDetailFunc: function (data) {
+                        $('#content-for-Name').text(data.Name);
+                    },
+                    resetCallback: null
+                }
+            });
+        });
+    </script>
+}

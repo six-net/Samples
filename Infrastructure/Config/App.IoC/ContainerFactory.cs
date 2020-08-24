@@ -1,19 +1,22 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
-using EZNEW.VerificationCode.SkiaSharp;
-using EZNEW.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using EZNEW.Web.DependencyInjection;
+using EZNEW.VerificationCode.SkiaSharp;
 using EZNEW.Drawing.VerificationCode;
+using EZNEW.DependencyInjection;
+using EZNEW.Logging;
 
 namespace App.IoC
 {
     public class ContainerFactory : IServiceProviderFactory<IDIContainer>
     {
         /// <summary>
-        /// 自定义服务注入
+        /// 自定义服务依赖配置
         /// </summary>
-        /// <param name="container"></param>
-        static void RegisterServices(IDIContainer container)
+        /// <param name="container">Dependency injection container</param>
+        static void ConfigureServices(IDIContainer container)
         {
             WebDependencyInjectionManager.ConfigureDefaultWebService();
             container.Register(typeof(VerificationCodeProvider), typeof(SkiaSharpVerificationCode));
@@ -21,7 +24,16 @@ namespace App.IoC
 
         public IDIContainer CreateBuilder(IServiceCollection services)
         {
-            ContainerManager.Init(services, serviceRegisterAction: RegisterServices);
+            //打开框架跟踪日志
+            TraceLogSwitchManager.EnableFrameworkTrace();
+            services.AddLogging(cfg =>
+            {
+                cfg.AddTraceSource("", new DefaultTraceListener());
+            }).Configure<LoggerFilterOptions>(option =>
+            {
+            });
+
+            ContainerManager.Init(services, configureServiceAction: ConfigureServices);
             return ContainerManager.Container;
         }
 

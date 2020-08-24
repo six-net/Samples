@@ -1,9 +1,9 @@
-﻿using EZNEW.Module.Sys;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EZNEW.Cache;
 using EZNEW.Develop.Domain.Event;
 using EZNEW.Domain.Sys.Model;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using EZNEW.Module.Sys;
 
 namespace EZNEW.ModuleConfig.Sys
 {
@@ -12,7 +12,7 @@ namespace EZNEW.ModuleConfig.Sys
     /// </summary>
     internal static class DomainEventConfig
     {
-        internal static void Init()
+        internal static void Configure()
         {
         }
     }

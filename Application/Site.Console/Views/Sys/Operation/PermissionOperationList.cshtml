@@ -1,0 +1,180 @@
+@{
+    ViewBag.Title = "操作权限";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using EZNEW.Module.Sys;
+@using EZNEW.Serialize;
+@{
+    var statusValues = OperationStatus.Enable.GetType().GetEnumValueAndNames();
+}
+<div id="page-head">
+    <div class="layui-row pd-0 mg-0">
+        <div class="column layui-form lis_search pd-0 pdb-10">
+            <div class="list_search_inputgroup">
+                <label class="layui-form-label">操作名称/编码</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="search_authname" placeholder="操作名称/编码" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="list_search_inputgroup mgl-5">
+                @Html.AuthIcoButton("搜索", "Operation", "SearchPermissionOperation",
+                new { @class = "layui-btn layui-btn-sm", id = "search_btn" }
+                , new { @class = "icon-search" })
+                @Html.AuthIcoButton("添加功能操作", "Permission", "AddPermissionOperation",
+                new { @class = "layui-btn layui-btn-gsuccess layui-btn-sm", id = "btn_addoperation" }
+                , new { @class = "icon-plus" })
+                @Html.AuthIcoButton("删除选中", "Permission", "RemovePermissionOperation",
+                new { @class = "layui-btn layui-btn-danger layui-btn-sm", id = "btn_deleteoperation" }
+                , new { @class = "icon-trash" })
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page-body">
+    <table id="demo" lay-filter="demo"></table>
+</div>
+<div id="page-foot" class="pd-5 h-38 default_shadow_up"></div>
+
+@section Scripts{
+    <script type="text/html" id="operation_status">
+        {{operationStatusDict[d.Status]}}
+    </script>
+    <script type="text/html" id="operation_code">
+        {{d.ControllerCode}}/{{d.ActionCode}}
+    </script>
+    <script type="text/html" id="operation_group">
+        {{d.Group.Name}}
+    </script>
+    <script type="text/html" id="operation_bar">
+        @Html.AuthIcoButton("删除", "Permission", "RemovePermissionOperation",
+        new { @class = "layui-btn layui-btn-xs layui-btn-danger", lay_event = "operation_del" }
+        , new { @class = "icon-trash" })
+    </script>
+    <script type="text/javascript">
+        var operationStatusDict = new Object();
+        $(function () {
+            operationStatusDict = JSON.parse('@Html.Raw(JsonSerializeHelper.ObjectToJson(statusValues))');
+            InitTable({
+                elem: 'demo',
+                defaultToolbar: [],
+                cols: [[
+                    { type: 'checkbox', fixed: 'left' }
+                    , { field: 'Name', title: '名称', width: 130, fixed: 'left' }
+                    , { field: 'code', title: '控制器/操作', minWidth: 150, templet: '#operation_code' }
+                    , { field: 'Group.Name', title: '分组',align: 'center', width: 100, templet: '#operation_group' }
+                    , { field: 'Status', title: '状态', align: 'center', width: 60, templet: '#operation_status' }
+                    , { width: 80, align: 'center', fixed: 'right', toolbar: '#operation_bar' }
+                ]]
+            }, SearchOperation);
+
+            //搜索功能操作
+            $("#search_btn").click(function () {
+                SearchOperation();
+            });
+
+            //添加功能操作
+            $("#btn_addoperation").click(function () {
+                SelectOperation();
+            });
+
+            //表格事件监听
+            ListenTableEvent('demo', function (obj, btn) {
+                var data = obj.data;
+                var layEvent = obj.event;
+                switch (layEvent) {
+                    case "operation_del":
+                        UnBindOperation([data]);
+                        break;
+                }
+            });
+
+            //删除选中
+            $("#btn_deleteoperation").click(function () {
+                var checkedValues = GetTableCheckData("demo").data;
+                UnBindOperation(checkedValues);
+            });
+        });
+
+            //搜索操作
+            function SearchOperation() {
+                var data = {
+                        PermissionFilter: { Ids: ['@ViewBag.PermissionId'] },
+                        OperationMateKey: $.trim($("#search_authname").val())
+                };
+                PageSearch({
+                    url: '@Url.Action("SearchPermissionOperation", "Operation")',
+                    method: 'post',
+                    listEle: 'demo',
+                    pagerEle: 'page-foot',
+                    data: data
+                });
+            }
+
+            //删除操作
+            function DeleteOperation(sysnos) {
+                if (!sysnos || sysnos == "") {
+                    return;
+                }
+                UnBindOperation(sysnos.split(','));
+            };
+
+            //选择操作
+            function SelectOperation() {
+                OpenDialogPage({
+                    content: '@Url.Action("OperationMultiSelect", "Operation")',
+                    area: ['750px', '550px'],
+                    title: '选择操作功能'
+                });
+            }
+
+            //操作选中回调
+        function EZNEW_SelectCallback(res) {
+            if (!res || !res.data.keys || res.data.keys.length < 1) {
+                    return;
+            }
+            BindOperation(res.data.keys);
+        }
+
+            //绑定操作
+            function BindOperation(operations) {
+                if (!operations || operations.length <= 0) {
+                    return;
+                }
+                var data = {
+                    permissionId: '@ViewBag.PermissionId',
+                    operationIds: operations
+                };
+                $.post('@Url.Action("AddPermissionOperation", "Permission")', data, function (res) {
+                    ResultMsg(res);
+                    if (res.Success) {
+                        SearchOperation();
+                    }
+                });
+            }
+
+            //解绑操作
+            function UnBindOperation(datas) {
+                if (!datas || datas.length <= 0) {
+                    ErrorMsg('没有指定要删除的操作功能');
+                    return;
+                }
+                ConfirmMsg('确认要删除绑定的操作功能吗?', function () {
+                    var dataIds = new Array();
+                    for (var d in datas) {
+                        dataIds.push(datas[d].Id);
+                    }
+                    var data = {
+                        permissionId: '@ViewBag.PermissionId',
+                        operationIds: dataIds
+                    };
+                    $.post('@Url.Action("RemovePermissionOperation", "Permission")', data, function (res) {
+                        ResultMsg(res);
+                        if (res.Success) {
+                            SearchOperation();
+                        }
+                    });
+                });
+            }
+    </script>
+}

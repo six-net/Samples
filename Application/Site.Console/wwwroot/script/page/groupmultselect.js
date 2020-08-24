@@ -10,7 +10,7 @@ var EZNEW_DefaultGroupMultSelectOptions = {
         where: null,
         initDataCondition: { level: 1 },
         groupDataToNodeFunc: null,
-        keyField: "SysNo",
+        keyField: "Id",
         nameField: "Name",
         parentField: 'Parent'
     },
@@ -34,7 +34,7 @@ var EZNEW_DefaultGroupMultSelectOptions = {
         dataUrl: '',
         where: null,
         requestVerify: null,
-        dataField: "SysNo",
+        dataField: "Id",
         groupField: 'Group',
         searchBtnId: 'search_btn',
         cols: [[]] //数据标题

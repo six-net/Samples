@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace EZNEW.Module.Sys
 {
+    #region 模块对象类型
+
     /// <summary>
     /// 模块对象类型
     /// </summary>
@@ -9,21 +12,10 @@ namespace EZNEW.Module.Sys
     {
         Role = 110,
         User = 111,
-        AuthorityGroup = 112,
-        Authority = 113,
-        AuthorityOperationGroup = 114,
-        AuthorityOperation = 115
-    }
-
-    #region 权限组
-
-    /// <summary>
-    /// 权限分组状态
-    /// </summary>
-    public enum AuthorityGroupStatus
-    {
-        启用 = 310,
-        关闭 = 320
+        PermissionGroup = 112,
+        Permission = 113,
+        OperationGroup = 114,
+        Operation = 115
     }
 
     #endregion
@@ -33,76 +25,47 @@ namespace EZNEW.Module.Sys
     /// <summary>
     /// 权限状态
     /// </summary>
-    public enum AuthorityStatus
+    public enum PermissionStatus
     {
-        启用 = 310,
-        关闭 = 320
+        [Display(Name = "启用")]
+        Enable = 310,
+        [Display(Name = "禁用")]
+        Disabled = 320
     }
 
     /// <summary>
     /// 权限类型
     /// </summary>
-    public enum AuthorityType
+    public enum PermissionType
     {
-        管理 = 410
+        [Display(Name = "管理权限")]
+        Management = 410
     }
 
     #endregion
 
-    #region 授权操作分组
+    #region 操作功能
 
     /// <summary>
-    /// 授权操作分组状态
+    /// 操作功能状态
     /// </summary>
-    public enum AuthorityOperationGroupStatus
+    public enum OperationStatus
     {
-        启用 = 310,
-        关闭 = 320
-    }
-
-    #endregion
-
-    #region 授权操作
-
-    /// <summary>
-    /// 授权操作状态
-    /// </summary>
-    public enum AuthorityOperationStatus
-    {
-        启用 = 310,
-        关闭 = 320
+        [Display(Name = "启用")]
+        Enable = 310,
+        [Display(Name = "关闭")]
+        Closed = 320
     }
 
     /// <summary>
-    /// 授权操作请求方式
+    /// 操作功能访问限制级别
     /// </summary>
-    public enum AuthorityOperationMethod
+    public enum OperationAccessLevel
     {
-        全部 = 410,
-        GET = 420,
-        POST = 430
-    }
-
-    /// <summary>
-    /// 授权操作类型
-    /// </summary>
-    public enum AuthorityOperationAuthorizeType
-    {
-        无限制 = 510,
-        权限授权 = 520
-    }
-
-    #endregion
-
-    #region 授权
-
-    /// <summary>
-    /// 授权对象类型
-    /// </summary>
-    public enum AuthorizeType
-    {
-        权限组 = 410,
-        权限 = 420
+        [Display(Name = "公开")]
+        Public = 510,
+        [Display(Name = "授权")]
+        Authorized = 520
     }
 
     #endregion
@@ -114,7 +77,8 @@ namespace EZNEW.Module.Sys
     /// </summary>
     public enum UserType
     {
-        管理账户 = 210
+        [Display(Name = "管理")]
+        Management = 210
     }
 
     /// <summary>
@@ -122,8 +86,10 @@ namespace EZNEW.Module.Sys
     /// </summary>
     public enum UserStatus
     {
-        正常 = 310,
-        锁定 = 320
+        [Display(Name = "启用")]
+        Enable = 310,
+        [Display(Name = "锁定")]
+        Locked = 320
     }
 
     #endregion
@@ -135,8 +101,10 @@ namespace EZNEW.Module.Sys
     /// </summary>
     public enum RoleStatus
     {
-        正常 = 310,
-        禁用 = 320
+        [Display(Name = "启用")]
+        Enable = 310,
+        [Display(Name = "禁用")]
+        Disabled = 320
     }
 
     #endregion

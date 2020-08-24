@@ -11,22 +11,10 @@ namespace EZNEW.Entity.Sys
     [Entity("Sys_User", "Sys", "管理用户")]
     public class UserEntity : BaseEntity<UserEntity>
     {
-        #region	字段
-
-        /// <summary>
-        /// 用户编号
-        /// </summary>
-        [EntityField(Description = "用户编号", PrimaryKey = true)]
-        public long SysNo
-        {
-            get { return valueDict.GetValue<long>("SysNo"); }
-            set { valueDict.SetValue("SysNo", value); }
-        }
-
         /// <summary>
         /// 用户名
         /// </summary>
-        [EntityField(Description = "用户名")]
+        [EntityField(Description = "用户名", CacheOption = EntityFieldCacheOption.CacheKey)]
         public string UserName
         {
             get { return valueDict.GetValue<string>("UserName"); }
@@ -47,10 +35,20 @@ namespace EZNEW.Entity.Sys
         /// 密码
         /// </summary>
         [EntityField(Description = "密码")]
-        public string Pwd
+        public string Password
         {
-            get { return valueDict.GetValue<string>("Pwd"); }
-            set { valueDict.SetValue("Pwd", value); }
+            get { return valueDict.GetValue<string>("Password"); }
+            set { valueDict.SetValue("Password", value); }
+        }
+
+        /// <summary>
+        /// 用户编号
+        /// </summary>
+        [EntityField(Description = "用户编号", PrimaryKey = true)]
+        public long Id
+        {
+            get { return valueDict.GetValue<long>(nameof(Id)); }
+            set { valueDict.SetValue(nameof(Id), value); }
         }
 
         /// <summary>
@@ -67,9 +65,9 @@ namespace EZNEW.Entity.Sys
         /// 状态
         /// </summary>
         [EntityField(Description = "状态")]
-        public int Status
+        public int? Status
         {
-            get { return valueDict.GetValue<int>("Status"); }
+            get { return valueDict.GetValue<int?>("Status"); }
             set { valueDict.SetValue("Status", value); }
         }
 
@@ -122,17 +120,5 @@ namespace EZNEW.Entity.Sys
             get { return valueDict.GetValue<DateTime>("CreateDate"); }
             set { valueDict.SetValue("CreateDate", value); }
         }
-
-        /// <summary>
-        /// 最近登录时间
-        /// </summary>
-        [EntityField(Description = "最近登录时间")]
-        public DateTime LastLoginDate
-        {
-            get { return valueDict.GetValue<DateTime>("LastLoginDate"); }
-            set { valueDict.SetValue("LastLoginDate", value); }
-        }
-
-        #endregion
     }
 }

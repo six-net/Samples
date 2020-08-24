@@ -22,7 +22,7 @@ var CTreeSelect = function (options) {
         selectedValue: null,//默认选择值
         defaultNode: null,//默认选项节点
         dataUrl: '',//数据加载地址
-        keyField: 'SysNo',//值字段
+        keyField: 'Id',//值字段
         nameField: 'Name',//名称字段
         parseDataToNodeFunc: null,//数据转换为节点方法
         requestMethod: "post",//数据请求方式,

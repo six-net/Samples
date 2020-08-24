@@ -1,10 +1,9 @@
-using EZNEW.Develop.CQuery;
-using EZNEW.DTO.Sys.Cmd;
-using EZNEW.DTO.Sys.Query;
-using EZNEW.DTO.Sys.Query.Filter;
-using EZNEW.Paging;
-using EZNEW.Response;
 using System.Collections.Generic;
+using EZNEW.Response;
+using EZNEW.DTO.Sys.Filter;
+using EZNEW.DTO.Sys;
+using EZNEW.Paging;
+using EZNEW.DTO.Sys.Cmd;
 
 namespace EZNEW.BusinessContract.Sys
 {
@@ -18,9 +17,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 保存角色
         /// </summary>
-        /// <param name="saveInfo">保存信息</param>
+        /// <param name="saveRoleDto">角色保存信息</param>
         /// <returns></returns>
-        Result<RoleDto> SaveRole(SaveRoleCmdDto saveInfo);
+        Result<RoleDto> SaveRole(SaveRoleDto saveRoleDto);
 
         #endregion
 
@@ -29,9 +28,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 获取角色
         /// </summary>
-        /// <param name="filter">查询对象</param>
-        /// <returns></returns>
-        RoleDto GetRole(RoleFilterDto filter);
+        /// <param name="roleFilterDto">角色筛选信息</param>
+        /// <returns>返回角色信息</returns>
+        RoleDto GetRole(RoleFilterDto roleFilterDto);
 
         #endregion
 
@@ -40,9 +39,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 删除角色
         /// </summary>
-        /// <param name="deleteInfo">删除信息</param>
-        /// <returns>执行结果</returns>
-        Result DeleteRole(DeleteRoleCmdDto deleteInfo);
+        /// <param name="deleteRoleDto">角色删除信息</param>
+        /// <returns>返回删除角色执行结果</returns>
+        Result RemoveRole(RemoveRoleDto deleteRoleDto);
 
         #endregion
 
@@ -51,20 +50,20 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 获取角色列表
         /// </summary>
-        /// <param name="filter">查询对象</param>
-        /// <returns></returns>
-        List<RoleDto> GetRoleList(RoleFilterDto filter);
+        /// <param name="roleFilterDto">角色筛选信息</param>
+        /// <returns>返回角色列表</returns>
+        List<RoleDto> GetRoleList(RoleFilterDto roleFilterDto);
 
         #endregion
 
         #region 获取角色分页
 
         /// <summary>
-        /// 获取Role分页
+        /// 获取角色分页
         /// </summary>
-        /// <param name="filter">查询对象</param>
-        /// <returns></returns>
-        IPaging<RoleDto> GetRolePaging(RoleFilterDto filter);
+        /// <param name="roleFilterDto">角色筛选信息</param>
+        /// <returns>返回角色分页</returns>
+        IPaging<RoleDto> GetRolePaging(RoleFilterDto roleFilterDto);
 
         #endregion
 
@@ -73,9 +72,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 修改角色排序
         /// </summary>
-        /// <param name="sortInfo">排序修改信息</param>
-        /// <returns></returns>
-        Result ModifyRoleSort(ModifyRoleSortCmdDto sortInfo);
+        /// <param name="modifyRoleSortDto">角色排序修改信息</param>
+        /// <returns>返回角色排序修改执行结果</returns>
+        Result ModifyRoleSort(ModifyRoleSortDto modifyRoleSortDto);
 
         #endregion
 
@@ -84,9 +83,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 验证角色名称是否存在
         /// </summary>
-        /// <param name="existInfo">验证信息</param>
-        /// <returns></returns>
-        bool ExistRoleName(ExistRoleNameCmdDto existInfo);
+        /// <param name="existRoleNameDto">角色名称验证信息</param>
+        /// <returns>返回角色名称是否存在</returns>
+        bool ExistRoleName(ExistRoleNameDto existRoleNameDto);
 
         #endregion
 
@@ -96,19 +95,8 @@ namespace EZNEW.BusinessContract.Sys
         /// 清除角色下所有的用户
         /// </summary>
         /// <param name="roleSysNos">角色编号</param>
-        /// <returns></returns>
-        Result ClearRoleUser(IEnumerable<long> roleSysNos);
-
-        #endregion
-
-        #region 根据查询条件生成查询对象
-
-        /// <summary>
-        /// 根据查询条件生成查询对象
-        /// </summary>
-        /// <param name="filter">查询条件</param>
-        /// <returns></returns>
-        IQuery CreateQueryObject(RoleFilterDto filter, bool useBaseFilter = false);
+        /// <returns>返回执行结果</returns>
+        Result ClearUser(IEnumerable<long> roleSysNos);
 
         #endregion
     }

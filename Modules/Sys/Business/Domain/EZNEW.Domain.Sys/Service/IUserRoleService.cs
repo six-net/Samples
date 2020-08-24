@@ -1,7 +1,9 @@
-﻿using EZNEW.Domain.Sys.Model;
-using EZNEW.Response;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using EZNEW.Domain.Sys.Model;
+using EZNEW.Domain.Sys.Parameter;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Service
 {
@@ -15,9 +17,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 绑定用户角色
         /// </summary>
-        /// <param name="userRoleBinds">用户角色绑定信息</param>
-        /// <returns></returns>
-        Result BindUserAndRole(params Tuple<User, Role>[] userRoleBinds);
+        /// <param name="userRoleBindings">用户角色绑定信息</param>
+        /// <returns>返回操作结果</returns>
+        Result Bind(params UserRole[] userRoleBindings);
 
         #endregion
 
@@ -26,9 +28,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 用户角色解绑
         /// </summary>
-        /// <param name="userRoleBinds">用户角色绑定信息</param>
-        /// <returns></returns>
-        Result UnBindUserAndRole(params Tuple<User, Role>[] userRoleBinds);
+        /// <param name="userRoleUnbindings">用户角色绑定信息</param>
+        /// <returns>返回操作结果</returns>
+        Result Unbind(params UserRole[] userRoleUnbindings);
 
         #endregion
 
@@ -37,9 +39,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 清除角色下所有的用户
         /// </summary>
-        /// <param name="roleSysNos">角色系统编号</param>
+        /// <param name="roleIds">角色系统编号</param>
         /// <returns>执行结果</returns>
-        Result ClearRoleUser(IEnumerable<long> roleSysNos);
+        Result ClearByRole(IEnumerable<long> roleIds);
 
         #endregion
 
@@ -48,9 +50,20 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 清除用户绑定的所有角色
         /// </summary>
-        /// <param name="userSysNos">用户系统编号</param>
+        /// <param name="userIds">用户系统编号</param>
         /// <returns>执行结果</returns>
-        Result ClearUserRole(IEnumerable<long> userSysNos);
+        Result ClearByUser(IEnumerable<long> userIds);
+
+        #endregion
+
+        #region 修改用户&角色绑定关系
+
+        /// <summary>
+        /// 修改用户&角色绑定关系
+        /// </summary>
+        /// <param name="modifyUserRole">用户&角色修绑定关系修改信息</param>
+        /// <returns>返回操作结果</returns>
+        Result Modify(ModifyUserRole modifyUserRole);
 
         #endregion
     }

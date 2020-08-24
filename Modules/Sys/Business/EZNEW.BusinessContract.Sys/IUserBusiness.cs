@@ -1,10 +1,9 @@
-using EZNEW.Develop.CQuery;
-using EZNEW.DTO.Sys.Cmd;
-using EZNEW.DTO.Sys.Query;
-using EZNEW.DTO.Sys.Query.Filter;
-using EZNEW.Paging;
-using EZNEW.Response;
 using System.Collections.Generic;
+using EZNEW.Response;
+using EZNEW.DTO.Sys;
+using EZNEW.DTO.Sys.Filter;
+using EZNEW.Paging;
+using EZNEW.DTO.Sys.Cmd;
 
 namespace EZNEW.BusinessContract.Sys
 {
@@ -18,9 +17,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 保存用户
         /// </summary>
-        /// <param name="saveInfo">保存信息</param>
-        /// <returns></returns>
-        Result<UserDto> SaveUser(SaveUserCmdDto saveInfo);
+        /// <param name="saveUserDto">用户保存信息</param>
+        /// <returns>返回用户保存结果</returns>
+        Result<UserDto> SaveUser(SaveUserDto saveUserDto);
 
         #endregion
 
@@ -29,9 +28,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 获取用户
         /// </summary>
-        /// <param name="filter">筛选信息</param>
-        /// <returns></returns>
-        UserDto GetUser(UserFilterDto filter);
+        /// <param name="userFilterDto">用户筛选信息</param>
+        /// <returns>返回用户信息</returns>
+        UserDto GetUser(UserFilterDto userFilterDto);
 
         #endregion
 
@@ -40,9 +39,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 获取用户列表
         /// </summary>
-        /// <param name="filter">筛选信息</param>
-        /// <returns></returns>
-        List<UserDto> GetUserList(UserFilterDto filter);
+        /// <param name="userFilterDto">用户筛选信息</param>
+        /// <returns>返回用户列表</returns>
+        List<UserDto> GetUserList(UserFilterDto userFilterDto);
 
         #endregion
 
@@ -51,9 +50,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 获取用户分页
         /// </summary>
-        /// <param name="filter">筛选信息</param>
-        /// <returns></returns>
-        IPaging<UserDto> GetUserPaging(UserFilterDto filter);
+        /// <param name="userFilterDto">用户筛选信息</param>
+        /// <returns>返回用户分页</returns>
+        IPaging<UserDto> GetUserPaging(UserFilterDto userFilterDto);
 
         #endregion
 
@@ -62,9 +61,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="deleteInfo">删除信息</param>
-        /// <returns></returns>
-        Result DeleteUser(DeleteUserCmdDto deleteInfo);
+        /// <param name="deleteUserDto">用户删除信息</param>
+        /// <returns>返回删除用户操作结果</returns>
+        Result RemoveUser(RemoveUserDto deleteUserDto);
 
         #endregion
 
@@ -73,9 +72,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="userDto">登录用户信息</param>
-        /// <returns></returns>
-        Result<UserDto> Login(UserDto userDto);
+        /// <param name="loginDto">登录信息</param>
+        /// <returns>返回登录信息</returns>
+        Result<UserDto> Login(LoginDto loginDto);
 
         #endregion
 
@@ -84,9 +83,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="modifyInfo">修改信息</param>
-        /// <returns></returns>
-        Result ModifyPassword(ModifyPasswordCmdDto modifyInfo);
+        /// <param name="modifyPasswordDto">密码修改信息</param>
+        /// <returns>返回密码修改结果</returns>
+        Result ModifyPassword(ModifyUserPasswordDto modifyPasswordDto);
 
         #endregion
 
@@ -95,9 +94,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 修改用户状态
         /// </summary>
-        /// <param name="statusInfo">状态信息</param>
-        /// <returns>执行结果</returns>
-        Result ModifyStatus(ModifyUserStatusCmdDto statusInfo);
+        /// <param name="modifyUserStatusDto">用户状态修改信息</param>
+        /// <returns>返回状态修改结果</returns>
+        Result ModifyStatus(ModifyUserStatusDto modifyUserStatusDto);
 
         #endregion
 
@@ -106,8 +105,9 @@ namespace EZNEW.BusinessContract.Sys
         /// <summary>
         /// 修改用户绑定角色
         /// </summary>
-        /// <param name="bindInfo">绑定信息</param>
-        Result ModifyUserBindRole(ModifyUserBindRoleCmdDto bindInfo);
+        /// <param name="modifyUserRoleDto">用户角色修改信息</param>
+        /// <returns>返回角色修改结果</returns>
+        Result ModifyUserRole(ModifyUserRoleDto modifyUserRoleDto);
 
         #endregion
 
@@ -118,25 +118,7 @@ namespace EZNEW.BusinessContract.Sys
         /// </summary>
         /// <param name="userSysNos">用户系统编号</param>
         /// <returns>执行结果</returns>
-        Result ClearUserRole(IEnumerable<long> userSysNos);
-
-        #endregion
-
-        #region 根据查询条件生成查询对象
-
-        /// <summary>
-        /// 根据查询条件生成查询对象
-        /// </summary>
-        /// <param name="filter">查询条件</param>
-        /// <returns></returns>
-        IQuery CreateQueryObject(UserFilterDto filter, bool useBaseFilter = false);
-
-        /// <summary>
-        /// 管理用户查询对象
-        /// </summary>
-        /// <param name="adminUserFilter">管理用户筛选对象</param>
-        /// <returns></returns>
-        IQuery CreateAdminQueryObject(AdminUserFilterDto adminUserFilter);
+        Result ClearRole(IEnumerable<long> userSysNos);
 
         #endregion
     }

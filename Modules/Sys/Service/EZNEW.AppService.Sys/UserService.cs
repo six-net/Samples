@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using EZNEW.BusinessContract.Sys;
-using EZNEW.DTO.Sys.Query;
 using EZNEW.DTO.Sys.Cmd;
-using EZNEW.DTO.Sys.Query.Filter;
-using EZNEW.AppServiceContract.Sys;
 using EZNEW.Paging;
+using EZNEW.AppServiceContract.Sys;
 using EZNEW.Response;
+using EZNEW.DTO.Sys.Filter;
+using EZNEW.DTO.Sys;
 
 namespace EZNEW.AppService.Sys
 {
@@ -14,7 +14,11 @@ namespace EZNEW.AppService.Sys
     /// </summary>
     public class UserAppService : IUserAppService
     {
-        IUserBusiness userBusiness = null;
+        /// <summary>
+        /// 用户业务
+        /// </summary>
+        readonly IUserBusiness userBusiness = null;
+
         public UserAppService(IUserBusiness userBusiness)
         {
             this.userBusiness = userBusiness;
@@ -25,11 +29,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 保存用户
         /// </summary>
-        /// <param name="saveInfo">保存信息</param>
-        /// <returns></returns>
-        public Result<UserDto> SaveUser(SaveUserCmdDto saveInfo)
+        /// <param name="saveUserDto">用户保存信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result<UserDto> SaveUser(SaveUserDto saveUserDto)
         {
-            return userBusiness.SaveUser(saveInfo);
+            return userBusiness.SaveUser(saveUserDto);
         }
 
         #endregion
@@ -39,8 +43,8 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 获取用户
         /// </summary>
-        /// <param name="filter">筛选信息</param>
-        /// <returns></returns>
+        /// <param name="filter">用户筛选信息</param>
+        /// <returns>返回用户</returns>
         public UserDto GetUser(UserFilterDto filter)
         {
             return userBusiness.GetUser(filter);
@@ -53,8 +57,8 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 获取用户列表
         /// </summary>
-        /// <param name="filter">筛选信息</param>
-        /// <returns></returns>
+        /// <param name="filter">用户筛选信息</param>
+        /// <returns>返回用户列表</returns>
         public List<UserDto> GetUserList(UserFilterDto filter)
         {
             return userBusiness.GetUserList(filter);
@@ -67,8 +71,8 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 获取用户分页
         /// </summary>
-        /// <param name="filter">筛选信息</param>
-        /// <returns></returns>
+        /// <param name="filter">用户筛选信息</param>
+        /// <returns>返回用户分页</returns>
         public IPaging<UserDto> GetUserPaging(UserFilterDto filter)
         {
             return userBusiness.GetUserPaging(filter);
@@ -81,11 +85,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 删除用户
         /// </summary>
-        /// <param name="deleteInfo">删除信息</param>
-        /// <returns></returns>
-        public Result DeleteUser(DeleteUserCmdDto deleteInfo)
+        /// <param name="removeUserDto">删除信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result RemoveUser(RemoveUserDto removeUserDto)
         {
-            return userBusiness.DeleteUser(deleteInfo);
+            return userBusiness.RemoveUser(removeUserDto);
         }
 
         #endregion
@@ -95,11 +99,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="userDto">登录用户信息</param>
-        /// <returns></returns>
-        public Result<UserDto> Login(UserDto userDto)
+        /// <param name="loginDto">登录用户信息</param>
+        /// <returns>返回登录结果</returns>
+        public Result<UserDto> Login(LoginDto loginDto)
         {
-            return userBusiness.Login(userDto);
+            return userBusiness.Login(loginDto);
         }
 
         #endregion
@@ -109,11 +113,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="modifyInfo">修改信息</param>
-        /// <returns></returns>
-        public Result ModifyPassword(ModifyPasswordCmdDto modifyInfo)
+        /// <param name="modifyPasswordDto">用户密码修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyPassword(ModifyUserPasswordDto modifyPasswordDto)
         {
-            return userBusiness.ModifyPassword(modifyInfo);
+            return userBusiness.ModifyPassword(modifyPasswordDto);
         }
 
         #endregion
@@ -123,11 +127,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 修改用户状态
         /// </summary>
-        /// <param name="statusInfo">状态信息</param>
-        /// <returns>执行结果</returns>
-        public Result ModifyStatus(ModifyUserStatusCmdDto statusInfo)
+        /// <param name="modifyUserStatusDto">用户状态修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyStatus(ModifyUserStatusDto modifyUserStatusDto)
         {
-            return userBusiness.ModifyStatus(statusInfo);
+            return userBusiness.ModifyStatus(modifyUserStatusDto);
         }
 
         #endregion
@@ -137,10 +141,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 修改用户绑定角色
         /// </summary>
-        /// <param name="bindInfo">绑定信息</param>
-        public Result ModifyUserBindRole(ModifyUserBindRoleCmdDto bindInfo)
+        /// <param name="modifyUserRoleDto">用户角色修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyUserRole(ModifyUserRoleDto modifyUserRoleDto)
         {
-            return userBusiness.ModifyUserBindRole(bindInfo);
+            return userBusiness.ModifyUserRole(modifyUserRoleDto);
         }
 
         #endregion
@@ -150,11 +155,11 @@ namespace EZNEW.AppService.Sys
         /// <summary>
         /// 清除用户绑定的角色
         /// </summary>
-        /// <param name="userSysNos">用户系统编号</param>
-        /// <returns>执行结果</returns>
-        public Result ClearUserRole(IEnumerable<long> userSysNos)
+        /// <param name="userIds">用户系统编号</param>
+        /// <returns>返回执行结果</returns>
+        public Result ClearRole(IEnumerable<long> userIds)
         {
-            return userBusiness.ClearUserRole(userSysNos);
+            return userBusiness.ClearRole(userIds);
         }
 
         #endregion

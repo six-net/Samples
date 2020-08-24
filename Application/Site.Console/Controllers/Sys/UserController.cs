@@ -1,148 +1,127 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EZNEW.Module.Sys;
+using Microsoft.AspNetCore.Mvc;
 using EZNEW.AppServiceContract.Sys;
+using EZNEW.DTO.Sys;
 using EZNEW.DTO.Sys.Cmd;
-using EZNEW.DTO.Sys.Query.Filter;
+using EZNEW.DTO.Sys.Filter;
+using EZNEW.Module.Sys;
 using EZNEW.Paging;
 using EZNEW.Response;
-using EZNEW.ViewModel.Sys.Filter;
-using EZNEW.ViewModel.Sys.Request;
-using EZNEW.ViewModel.Sys.Response;
+using EZNEW.ViewModel.Sys;
 using EZNEW.Web.Mvc;
-using Microsoft.AspNetCore.Mvc;
+using EZNEW.Web.Security.Authorization;
 
 namespace Site.Console.Controllers.Sys
 {
+    [AuthorizationOperationGroup(Name = "用户", Parent = "账户/授权")]
     public class UserController : WebBaseController
     {
-        IUserAppService userService = null;
-        IAuthAppService authService = null;
+        readonly IUserAppService userAppService;
+        readonly IUserPermissionAppService userPermissionAppService;
 
-        public UserController(IUserAppService userAppService, IAuthAppService authAppService)
+        public UserController(IUserAppService userAppService
+            , IUserPermissionAppService userPermissionAppService)
         {
-            userService = userAppService;
-            authService = authAppService;
+            this.userAppService = userAppService;
+            this.userPermissionAppService = userPermissionAppService;
         }
 
-        #region 修改密码
+        #region 用户列表
 
-        public IActionResult ModifyPassword(ModifyPasswordViewModel modifyInfo)
-        {
-            if (IsPost)
-            {
-                if (!ModelState.IsValid)
-                {
-                    return Json(Result.FailedResult("提交数据有错误"));
-                }
-                var modifyInfoDto = modifyInfo.MapTo<ModifyPasswordCmdDto>();
-                modifyInfoDto.CheckOldPassword = true;
-                modifyInfoDto.SysNo = User.Id;
-                var result = AjaxResult.CopyFromResult(userService.ModifyPassword(modifyInfoDto));
-                result.SuccessClose = true;
-                return Json(result);
-            }
-            return View("ModifyPassword");
-        }
-
-        #endregion
-
-        #region 管理用户列表
-
-        public ActionResult AdminUserList()
+        [AuthorizationOperation(Name = "用户列表")]
+        public ActionResult UserList()
         {
             return View();
         }
 
         #endregion
 
-        #region 查询管理用户数据
+        #region 搜索用户数据
 
         [HttpPost]
-        public ActionResult SearchAdminUser(AdminUserFilterViewModel filter)
+        [AuthorizationOperation(Name = "查询用户数据")]
+        public ActionResult SearchUser(RoleUserFilterDto filter)
         {
-            filter.UserType = UserType.管理账户;
-            IPaging<UserViewModel> userPager = userService.GetUserPaging(filter.MapTo<AdminUserFilterDto>()).ConvertTo<UserViewModel>();
-            object objResult = new
+            filter.UserType = UserType.Management;
+            IPaging<UserViewModel> userPager = userAppService.GetUserPaging(filter).ConvertTo<UserViewModel>();
+            object dataResult = new
             {
                 userPager.TotalCount,
                 Datas = userPager.ToList()
             };
-            return Json(objResult);
+            return Json(dataResult);
         }
 
         #endregion
 
-        #region 管理用户详情
+        #region 用户详情
 
-        public ActionResult AdminUserDetail(long id)
+        [AuthorizationOperation(Name = "用户详情页面")]
+        public ActionResult UserDetail(long id)
         {
-            #region 用户信息
-
             UserViewModel user = null;
             if (id > 0)
             {
-                AdminUserFilterDto filter = new AdminUserFilterDto()
+                UserFilterDto filter = new UserFilterDto()
                 {
-                    SysNos = new List<long>()
+                    Ids = new List<long>()
                     {
                         id
                     },
                 };
-                user = userService.GetUser(filter).MapTo<UserViewModel>();
+                user = userAppService.GetUser(filter).MapTo<UserViewModel>();
             }
-            if (user == null || !(user is AdminUserViewModel))
+            if (user == null)
             {
                 return Content("没有找到用户信息");
-            }
-            var adminUser = user as AdminUserViewModel;
-
-            #endregion
-
-            return View(adminUser);
-        }
-
-        #endregion
-
-        #region 编辑/添加管理用户
-
-        public ActionResult EditUser(EditUserViewModel user)
-        {
-            if (IsPost)
-            {
-                user.UserType = UserType.管理账户;
-                AdminUserCmdDto adminUser = user.MapTo<AdminUserCmdDto>();
-                SaveUserCmdDto saveInfo = new SaveUserCmdDto()
-                {
-                    User = adminUser
-                };
-                var result = userService.SaveUser(saveInfo);
-                return Json(result);
-            }
-            else if (user.SysNo > 0)
-            {
-                AdminUserFilterDto filter = new AdminUserFilterDto()
-                {
-                    SysNos = new List<long>()
-                    {
-                        user.SysNo
-                    }
-                };
-                user = userService.GetUser(filter).MapTo<EditUserViewModel>();
             }
             return View(user);
         }
 
         #endregion
 
-        #region 删除管理用户
+        #region 添加/编辑用户
 
-        public ActionResult DeleteUser(List<long> sysNos)
+        [AuthorizationOperation(Name = "添加/编辑用户")]
+        public ActionResult EditUser(UserViewModel user)
         {
-            Result result = userService.DeleteUser(new DeleteUserCmdDto()
+            if (IsPost)
             {
-                UserIds = sysNos
+                user.UserType = UserType.Management;
+                UserDto userDto = user.MapTo<UserDto>();
+                SaveUserDto saveUserDto = new SaveUserDto()
+                {
+                    User = userDto
+                };
+                var result = userAppService.SaveUser(saveUserDto);
+                return Json(result);
+            }
+            else if (user.Id > 0)
+            {
+                UserFilterDto filter = new UserFilterDto()
+                {
+                    Ids = new List<long>()
+                    {
+                        user.Id
+                    }
+                };
+                user = userAppService.GetUser(filter).MapTo<UserViewModel>();
+            }
+            return View(user);
+        }
+
+        #endregion
+
+        #region 删除用户
+
+        [AuthorizationOperation(Name = "删除用户")]
+        public ActionResult RemoveUser(List<long> ids)
+        {
+            Result result = userAppService.RemoveUser(new RemoveUserDto()
+            {
+                Ids = ids
             });
             return Json(result);
         }
@@ -152,16 +131,17 @@ namespace Site.Console.Controllers.Sys
         #region 验证登陆名是否存在
 
         [HttpPost]
+        [AuthorizationOperation(Name = "验证用户名是否存在")]
         public ActionResult CheckUserName(string userName)
         {
             bool allowUse = true;
-            if (!userName.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(userName))
             {
                 UserFilterDto filter = new UserFilterDto()
                 {
                     UserName = userName
                 };
-                var user = userService.GetUser(filter);
+                var user = userAppService.GetUser(filter);
                 allowUse = user == null;
             }
             return Content(allowUse ? "true" : "false");
@@ -172,32 +152,33 @@ namespace Site.Console.Controllers.Sys
         #region 修改用户状态
 
         [HttpPost]
+        [AuthorizationOperation(Name = "修改用户状态")]
         public ActionResult ModifyUserStatus(long id, UserStatus status)
         {
-            ModifyUserStatusCmdDto statusInfo = new ModifyUserStatusCmdDto()
+            ModifyUserStatusDto statusInfo = new ModifyUserStatusDto()
             {
-                Status = status,
-                UserId = id
+                StatusInfos = new Dictionary<long, UserStatus>() { { id, status } }
             };
-            return Json(userService.ModifyStatus(statusInfo));
+            return Json(userAppService.ModifyStatus(statusInfo));
         }
 
         #endregion
 
         #region 修改密码
 
-        public ActionResult AdminModifyPassword(ModifyPasswordViewModel modifyInfo)
+        [AuthorizationOperation(Name = "修改用户密码")]
+        public ActionResult ModifyUserPassword(ModifyUserPasswordViewModel modifyInfo)
         {
             if (IsPost)
             {
-                ModelState.Remove("NowPassword");
+                ModelState.Remove("CurrentPassword");
                 if (!ModelState.IsValid)
                 {
                     return Json(Result.FailedResult("提交数据有错误"));
                 }
-                var modifyInfoDto = modifyInfo.MapTo<ModifyPasswordCmdDto>();
-                modifyInfoDto.CheckOldPassword = false;
-                var modifyResult = userService.ModifyPassword(modifyInfoDto);
+                var modifyInfoDto = modifyInfo.MapTo<ModifyUserPasswordDto>();
+                modifyInfoDto.CheckCurrentPassword = false;
+                var modifyResult = userAppService.ModifyPassword(modifyInfoDto);
                 var result = AjaxResult.CopyFromResult(modifyResult);
                 result.SuccessClose = true;
                 return Json(result);
@@ -205,65 +186,100 @@ namespace Site.Console.Controllers.Sys
             return View(modifyInfo);
         }
 
+        [AuthorizationOperation(Name = "修改自己的登录密码")]
+        public IActionResult ModifySelfPassword(ModifyUserPasswordViewModel modifyInfo)
+        {
+            if (IsPost)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(Result.FailedResult("提交数据有错误"));
+                }
+                var modifyInfoDto = modifyInfo.MapTo<ModifyUserPasswordDto>();
+                modifyInfoDto.CheckCurrentPassword = true;
+                modifyInfoDto.UserId = User.Id;
+                var result = AjaxResult.CopyFromResult(userAppService.ModifyPassword(modifyInfoDto));
+                result.SuccessClose = true;
+                return Json(result);
+            }
+            return View("ModifySelfPassword");
+        }
+
         #endregion
 
-        #region 管理用户多选
+        #region 用户多选
 
-        public ActionResult AdminUserMultiSelect()
+        [AuthorizationOperation(Name = "用户多选页面")]
+        public ActionResult UserMultiSelect()
         {
             return View();
         }
 
         #endregion
 
-        #region 管理用户&角色
+        #region 用户&角色
 
-        #region 移除管理用户角色
+        #region 移除用户角色
 
         [HttpPost]
+        [AuthorizationOperation(Name = "删除用户角色")]
         public ActionResult RemoveUserRole(long userId, IEnumerable<long> roleIds)
         {
-            ModifyUserBindRoleCmdDto bindInfo = new ModifyUserBindRoleCmdDto()
+            if (userId < 1)
             {
-                UnBinds = roleIds.Select(c => new Tuple<UserCmdDto, RoleCmdDto>(new UserCmdDto()
+                return Json(Result.FailedResult("没有指定用户数据"));
+            }
+            if (roleIds.IsNullOrEmpty())
+            {
+                return Json(Result.FailedResult("没有指定角色数据"));
+            }
+            ModifyUserRoleDto modifyUserRoleDto = new ModifyUserRoleDto()
+            {
+                Unbindings = roleIds.Select(rid => new UserRoleDto()
                 {
-                    SysNo = userId
-                }, new RoleCmdDto()
-                {
-                    SysNo = c
-                }))
+                    RoleId = rid,
+                    UserId = userId
+                })
             };
-            return Json(userService.ModifyUserBindRole(bindInfo));
+            return Json(userAppService.ModifyUserRole(modifyUserRoleDto));
         }
 
         #endregion
 
-        #region 添加管理用户角色
+        #region 添加用户角色
 
         [HttpPost]
+        [AuthorizationOperation(Name = "添加用户角色")]
         public ActionResult AddUserRole(long userId, IEnumerable<long> roleIds)
         {
-            ModifyUserBindRoleCmdDto bindInfo = new ModifyUserBindRoleCmdDto()
+            if (userId < 1)
             {
-                Binds = roleIds.Select(c => new Tuple<UserCmdDto, RoleCmdDto>(new UserCmdDto()
+                return Json(Result.FailedResult("没有指定用户数据"));
+            }
+            if (roleIds.IsNullOrEmpty())
+            {
+                return Json(Result.FailedResult("没有指定角色数据"));
+            }
+            ModifyUserRoleDto modifyUserRoleDto = new ModifyUserRoleDto()
+            {
+                Bindings = roleIds.Select(rid => new UserRoleDto()
                 {
-                    SysNo = userId
-                }, new RoleCmdDto()
-                {
-                    SysNo = c
-                }))
+                    RoleId = rid,
+                    UserId = userId
+                })
             };
-            return Json(userService.ModifyUserBindRole(bindInfo));
+            return Json(userAppService.ModifyUserRole(modifyUserRoleDto));
         }
 
         #endregion
 
-        #region 清除管理用户角色
+        #region 清除用户角色
 
         [HttpPost]
+        [AuthorizationOperation(Name = "清除用户角色")]
         public ActionResult ClearUserRole(long userId)
         {
-            var result = userService.ClearUserRole(new long[1] { userId });
+            var result = userAppService.ClearRole(new long[1] { userId });
             return Json(result);
         }
 
@@ -271,78 +287,71 @@ namespace Site.Console.Controllers.Sys
 
         #endregion
 
-        #region 管理账户授权
+        #region 账户授权
 
-        #region 添加管理账户授权
+        #region 添加账户授权
 
         [HttpPost]
-        public ActionResult AddUserAuthorize(long userId, IEnumerable<long> authSysNos)
+        [AuthorizationOperation(Name = "添加用户权限")]
+        public ActionResult AddUserPermission(long userId, IEnumerable<long> permissionIds)
         {
-            List<UserAuthorizeCmdDto> userAuthorizeList = new List<UserAuthorizeCmdDto>();
-            var user = new AdminUserCmdDto()
+            if (userId < 1)
             {
-                SysNo = userId,
-                UserType = UserType.管理账户
-            };
-            if (!authSysNos.IsNullOrEmpty())
+                return Json(Result.FailedResult("没有指定用户"));
+            }
+            if (permissionIds.IsNullOrEmpty())
             {
-                userAuthorizeList.AddRange(authSysNos?.Select(c => new UserAuthorizeCmdDto()
+                return Json(Result.FailedResult("没有指定权限"));
+            }
+            ModifyUserPermissionDto modifyUserPermissionDto = new ModifyUserPermissionDto()
+            {
+                UserPermissions = permissionIds.Select(pid => new UserPermissionDto()
                 {
                     Disable = false,
-                    Authority = new AuthorityCmdDto()
-                    {
-                        SysNo = c
-                    },
-                    User = user
-                }));
-            }
-            ModifyUserAuthorizeCmdDto userAuthInfo = new ModifyUserAuthorizeCmdDto()
-            {
-                UserAuthorizes = userAuthorizeList
+                    PermissionId = pid,
+                    UserId = userId
+                })
             };
-            return Json(authService.ModifyUserAuthorize(userAuthInfo));
+            return Json(userPermissionAppService.ModifyUserPermission(modifyUserPermissionDto));
         }
 
         #endregion
 
-        #region 删除管理账户授权
+        #region 删除账户授权
 
         [HttpPost]
-        public ActionResult RemoveUserAuthorize(long userId, IEnumerable<long> authSysNos)
+        [AuthorizationOperation(Name = "删除用户权限")]
+        public ActionResult RemoveUserPermission(long userId, IEnumerable<long> permissionIds)
         {
-            List<UserAuthorizeCmdDto> userAuthorizeList = new List<UserAuthorizeCmdDto>();
-            var user = new AdminUserCmdDto()
+            if (userId < 1)
             {
-                SysNo = userId,
-                UserType = UserType.管理账户
-            };
-            if (!authSysNos.IsNullOrEmpty())
+                return Json(Result.FailedResult("没有指定用户"));
+            }
+            if (permissionIds.IsNullOrEmpty())
             {
-                userAuthorizeList.AddRange(authSysNos?.Select(c => new UserAuthorizeCmdDto()
+                return Json(Result.FailedResult("没有指定权限"));
+            }
+            ModifyUserPermissionDto modifyUserPermissionDto = new ModifyUserPermissionDto()
+            {
+                UserPermissions = permissionIds.Select(pid => new UserPermissionDto()
                 {
                     Disable = true,
-                    Authority = new AuthorityCmdDto()
-                    {
-                        SysNo = c
-                    },
-                    User = user
-                }));
-            }
-            ModifyUserAuthorizeCmdDto userAuthInfo = new ModifyUserAuthorizeCmdDto()
-            {
-                UserAuthorizes = userAuthorizeList
+                    PermissionId = pid,
+                    UserId = userId
+                })
             };
-            return Json(authService.ModifyUserAuthorize(userAuthInfo));
+            return Json(userPermissionAppService.ModifyUserPermission(modifyUserPermissionDto));
         }
 
         #endregion
 
-        #region 还原管理用户角色授权
+        #region 还原用户角色授权
 
         [HttpPost]
-        public ActionResult RestoreUserRoleAuthorize(long userId)
+        [AuthorizationOperation(Name = "清除用户权限")]
+        public ActionResult RestoreUserRolePermission(long userId)
         {
-            var result = authService.ClearUserAuthorize(new long[1] { userId });
+            var result = userPermissionAppService.ClearUserPermission(new long[1] { userId });
             return Json(result);
         }
 

@@ -1,16 +1,16 @@
+using System.Collections.Generic;
+using System.Linq;
+using EZNEW.Paging;
+using EZNEW.Response;
 using EZNEW.Develop.CQuery;
 using EZNEW.Domain.Sys.Model;
 using EZNEW.Domain.Sys.Repository;
-using EZNEW.Domain.Sys.Service.Param;
-using EZNEW.Query.Sys;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using EZNEW.Module.Sys;
 using EZNEW.DependencyInjection;
-using EZNEW.Response;
 using EZNEW.ExpressionUtil;
-using EZNEW.Paging;
+using EZNEW.Entity.Sys;
+using EZNEW.Domain.Sys.Parameter.Filter;
+using EZNEW.Domain.Sys.Parameter;
+using EZNEW.Module.Sys;
 
 namespace EZNEW.Domain.Sys.Service.Impl
 {
@@ -19,8 +19,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
     /// </summary>
     public class UserService : IUserService
     {
-        static IUserRepository userRepository = ContainerManager.Container.Resolve<IUserRepository>();
-        static IUserRoleRepository userRoleRepository = ContainerManager.Container.Resolve<IUserRoleRepository>();
+        static readonly IUserRepository userRepository = ContainerManager.Resolve<IUserRepository>();
 
         #region 保存用户
 
@@ -28,15 +27,15 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 保存用户信息
         /// </summary>
         /// <param name="user">用户信息</param>
-        /// <returns></returns>
-        public Result<User> SaveUser(User user)
+        /// <returns>返回保存执行结果</returns>
+        public Result<User> Save(User user)
         {
             if (user == null)
             {
                 return Result<User>.FailedResult("用户信息为空");
             }
             Result<User> result = null;
-            if (user.SysNo < 1)
+            if (user.Id < 1)
             {
                 result = AddUser(user);
             }
@@ -54,7 +53,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns></returns>
         Result<User> AddUser(User user)
         {
-            user.ModifyPassword(user.Pwd);//密码加密
+            user.ModifyPassword(user.Password);//密码加密
             user.Save();
             var result = Result<User>.SuccessResult("保存成功");
             result.Data = user;
@@ -68,23 +67,22 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns></returns>
         Result<User> UpdateUser(User user)
         {
-            var nowUser = GetUser(user.SysNo);
+            var nowUser = Get(user.Id);
             if (nowUser == null)
             {
                 return Result<User>.FailedResult("请指定要编辑的用户");
             }
             var excludeModifyPropertys = ExpressionHelper.GetExpressionPropertyNames<User>(u =>
-              u.SysNo
-            , u => u.Pwd
+              u.Id
+            , u => u.Password
             , u => u.UserType
             , u => u.CreateDate
-            , u => u.LastLoginDate
             , u => u.UserName
             , u => u.SuperUser
             );
             if (nowUser.SuperUser)
             {
-                user.Status = UserStatus.正常;
+                user.Status = UserStatus.Enable;
             }
             nowUser.ModifyFromOtherUser(user, excludeModifyPropertys);//更新用户
             nowUser.Save();
@@ -101,8 +99,8 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 删除用户
         /// </summary>
         /// <param name="users">要删除的用户信息</param>
-        /// <returns></returns>
-        public Result DeleteUser(IEnumerable<User> users)
+        /// <returns>返回执行结果</returns>
+        public Result Remove(IEnumerable<User> users)
         {
             if (users.IsNullOrEmpty())
             {
@@ -116,15 +114,15 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 删除用户
         /// </summary>
         /// <param name="userIds">用户编号</param>
-        /// <returns></returns>
-        public Result DeleteUser(IEnumerable<long> userIds)
+        /// <returns>返回执行结果</returns>
+        public Result Remove(IEnumerable<long> userIds)
         {
             if (userIds.IsNullOrEmpty())
             {
                 return Result.FailedResult("没有指定要删除的用户");
             }
-            IEnumerable<User> users = userIds.Select(c => User.CreateUser(c)).ToList();
-            return DeleteUser(users);
+            IEnumerable<User> users = userIds.Select(c => User.Create(c)).ToList();
+            return Remove(users);
         }
 
         #endregion
@@ -134,12 +132,12 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <summary>
         /// 用户登录
         /// </summary>
-        /// <param name="user">登录用户信息</param>
-        /// <returns></returns>
-        public Result<User> Login(UserLogin loginInfo)
+        /// <param name="loginInfo">登录用户信息</param>
+        /// <returns>返回登录执行结果</returns>
+        public Result<User> Login(Login loginInfo)
         {
-            var userQuery = QueryManager.Create<UserQuery>(u => u.UserName == loginInfo.UserName && u.Pwd == User.PasswordEncryption(loginInfo.Pwd));
-            User user = userRepository.Get(userQuery);
+            var UserEntity = QueryManager.Create<UserEntity>(u => u.UserName == loginInfo.UserName && u.Password == User.PasswordEncryption(loginInfo.Password));
+            User user = userRepository.Get(UserEntity);
             if (user == null || !user.AllowLogin())
             {
                 return Result<User>.FailedResult("登陆失败");
@@ -157,8 +155,8 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 获取用户
         /// </summary>
         /// <param name="query">查询对象</param>
-        /// <returns></returns>
-        public User GetUser(IQuery query)
+        /// <returns>返回用户</returns>
+        User GetUser(IQuery query)
         {
             User user = userRepository.Get(query);
             return user;
@@ -168,15 +166,25 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 获取用户信息
         /// </summary>
         /// <param name="userId">用户编号</param>
-        /// <returns></returns>
-        public User GetUser(long userId)
+        /// <returns>返回用户</returns>
+        public User Get(long userId)
         {
             if (userId <= 0)
             {
                 return null;
             }
-            IQuery query = QueryManager.Create<UserQuery>(c => c.SysNo == userId);
+            IQuery query = QueryManager.Create<UserEntity>(c => c.Id == userId);
             return GetUser(query);
+        }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="userFilter">用户筛选信息</param>
+        /// <returns>返回用户</returns>
+        public User Get(UserFilter userFilter)
+        {
+            return GetUser(userFilter?.CreateQuery());
         }
 
         #endregion
@@ -187,8 +195,8 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 获取用户列表
         /// </summary>
         /// <param name="query">筛选条件</param>
-        /// <returns></returns>
-        public List<User> GetUserList(IQuery query)
+        /// <returns>返回用户列表</returns>
+        List<User> GetUserList(IQuery query)
         {
             return userRepository.GetList(query);
         }
@@ -197,15 +205,25 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 获取用户列表
         /// </summary>
         /// <param name="userIds">用户编号</param>
-        /// <returns></returns>
-        public List<User> GetUserList(IEnumerable<long> userIds)
+        /// <returns>返回用户列表</returns>
+        public List<User> GetList(IEnumerable<long> userIds)
         {
             if (userIds.IsNullOrEmpty())
             {
                 return new List<User>(0);
             }
-            IQuery query = QueryManager.Create<UserQuery>(c => userIds.Contains(c.SysNo));
+            IQuery query = QueryManager.Create<UserEntity>(c => userIds.Contains(c.Id));
             return GetUserList(query);
+        }
+
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="userFilter">用户筛选条件</param>
+        /// <returns>返回用户列表</returns>
+        public List<User> GetList(UserFilter userFilter)
+        {
+            return GetUserList(userFilter?.CreateQuery());
         }
 
         #endregion
@@ -216,10 +234,20 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 获取用户分页
         /// </summary>
         /// <param name="query">筛选信息</param>
-        /// <returns></returns>
-        public IPaging<User> GetUserPaging(IQuery query)
+        /// <returns>返回用户分页</returns>
+        IPaging<User> GetPaging(IQuery query)
         {
             return userRepository.GetPaging(query);
+        }
+
+        /// <summary>
+        /// 获取用户分页
+        /// </summary>
+        /// <param name="userFilter">用户筛选信息</param>
+        /// <returns>返回用户分页</returns>
+        public IPaging<User> GetPaging(UserFilter userFilter)
+        {
+            return GetPaging(userFilter?.CreateQuery());
         }
 
         #endregion
@@ -229,13 +257,13 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="modifyInfo">修改信息</param>
-        /// <returns></returns>
-        public Result ModifyPassword(ModifyUserPassword modifyInfo)
+        /// <param name="modifyUserPassword">用户密码修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyPassword(ModifyUserPassword modifyUserPassword)
         {
             #region 参数判断
 
-            if (modifyInfo == null)
+            if (modifyUserPassword == null)
             {
                 return Result.FailedResult("密码修改信息为空");
             }
@@ -243,18 +271,18 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #endregion
 
             //获取用户
-            IQuery query = QueryManager.Create<UserQuery>(u => u.SysNo == modifyInfo.SysNo);
+            IQuery query = QueryManager.Create<UserEntity>(u => u.Id == modifyUserPassword.UserId);
             User nowUser = userRepository.Get(query);
             if (nowUser == null)
             {
                 return Result.FailedResult("用户不存在");
             }
             //验证当前密码
-            if (modifyInfo.CheckOldPassword && nowUser.Pwd != User.PasswordEncryption(modifyInfo.NowPassword))
+            if (modifyUserPassword.CheckCurrentPassword && nowUser.Password != User.PasswordEncryption(modifyUserPassword.CurrentPassword))
             {
                 return Result.FailedResult("当前密码不正确");
             }
-            nowUser.ModifyPassword(modifyInfo.NewPassword);//设置新密码
+            nowUser.ModifyPassword(modifyUserPassword.NewPassword);//设置新密码
             nowUser.Save();
             return Result.SuccessResult("密码修改成功");
         }
@@ -266,32 +294,26 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <summary>
         /// 修改用户状态
         /// </summary>
-        /// <param name="userStatus">状态信息</param>
-        /// <returns>执行结果</returns>
-        public Result ModifyStatus(params UserStatusInfo[] userStatus)
+        /// <param name="modifyUserStatus">用户状态修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyStatus(ModifyUserStatus modifyUserStatus)
         {
-            if (userStatus.IsNullOrEmpty())
+            if (modifyUserStatus?.StatusInfos.IsNullOrEmpty() ?? true)
             {
                 return Result.FailedResult("没有指定要修改状态的用户信息");
             }
-            var userIds = userStatus.Select(c => c.UserId).Distinct().ToList();
-            var userList = GetUserList(userIds);
+            var userList = GetList(modifyUserStatus.StatusInfos.Keys);
             if (userList.IsNullOrEmpty())
             {
                 return Result.FailedResult("没有指定要修改状态的用户信息");
             }
             foreach (var user in userList)
             {
-                if (user == null)
+                if (user == null || !modifyUserStatus.StatusInfos.TryGetValue(user.Id, out var newStatus))
                 {
                     continue;
                 }
-                var newStatusInfo = userStatus.FirstOrDefault(c => c.UserId == user.SysNo);
-                if (newStatusInfo == null)
-                {
-                    continue;
-                }
-                user.Status = newStatusInfo.Status;
+                user.Status = newStatus;
                 user.Save();
             }
             return Result.SuccessResult("修改成功");
@@ -305,18 +327,18 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// 验证用户名是否存在
         /// </summary>
         /// <param name="userName">用户名</param>
-        /// <param name="excludeUserId">检查除指定用户以外的用户信息</param>
-        /// <returns></returns>
-        public bool ExistUserName(string userName, long? excludeUserId = null)
+        /// <param name="excludeId">检查除指定用户以外的用户信息</param>
+        /// <returns>返回用户名是否存在</returns>
+        public bool ExistName(string userName, long? excludeId = null)
         {
-            if (userName.IsNullOrEmpty())
+            if (string.IsNullOrWhiteSpace(userName))
             {
                 return false;
             }
-            IQuery query = QueryManager.Create<UserQuery>(c => c.UserName == userName);
-            if (excludeUserId.HasValue)
+            IQuery query = QueryManager.Create<UserEntity>(c => c.UserName == userName);
+            if (excludeId.HasValue)
             {
-                query.And<UserQuery>(c => c.SysNo != excludeUserId);
+                query.And<UserEntity>(c => c.Id != excludeId);
             }
             return userRepository.Exist(query);
         }

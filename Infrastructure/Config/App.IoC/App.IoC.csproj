@@ -2,16 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>eznew.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EZNEW.VerificationCode.SkiaSharp" Version="2.0.0" />
-    <PackageReference Include="EZNEW.Web" Version="4.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.1" />
+    <PackageReference Include="EZNEW.Web" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Modules\Sys\Business\Domain\EZNEW.Domain.Sys\EZNEW.Domain.Sys.csproj" />
+    <ProjectReference Include="..\..\..\Modules\Sys\Libraries\EZNEW.ModuleConfig.Sys\EZNEW.ModuleConfig.Sys.csproj" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="build.bat" />
+  </Target>
 
 </Project>

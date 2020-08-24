@@ -50,7 +50,7 @@ var CTreeControl = function CTreeControl(options) {
             method: 'post',
             parseDataToNode: null,
             treeEleId: 'data_tree',
-            keyField: 'SysNo',
+            keyField: 'Id',
             nameField: 'Name',
             parentField: 'Parent',
             loadingIcoUrl: EZNEW_TreeLoadingIcoUrl,

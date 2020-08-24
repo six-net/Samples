@@ -1,0 +1,93 @@
+@{
+    ViewBag.Title = "编辑授权操作";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using EZNEW.ViewModel.Sys
+@using EZNEW.Module.Sys
+@model OperationViewModel
+@{
+    var isAdd = (Model?.Id ?? 0) <= 0;
+    if (isAdd)
+    {
+        Model.AccessLevel = OperationAccessLevel.Authorized;
+        Model.Status = OperationStatus.Enable;
+    }
+}
+<div id="page-body">
+    <div id="page-body-inner">
+        <div class="layui-form">
+            @using (Html.AjaxBeginForm("EditOperation", "Operation", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback" }, new { id = "default-form" }))
+            {
+                @Html.HiddenFor(r => r.Group.Id)
+                @Html.HiddenFor(r => r.Id)
+                @if (Model.Group != null)
+                {
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属分组</label>
+                        <div class="layui-input-inline w-200 lh-38">
+                            @Model.Group.Name
+                        </div>
+                    </div>
+                }
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Name)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.Name, new { @class = "layui-input" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.ControllerCode)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.ControllerCode, new { @class = "layui-input" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.ControllerCode, "", new { @class = "form-validate-msg" })</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.ActionCode)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.ActionCode, new { @class = "layui-input" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.ActionCode, "", new { @class = "form-validate-msg" })</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.AccessLevel)</label>
+                    <div class="layui-input-block">
+                        @Html.EnumToRadio(a => a.AccessLevel, OperationAccessLevel.Public, checkedValue: Model?.AccessLevel, textAttributes: new string[] { "title" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Status)</label>
+                    <div class="layui-input-block">
+                        @Html.EnumToRadio(a => a.Status, OperationStatus.Enable, checkedValue: Model?.Status, textAttributes: new string[] { "title" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Remark)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextAreaFor(a => a.Remark, new { @class = "layui-input h-50", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.Remark, "", new { @class = "form-validate-msg" })</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="page-foot" class="hidev">
+    <div class="page-foot-btngroup">
+        <button type="button" id="btn_submit" class="layui-btn layui-btn-gsuccess"><i class="icon-save"></i> 提交</button>
+        <button type="reset" id="btn_reset" class="layui-btn layui-btn-gsecondary"><i class="icon-undo"></i> 重置</button>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        DataObjectTag = "Operation";
+        $(function () {
+            BindDefaultFormSubmitEnterEvent();
+        });
+
+    </script>
+}

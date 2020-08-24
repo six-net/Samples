@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EZNEW.Develop.Entity;
+using EZNEW.Module.Sys;
 
 namespace EZNEW.Entity.Sys
 {
@@ -11,18 +12,6 @@ namespace EZNEW.Entity.Sys
     [Entity("Sys_Role", "Sys", "角色")]
     public class RoleEntity : BaseEntity<RoleEntity>
     {
-        #region	字段
-
-        /// <summary>
-        /// 角色编号
-        /// </summary>
-        [EntityField(Description = "角色编号", PrimaryKey = true)]
-        public long SysNo
-        {
-            get { return valueDict.GetValue<long>("SysNo"); }
-            set { valueDict.SetValue("SysNo", value); }
-        }
-
         /// <summary>
         /// 名称
         /// </summary>
@@ -67,9 +56,9 @@ namespace EZNEW.Entity.Sys
         /// 状态
         /// </summary>
         [EntityField(Description = "状态")]
-        public int Status
+        public RoleStatus Status
         {
-            get { return valueDict.GetValue<int>("Status"); }
+            get { return valueDict.GetValue<RoleStatus>("Status"); }
             set { valueDict.SetValue("Status", value); }
         }
 
@@ -93,6 +82,14 @@ namespace EZNEW.Entity.Sys
             set { valueDict.SetValue("Remark", value); }
         }
 
-        #endregion
+        /// <summary>
+        /// 角色编号
+        /// </summary>
+        [EntityField(Description = "角色编号", PrimaryKey = true)]
+        public long Id
+        {
+            get { return valueDict.GetValue<long>("Id"); }
+            set { valueDict.SetValue("Id", value); }
+        }
     }
 }

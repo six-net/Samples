@@ -20,7 +20,7 @@ namespace EZNEW.Module.Sys
         {
             List<string> groupCodes = new List<string>();
 
-            Array values = Enum.GetValues(SysModuleObject.AuthorityOperation.GetType());
+            Array values = Enum.GetValues(SysModuleObject.Operation.GetType());
             foreach (SysModuleObject group in values)
             {
                 groupCodes.Add(GetIdGroup(group));

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EZNEW.Query.Sys;
 using EZNEW.Entity.Sys;
 using EZNEW.Develop.CQuery;
 using EZNEW.Develop.Domain.Repository;
@@ -17,9 +16,9 @@ namespace EZNEW.Repository.Sys
     public class UserRoleRepository : DefaultRelationRepository<User, Role, UserRoleEntity, IUserRoleDataAccess>, IUserRoleRepository
     {
         /// <summary>
-        /// create query by first type datas
+        /// Create query by first type datas
         /// </summary>
-        /// <param name="datas">datas</param>
+        /// <param name="datas">Datas</param>
         /// <returns></returns>
         public override IQuery CreateQueryByFirst(IEnumerable<User> datas)
         {
@@ -27,15 +26,14 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            IEnumerable<long> userIds = datas.Select(c => c.SysNo).Distinct();
-            IQuery query = QueryManager.Create<UserRoleQuery>(c => userIds.Contains(c.UserSysNo));
-            return query;
+            IEnumerable<long> userIds = datas.Select(c => c.Id);
+            return QueryManager.Create<UserRoleEntity>(c => userIds.Contains(c.UserId));
         }
 
         /// <summary>
-        /// create query by second type datas
+        /// Create query by second type datas
         /// </summary>
-        /// <param name="datas">datas</param>
+        /// <param name="datas">Datas</param>
         /// <returns></returns>
         public override IQuery CreateQueryBySecond(IEnumerable<Role> datas)
         {
@@ -43,29 +41,28 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            IEnumerable<long> roleIds = datas.Select(c => c.SysNo).Distinct();
-            IQuery query = QueryManager.Create<UserRoleQuery>(c => roleIds.Contains(c.RoleSysNo));
-            return query;
+            IEnumerable<long> roleIds = datas.Select(c => c.Id);
+            return QueryManager.Create<UserRoleEntity>(c => roleIds.Contains(c.RoleId));
         }
 
         /// <summary>
-        /// create entity by relation data
+        /// Create entity by relation data
         /// </summary>
-        /// <param name="data">data</param>
+        /// <param name="data">Data</param>
         /// <returns></returns>
         public override UserRoleEntity CreateEntityByRelationData(Tuple<User, Role> data)
         {
             return new UserRoleEntity()
             {
-                UserSysNo = data.Item1.SysNo,
-                RoleSysNo = data.Item2.SysNo
+                UserId = data.Item1.Id,
+                RoleId = data.Item2.Id
             };
         }
 
         /// <summary>
-        /// create relation data
+        /// Create relation data
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">Entity</param>
         /// <returns></returns>
         public override Tuple<User, Role> CreateRelationDataByEntity(UserRoleEntity entity)
         {
@@ -73,13 +70,13 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            return new Tuple<User, Role>(User.CreateUser(entity.UserSysNo), Role.CreateRole(entity.RoleSysNo));
+            return new Tuple<User, Role>(User.Create(entity.UserId), Role.Create(entity.RoleId));
         }
 
         /// <summary>
-        /// create query by first
+        /// Create query by first
         /// </summary>
-        /// <param name="query">query</param>
+        /// <param name="query">First type data query</param>
         /// <returns></returns>
         public override IQuery CreateQueryByFirst(IQuery query)
         {
@@ -87,18 +84,18 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            var copyQuery = query.Copy();
-            copyQuery.ClearQueryFields();
-            copyQuery.AddQueryFields<UserQuery>(c => c.SysNo);
-            var removeQuery = QueryManager.Create<UserRoleQuery>();
-            removeQuery.And<UserRoleQuery>(ur => ur.UserSysNo, CriteriaOperator.In, copyQuery);
-            return removeQuery;
+            var userQuery = query.LightClone();
+            userQuery.ClearQueryFields();
+            userQuery.AddQueryFields<UserEntity>(c => c.Id);
+            var userRoleQuery = QueryManager.Create<UserRoleEntity>();
+            userRoleQuery.And<UserRoleEntity>(ur => ur.UserId, CriteriaOperator.In, userQuery);
+            return userRoleQuery;
         }
 
         /// <summary>
-        /// create query by second
+        /// Create query by second
         /// </summary>
-        /// <param name="query">query</param>
+        /// <param name="query">Second type data query</param>
         /// <returns></returns>
         public override IQuery CreateQueryBySecond(IQuery query)
         {
@@ -106,12 +103,12 @@ namespace EZNEW.Repository.Sys
             {
                 return null;
             }
-            var copyQuery = query.Copy();
-            copyQuery.ClearQueryFields();
-            copyQuery.AddQueryFields<RoleQuery>(c => c.SysNo);
-            var removeQuery = QueryManager.Create<UserRoleQuery>();
-            removeQuery.And<UserRoleQuery>(ur => ur.RoleSysNo, CriteriaOperator.In, copyQuery);
-            return removeQuery;
+            var roleQuery = query.LightClone();
+            roleQuery.ClearQueryFields();
+            roleQuery.AddQueryFields<RoleEntity>(c => c.Id);
+            var userRoleQuery = QueryManager.Create<UserRoleEntity>();
+            userRoleQuery.And<UserRoleEntity>(ur => ur.RoleId, CriteriaOperator.In, roleQuery);
+            return userRoleQuery;
         }
     }
 }

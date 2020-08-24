@@ -15,7 +15,7 @@ function InitGroupDataManage(options) {
             sortUrl: '',
             editUrl: '',
             loadMethod: 'post',
-            keyField: 'SysNo',
+            keyField: 'Id',
             nameField: 'Name',
             parentField: 'Parent',
             sortField: 'Sort',
@@ -117,7 +117,7 @@ function InitGroupDataManage(options) {
             clearBtnEleId: 'btn_cleargrouptabledata',
             loadDataMethod: 'post',
             toolBarEvent: null,
-            tableDataKeyField: 'SysNo',
+            tableDataKeyField: 'Id',
             editWindowSize: ['700px', '500px'],
             dataTag: '',
             dataName: '',
@@ -347,7 +347,7 @@ function EZNEW_ClearGroupTableDatas() {
 //移除分组表格数据
 function EZNEW_RemoveGroupTableDatas(datas) {
     if (!datas || datas.length < 1 || !EZNEW_NowSelectedGroupData) {
-        ErrorMsg('没有指定要删除的' + EZNEW_GroupDataOptions.dataTable.dataName + '数据')
+        ErrorMsg('没有指定要移除的' + EZNEW_GroupDataOptions.dataTable.dataName)
         return;
     }
 
@@ -371,7 +371,7 @@ function EZNEW_RemoveGroupTableDatas(datas) {
 //删除分组数据
 function EZNEW_DeleteGroupData(ids) {
     if (!ids || ids.length <= 0) {
-        ErrorMsg('没有选择要删除的' + EZNEW_GroupDataOptions.groupData.groupName + '数据');
+        ErrorMsg('没有选择要删除的' + EZNEW_GroupDataOptions.groupData.groupName);
         return;
     }
     ConfirmMsg('删除' + EZNEW_GroupDataOptions.groupData.groupName + '数据将同时删除该' + EZNEW_GroupDataOptions.groupData.groupName + '下的所有下级' + EZNEW_GroupDataOptions.groupData.groupName + ',确认删除吗?', function (res) {

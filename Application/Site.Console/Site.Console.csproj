@@ -12,9 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Config\App.Cache\App.Cache.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Config\App.Database\App.Database.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Config\App.IoC\App.IoC.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Config\Site.Console.Config\Site.Console.Config.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Model\Presentation\EZNEW.ViewModel.Common\EZNEW.ViewModel.Common.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Model\EZNEW.ViewModel.Common\EZNEW.ViewModel.Common.csproj" />
     <ProjectReference Include="..\..\Modules\Sys\Service\EZNEW.AppServiceContract.Sys\EZNEW.AppServiceContract.Sys.csproj" />
   </ItemGroup>
 
@@ -62,6 +63,51 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="ConfigFile\Validation\Sys\Role.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Display\Sys\OperationGroupViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Display\Sys\OperationViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Display\Sys\PermissionGroupViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Display\Sys\PermissionViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Display\Sys\RoleViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Display\Sys\UserViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\LoginViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\ModifyPasswordViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\OperationGroupViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\OperationViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\PermissionGroupViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\PermissionViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\Role.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\RoleViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Validation\Sys\UserViewModel.dvconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

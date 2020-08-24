@@ -6,12 +6,15 @@
 
   <ItemGroup>
     <Compile Remove="Event\**" />
+    <Compile Remove="Response\**" />
     <EmbeddedResource Remove="Event\**" />
+    <EmbeddedResource Remove="Response\**" />
     <None Remove="Event\**" />
+    <None Remove="Response\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Model\EZNEW.Query.Sys\EZNEW.Query.Sys.csproj" />
+    <ProjectReference Include="..\..\..\Model\EZNEW.Entity.Sys\EZNEW.Entity.Sys.csproj" />
   </ItemGroup>
 
 </Project>

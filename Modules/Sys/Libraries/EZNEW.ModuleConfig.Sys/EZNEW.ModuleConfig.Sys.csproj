@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="EZNEW.Mapper.Convention" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,59 +18,11 @@
     <ProjectReference Include="..\..\Business\Domain\EZNEW.Repository.Sys\EZNEW.Repository.Sys.csproj" />
     <ProjectReference Include="..\..\DataAccess\EZNEW.DataAccess.Sys\EZNEW.DataAccess.Sys.csproj" />
     <ProjectReference Include="..\..\DataAccess\EZNEW.DataAccessContract.Sys\EZNEW.DataAccessContract.Sys.csproj" />
-    <ProjectReference Include="..\..\Model\EZNEW.Query.Sys\EZNEW.Query.Sys.csproj" />
     <ProjectReference Include="..\..\Service\EZNEW.AppService.Sys\EZNEW.AppService.Sys.csproj" />
     <ProjectReference Include="..\..\Service\EZNEW.AppServiceContract.Sys\EZNEW.AppServiceContract.Sys.csproj" />
     <ProjectReference Include="..\..\Business\EZNEW.Business.Sys\EZNEW.Business.Sys.csproj" />
+    <ProjectReference Include="..\..\DataAccess\EZNEW.CacheDataAccess.Sys\EZNEW.CacheDataAccess.Sys.csproj" />
     <ProjectReference Include="..\EZNEW.Module.Sys\EZNEW.Module.Sys.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ConfigFile\Sys\Display\EditAuthorityGroupViewModel.disconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Display\EditAuthorityOperationGroupViewModel.disconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Display\EditAuthorityOperationViewModel.disconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Display\EditAuthorityViewModel.disconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Display\EditRoleViewModel.disconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Display\EditUserViewModel.disconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\EditAuthorityGroupViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\EditAuthorityOperationGroupViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\EditAuthorityOperationViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\EditAuthorityViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\EditRoleViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\EditUserViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\LoginViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\ModifyPasswordViewModel.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="ConfigFile\Sys\Validation\Role.dvconfig">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -2,7 +2,7 @@
     Layout = null;
 }
 @using EZNEW.Web.Mvc
-@using EZNEW.ViewModel.Sys.Request
+@using EZNEW.ViewModel.Sys
 @model LoginViewModel
 
 <!DOCTYPE html>
@@ -31,15 +31,12 @@
             @using (Html.AjaxBeginForm("Login", "Account", new AjaxFormOptions() { OnSuccess = "LoginSuccess", OnBegin = "LoginBegin", HttpMethod = "Post" }, new { id = "loginform" }))
             {
                 <div class="layui-form-item">
-                    <h3 style="color:red;font-weight:bold;text-align:center">演示程序,请勿直接用于生产应用</h3>
-                </div>
-                <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-username"></label>
                     @Html.TextBoxFor(c => c.LoginName, new { placeholder = "用户名", @class = "layui-input" })
                 </div>
                 <div class="layui-form-item">
                     <label class="layadmin-user-login-icon layui-icon layui-icon-password"></label>
-                    @Html.PasswordFor(c => c.Pwd, new { placeholder = "密码", @class = "layui-input" })
+                    @Html.PasswordFor(c => c.Password, new { placeholder = "密码", @class = "layui-input" })
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-row">

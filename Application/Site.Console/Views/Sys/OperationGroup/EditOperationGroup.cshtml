@@ -1,0 +1,96 @@
+
+@{
+    ViewData["Title"] = "编辑操作分组";
+}
+@using EZNEW.ViewModel.Sys
+@using EZNEW.Module.Sys
+@model OperationGroupViewModel
+
+<environment>
+    <link href="~/script/ztree/skin.css" rel="stylesheet" />
+</environment>
+<div id="page-body">
+    <div id="page-body-inner">
+        <div class="layui-form">
+            @using (Html.AjaxBeginForm("EditOperationGroup", "OperationGroup", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form",@class = "pdt-10" }))
+            {
+                @Html.HiddenFor(c => c.Id)
+                @Html.HiddenFor(c => c.Parent.Id)
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上级分组</label>
+                    <div class="layui-input-inline w-300 h-38">
+                        <div id="parent_group"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">名称</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextBoxFor(a => a.Name, new { @class = "layui-input", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">说明</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextAreaFor(a => a.Remark, new { @class = "layui-input w-200 h-50", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Remark, "", new { @class = "form-validate-msg" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="page-foot" class="hidev">
+    <div class="page-foot-btngroup">
+        <button type="button" id="btn_submit" class="layui-btn layui-btn-gsuccess"><i class="icon-save"></i> 提交</button>
+        <button type="reset" id="btn_reset" class="layui-btn layui-btn-gsecondary"><i class="icon-undo"></i> 重置</button>
+    </div>
+</div>
+@section Scripts{
+    <environment>
+        <script src="~/script/ztree/jquery.ztree.all.js"></script>
+        <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
+        <script src="~/script/treeselect.js"></script>
+    </environment>
+    <script type="text/javascript">
+        DataObjectTag = "OperationGroup";
+        var selectTree = null;
+        var nowId ='@(Model?.Id??0)'
+        $(function () {
+            InitTreeData();
+            BindDefaultFormSubmitEnterEvent();//绑定默认表单事件
+        });
+
+        //初始化选择控件
+        function InitTreeData() {
+            var options = {
+                containerEle: '#parent_group',
+                dataUrl:'@Url.Action("SearchOperationGroup", "OperationGroup")',
+                selectCallback: function (datas) {
+                   if (!datas || datas.length < 1) {
+                       return;
+                   }
+                   $("#Parent_Id").val(datas[0].id);
+                },
+                selectedValue: ['@(Model.Parent?.Id)'],
+                inputText: '@(Model.Parent?.Name)',
+                height: 200,
+                defaultNode: { id: 0, name: '一级分组', value: '0', isParent: true },
+                editMode: IsEdit(),
+                editKeyValue: nowId
+            };
+            selectTree = new CTreeSelect(options);
+        }
+
+        //是否编辑
+        function IsEdit() {
+            return nowId != '' && nowId != '0';
+
+        }
+    </script>
+}
+
