@@ -10,7 +10,7 @@ An example application for the EZNEW.NET development framework
 4. Clone or download project
 5. Configure database connection in <b>Application/Site.Console/appsettings.json</b> file
 6. Create database
-	* [Create the database using EntityFramework Migration](https://github.com/eznew-net/EZNEW)(recommended)
+	* [Create the database using EntityFramework Migration](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)(recommended)
 	
 		1. Open the command line tool(cmd.exe)
 		
@@ -20,7 +20,7 @@ An example application for the EZNEW.NET development framework
 		
 		4. Run the command：<b>dotnet ef database update</b>
 		
-	* [Download the database script to create the database](https://github.com/eznew-net/EZNEW)
+	* [Download the database script to create the database](https://github.com/eznew-net/Demo.File/tree/master/DemoDataBase)
 	
 7. Build and run <b>Site.Console</b> 
 8. Login by default UserName:<b>admin</b> and default Passwork:<b>admin</b>
