@@ -3,8 +3,9 @@ using Microsoft.Extensions.Configuration;
 using EZNEW.Data.SqlServer;
 using EZNEW.Data;
 using EZNEW.DependencyInjection;
+using System;
 
-namespace App.Database
+namespace AppConfig.Database
 {
     /// <summary>
     /// 数据库配置

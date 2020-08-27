@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using App.Cache;
-using App.Database;
+using AppConfig.Cache;
+using AppConfig.Database;
 using EZNEW.Configuration;
 using EZNEW.Mapper.Convention;
 
 namespace Site.Console.Config
 {
-    public static class AppConfig
+    public static class SiteConfig
     {
         public static void Init()
         {

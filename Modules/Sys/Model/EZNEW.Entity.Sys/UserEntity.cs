@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EZNEW.Develop.Entity;
+using EZNEW.Module.Sys;
 
 namespace EZNEW.Entity.Sys
 {
@@ -55,9 +56,9 @@ namespace EZNEW.Entity.Sys
         /// 类型
         /// </summary>
         [EntityField(Description = "类型")]
-        public int UserType
+        public UserType UserType
         {
-            get { return valueDict.GetValue<int>("UserType"); }
+            get { return valueDict.GetValue<UserType>("UserType"); }
             set { valueDict.SetValue("UserType", value); }
         }
 
@@ -65,9 +66,9 @@ namespace EZNEW.Entity.Sys
         /// 状态
         /// </summary>
         [EntityField(Description = "状态")]
-        public int? Status
+        public UserStatus Status
         {
-            get { return valueDict.GetValue<int?>("Status"); }
+            get { return valueDict.GetValue<UserStatus>("Status"); }
             set { valueDict.SetValue("Status", value); }
         }
 

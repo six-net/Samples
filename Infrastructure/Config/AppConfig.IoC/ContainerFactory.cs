@@ -8,7 +8,7 @@ using EZNEW.Drawing.VerificationCode;
 using EZNEW.DependencyInjection;
 using EZNEW.Logging;
 
-namespace App.IoC
+namespace AppConfig.IoC
 {
     public class ContainerFactory : IServiceProviderFactory<IDIContainer>
     {

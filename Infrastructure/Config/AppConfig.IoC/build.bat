@@ -1,4 +1,4 @@
-set iocPath=%cd%\App.IoC.csproj
+set iocPath=%cd%\AppConfig.IoC.csproj
 cd ../../../
 set topPath=%cd%
 

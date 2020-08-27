@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Config\App.Cache\App.Cache.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Config\App.Database\App.Database.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Config\App.IoC\App.IoC.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Config\AppConfig.Cache\AppConfig.Cache.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Config\AppConfig.Database\AppConfig.Database.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Config\AppConfig.IoC\AppConfig.IoC.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Model\EZNEW.ViewModel.Common\EZNEW.ViewModel.Common.csproj" />
     <ProjectReference Include="..\..\Modules\Sys\Service\EZNEW.AppServiceContract.Sys\EZNEW.AppServiceContract.Sys.csproj" />
   </ItemGroup>

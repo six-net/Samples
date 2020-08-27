@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using EZNEW.Cache;
 
-namespace App.Cache
+namespace AppConfig.Cache
 {
     public static class CacheConfig
     {

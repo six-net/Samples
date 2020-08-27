@@ -86,7 +86,7 @@ namespace Site.Console
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            AppConfig.Init();
+            SiteConfig.Init();
         }
     }
 }
