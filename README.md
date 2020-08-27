@@ -6,9 +6,9 @@ An example application for the EZNEW.NET development framework
 
 1. Download and install [.NetCore3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 2. Download and install [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)
-3. If you can't access nuget.org,you can use this nuget package source:<b>http://nuget.eznew.net</b>
+3. If you can't access nuget.org,you can use this nuget package source：<b>http://nuget.eznew.net</b>
 4. Clone or download project
-5. Configure database connection in <b>Application/Site.Console/appsettings.json</b> file
+5. Configure database connection in <b>Application/Site.Console/appsettings.json</b> and modify the database type in <b>Infrastructure/AppConfig.Database/DatabaseConfig</b>(The default value is DatabaseServerType.SQLServer)
 6. Create database
 	* [Create the database using EntityFramework Migration](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)(recommended)
 	
