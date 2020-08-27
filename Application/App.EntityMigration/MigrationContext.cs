@@ -6,7 +6,6 @@ using EZNEW.Module.Sys;
 using EZNEW.Data;
 using EZNEW.EntityMigration;
 using Site.Console.Config;
-using Microsoft.Extensions.Hosting;
 
 namespace App.EntityMigration
 {
@@ -18,13 +17,18 @@ namespace App.EntityMigration
             Site.Console.Program.CreateHostBuilder(Array.Empty<string>()).Build();
             SiteConfig.Init();
             DatabaseServer = DataManager.GetDatabaseServers(new MigrationCommand() { ObjectName = EntityMigrationManager.MigrationCommandObjectName })?.FirstOrDefault();
-            DbContextOptionsBuilder contextOptionsBuilder = DatabaseServer.ServerType switch
+            switch (DatabaseServer.ServerType)
             {
-                DatabaseServerType.SQLServer => optionsBuilder.UseSqlServer(DatabaseServer.ConnectionString),
-                DatabaseServerType.Oracle => optionsBuilder.UseOracle(DatabaseServer.ConnectionString),
-                DatabaseServerType.MySQL => optionsBuilder.UseMySQL(DatabaseServer.ConnectionString),
-                _ => null
-            };
+                case DatabaseServerType.SQLServer:
+                    optionsBuilder.UseSqlServer(DatabaseServer.ConnectionString);
+                    break;
+                case DatabaseServerType.MySQL:
+                    optionsBuilder.UseMySQL(DatabaseServer.ConnectionString);
+                    break;
+                case DatabaseServerType.Oracle:
+                    optionsBuilder.UseOracle(DatabaseServer.ConnectionString);
+                    break;
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
