@@ -39,7 +39,7 @@ namespace AppConfig.Database
                 {
                     new DatabaseServer()
                     {
-                        ServerType = DatabaseServerType.MySQL,
+                        ServerType = DatabaseServerType.SQLServer,
                         ConnectionString = ContainerManager.Resolve<IConfiguration>().GetConnectionString("DefaultConnection")
                     }
                 };
