@@ -6,12 +6,24 @@ An example application for the EZNEW.NET development framework
 
 1. Download and install [.NetCore3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 2. Download and install [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)
-3. If you can't access nuget.org,you can use this nuget package source:<b>http://nuget.eznew.net/nuget</b>
-3. Clone or download project
-4. [Download database script](https://github.com/eznew-net/Demo.File/tree/master/DemoDataBase) and create database
-5. Config database connection in <b>appsettings.json</b> file
-6. Build and run <b>Site.Console</b> 
-7. Login by default UserName:<b>admin</b> and default Passwork:<b>admin</b>
+3. If you can't access nuget.org,you can use this nuget package source：<b>http://nuget.eznew.net/v3/index.json</b>
+4. Clone or download project
+5. Configure database connection in <b>Application/Site.Console/appsettings.json</b> and modify the database type in <b>Infrastructure/AppConfig.Database/DatabaseConfig</b>(The default value is DatabaseServerType.SQLServer)
+6. Create database
+	* [Create the database using EntityFramework Migration](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)(recommended)
+	
+		1. Open the command line tool(cmd.exe)
+		
+		2. Installing the tools：<b>dotnet tool install --global dotnet-ef</b>
+		
+		3. Navigate to the path to the <b>Application/App.EntityMigration</b> then run the command: <b>dotnet ef migrations add InitialCreate</b>
+		
+		4. Run the command：<b>dotnet ef database update</b>
+		
+	* [Download the database script to create the database](https://github.com/eznew-net/Demo.File/tree/master/DemoDataBase)
+	
+7. Build and run <b>Site.Console</b> 
+8. Login by default UserName：<b>admin</b> and default Passwork：<b>admin</b>
 
 # Reporting issues and bugs
 

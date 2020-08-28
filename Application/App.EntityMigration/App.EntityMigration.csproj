@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Site.Console\Site.Console.csproj" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="build.bat" />
+  </Target>
+
 </Project>
