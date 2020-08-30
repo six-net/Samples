@@ -122,7 +122,7 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
 
             if (LoadGroup)
             {
-                query.SetLoadPropertys<Operation>(true, c => c.Group);
+                query.SetLoadProperty<Operation>(true, c => c.Group);
             }
 
             #endregion

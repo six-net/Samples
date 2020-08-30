@@ -139,7 +139,7 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
 
             if (LoadGroup)
             {
-                query.SetLoadPropertys<Permission>(true, c => c.Group);
+                query.SetLoadProperty<Permission>(true, c => c.Group);
             }
 
             #endregion

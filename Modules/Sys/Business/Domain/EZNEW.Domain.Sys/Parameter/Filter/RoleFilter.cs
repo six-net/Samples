@@ -146,7 +146,7 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
 
             if (LoadParent)
             {
-                query.SetLoadPropertys<Role>(true, r => r.Parent);
+                query.SetLoadProperty<Role>(true, r => r.Parent);
             }
 
             #endregion
