@@ -13,13 +13,23 @@ namespace EZNEW.Entity.Sys
     public class UserEntity : BaseEntity<UserEntity>
     {
         /// <summary>
+        /// 用户编号
+        /// </summary>
+        [EntityField(Description = "用户编号", PrimaryKey = true)]
+        public long Id
+        {
+            get => GetPropertyValue<long>(nameof(Id));
+            set => SetPropertyValue(nameof(Id), value);
+        }
+
+        /// <summary>
         /// 用户名
         /// </summary>
         [EntityField(Description = "用户名", CacheOption = EntityFieldCacheOption.CacheKey)]
         public string UserName
         {
-            get { return valueDict.GetValue<string>("UserName"); }
-            set { valueDict.SetValue("UserName", value); }
+            get => GetPropertyValue<string>(nameof(UserName));
+            set => SetPropertyValue(nameof(UserName), value);
         }
 
         /// <summary>
@@ -28,8 +38,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "真实名称")]
         public string RealName
         {
-            get { return valueDict.GetValue<string>("RealName"); }
-            set { valueDict.SetValue("RealName", value); }
+            get => GetPropertyValue<string>(nameof(RealName));
+            set => SetPropertyValue(nameof(RealName), value);
         }
 
         /// <summary>
@@ -38,18 +48,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "密码")]
         public string Password
         {
-            get { return valueDict.GetValue<string>("Password"); }
-            set { valueDict.SetValue("Password", value); }
-        }
-
-        /// <summary>
-        /// 用户编号
-        /// </summary>
-        [EntityField(Description = "用户编号", PrimaryKey = true)]
-        public long Id
-        {
-            get { return valueDict.GetValue<long>(nameof(Id)); }
-            set { valueDict.SetValue(nameof(Id), value); }
+            get => GetPropertyValue<string>(nameof(Password));
+            set => SetPropertyValue(nameof(Password), value);
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "类型")]
         public UserType UserType
         {
-            get { return valueDict.GetValue<UserType>("UserType"); }
-            set { valueDict.SetValue("UserType", value); }
+            get => GetPropertyValue<UserType>(nameof(UserType));
+            set => SetPropertyValue(nameof(UserType), value);
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "状态")]
         public UserStatus Status
         {
-            get { return valueDict.GetValue<UserStatus>("Status"); }
-            set { valueDict.SetValue("Status", value); }
+            get => GetPropertyValue<UserStatus>(nameof(Status));
+            set => SetPropertyValue(nameof(Status), value);
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "手机")]
         public string Mobile
         {
-            get { return valueDict.GetValue<string>("Mobile"); }
-            set { valueDict.SetValue("Mobile", value); }
+            get => GetPropertyValue<string>(nameof(Mobile));
+            set => SetPropertyValue(nameof(Mobile), value);
         }
 
         /// <summary>
@@ -88,8 +88,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "邮箱")]
         public string Email
         {
-            get { return valueDict.GetValue<string>("Email"); }
-            set { valueDict.SetValue("Email", value); }
+            get => GetPropertyValue<string>(nameof(Email));
+            set => SetPropertyValue(nameof(Email), value);
         }
 
         /// <summary>
@@ -98,8 +98,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "QQ")]
         public string QQ
         {
-            get { return valueDict.GetValue<string>("QQ"); }
-            set { valueDict.SetValue("QQ", value); }
+            get => GetPropertyValue<string>(nameof(QQ));
+            set => SetPropertyValue(nameof(QQ), value);
         }
 
         /// <summary>
@@ -108,8 +108,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "超级管理员")]
         public bool SuperUser
         {
-            get { return valueDict.GetValue<bool>("SuperUser"); }
-            set { valueDict.SetValue("SuperUser", value); }
+            get => GetPropertyValue<bool>(nameof(SuperUser));
+            set => SetPropertyValue(nameof(SuperUser), value);
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "添加时间")]
         public DateTime CreateDate
         {
-            get { return valueDict.GetValue<DateTime>("CreateDate"); }
-            set { valueDict.SetValue("CreateDate", value); }
+            get => GetPropertyValue<DateTime>(nameof(CreateDate));
+            set => SetPropertyValue(nameof(CreateDate), value);
         }
     }
 }

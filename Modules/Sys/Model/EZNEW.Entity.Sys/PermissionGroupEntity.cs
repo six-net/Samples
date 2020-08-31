@@ -17,8 +17,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "编号", PrimaryKey = true)]
         public long Id
         {
-            get { return valueDict.GetValue<long>("Id"); }
-            set { valueDict.SetValue("Id", value); }
+            get => GetPropertyValue<long>(nameof(Id));
+            set => SetPropertyValue(nameof(Id), value);
         }
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "名称")]
         public string Name
         {
-            get { return valueDict.GetValue<string>("Name"); }
-            set { valueDict.SetValue("Name", value); }
+            get => GetPropertyValue<string>(nameof(Name));
+            set => SetPropertyValue(nameof(Name), value);
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "排序")]
         public int Sort
         {
-            get { return valueDict.GetValue<int>("Sort"); }
-            set { valueDict.SetValue("Sort", value); }
+            get => GetPropertyValue<int>(nameof(Sort));
+            set => SetPropertyValue(nameof(Sort), value);
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "上级分组")]
         public long Parent
         {
-            get { return valueDict.GetValue<long>("Parent"); }
-            set { valueDict.SetValue("Parent", value); }
+            get => GetPropertyValue<long>(nameof(Parent));
+            set => SetPropertyValue(nameof(Parent), value);
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "分组等级")]
         public int Level
         {
-            get { return valueDict.GetValue<int>("Level"); }
-            set { valueDict.SetValue("Level", value); }
+            get => GetPropertyValue<int>(nameof(Level));
+            set => SetPropertyValue(nameof(Level), value);
         }
 
         /// <summary>
@@ -67,8 +67,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "说明")]
         public string Remark
         {
-            get { return valueDict.GetValue<string>("Remark"); }
-            set { valueDict.SetValue("Remark", value); }
+            get => GetPropertyValue<string>(nameof(Remark));
+            set => SetPropertyValue(nameof(Remark), value);
         }
     }
 }

@@ -15,11 +15,11 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 编号
         /// </summary>
-        [EntityField(Description = "权限编码", PrimaryKey = true)]
+        [EntityField(Description = "编号", PrimaryKey = true)]
         public long Id
         {
-            get { return valueDict.GetValue<long>("Id"); }
-            set { valueDict.SetValue("Id", value); }
+            get => GetPropertyValue<long>(nameof(Id));
+            set => SetPropertyValue(nameof(Id), value);
         }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "权限编码")]
         public string Code
         {
-            get { return valueDict.GetValue<string>("Code"); }
-            set { valueDict.SetValue("Code", value); }
+            get => GetPropertyValue<string>(nameof(Code));
+            set => SetPropertyValue(nameof(Code), value);
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "名称")]
         public string Name
         {
-            get { return valueDict.GetValue<string>("Name"); }
-            set { valueDict.SetValue("Name", value); }
+            get => GetPropertyValue<string>(nameof(Name));
+            set => SetPropertyValue(nameof(Name), value);
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "权限类型")]
         public PermissionType Type
         {
-            get { return valueDict.GetValue<PermissionType>("Type"); }
-            set { valueDict.SetValue("Type", value); }
+            get => GetPropertyValue<PermissionType>(nameof(Type));
+            set => SetPropertyValue(nameof(Type), value);
         }
 
         /// <summary>
@@ -58,8 +58,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "状态")]
         public PermissionStatus Status
         {
-            get { return valueDict.GetValue<PermissionStatus>("Status"); }
-            set { valueDict.SetValue("Status", value); }
+            get => GetPropertyValue<PermissionStatus>(nameof(Status));
+            set => SetPropertyValue(nameof(Status), value);
         }
 
         /// <summary>
@@ -68,18 +68,19 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "排序")]
         public int Sort
         {
-            get { return valueDict.GetValue<int>("Sort"); }
-            set { valueDict.SetValue("Sort", value); }
+            get => GetPropertyValue<int>(nameof(Sort));
+            set => SetPropertyValue(nameof(Sort), value);
         }
 
         /// <summary>
         /// 权限分组
         /// </summary>
         [EntityField(Description = "权限分组")]
+        [EntityRelation(typeof(PermissionGroupEntity), nameof(PermissionGroupEntity.Id))]
         public long Group
         {
-            get { return valueDict.GetValue<long>("Group"); }
-            set { valueDict.SetValue("Group", value); }
+            get => GetPropertyValue<long>(nameof(Group));
+            set => SetPropertyValue(nameof(Group), value);
         }
 
         /// <summary>
@@ -88,8 +89,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "说明")]
         public string Remark
         {
-            get { return valueDict.GetValue<string>("Remark"); }
-            set { valueDict.SetValue("Remark", value); }
+            get => GetPropertyValue<string>(nameof(Remark));
+            set => SetPropertyValue(nameof(Remark), value);
         }
 
         /// <summary>
@@ -98,8 +99,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "添加时间")]
         public DateTime CreateDate
         {
-            get { return valueDict.GetValue<DateTime>("CreateDate"); }
-            set { valueDict.SetValue("CreateDate", value); }
+            get => GetPropertyValue<DateTime>(nameof(CreateDate));
+            set => SetPropertyValue(nameof(CreateDate), value);
         }
     }
 }

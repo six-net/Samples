@@ -15,22 +15,22 @@ namespace EZNEW.Entity.Sys
         /// 用户
         /// </summary>
         [EntityField(Description = "用户", PrimaryKey = true)]
-        [EntityRelation(typeof(UserEntity), "Id")]
+        [EntityRelation(typeof(UserEntity), nameof(UserEntity.Id))]
         public long UserId
         {
-            get { return valueDict.GetValue<long>("UserId"); }
-            set { valueDict.SetValue("UserId", value); }
+            get => GetPropertyValue<long>(nameof(UserId));
+            set => SetPropertyValue(nameof(UserId), value);
         }
 
         /// <summary>
         /// 角色
         /// </summary>
         [EntityField(Description = "角色", PrimaryKey = true)]
-        [EntityRelation(typeof(RoleEntity), "Id")]
+        [EntityRelation(typeof(RoleEntity), nameof(RoleEntity.Id))]
         public long RoleId
         {
-            get { return valueDict.GetValue<long>("RoleId"); }
-            set { valueDict.SetValue("RoleId", value); }
+            get => GetPropertyValue<long>(nameof(RoleId));
+            set => SetPropertyValue(nameof(RoleId), value);
         }
     }
 }

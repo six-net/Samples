@@ -15,23 +15,23 @@ namespace EZNEW.Entity.Sys
         /// 角色
         /// </summary>
         [EntityField(Description = "角色", PrimaryKey = true)]
-        [EntityRelation(typeof(RoleEntity), "Id")]
-        [EntityRelation(typeof(UserRoleEntity), "RoleId")]
+        [EntityRelation(typeof(RoleEntity), nameof(RoleEntity.Id))]
+        [EntityRelation(typeof(UserRoleEntity), nameof(UserRoleEntity.RoleId))]
         public long RoleId
         {
-            get { return valueDict.GetValue<long>("RoleId"); }
-            set { valueDict.SetValue("RoleId", value); }
+            get => GetPropertyValue<long>(nameof(RoleId));
+            set => SetPropertyValue(nameof(RoleId), value);
         }
 
         /// <summary>
         /// 权限
         /// </summary>
         [EntityField(Description = "权限", PrimaryKey = true)]
-        [EntityRelation(typeof(PermissionEntity), "Id")]
+        [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
         public long PermissionId
         {
-            get { return valueDict.GetValue<long>("PermissionId"); }
-            set { valueDict.SetValue("PermissionId", value); }
+            get => GetPropertyValue<long>(nameof(PermissionId));
+            set => SetPropertyValue(nameof(PermissionId), value);
         }
     }
 }

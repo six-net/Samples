@@ -20,8 +20,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "主键编号", PrimaryKey = true)]
         public long Id
         {
-            get { return valueDict.GetValue<long>("Id"); }
-            set { valueDict.SetValue("Id", value); }
+            get => GetPropertyValue<long>(nameof(Id));
+            set => SetPropertyValue(nameof(Id), value);
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "控制器", IsRequired = true)]
         public string ControllerCode
         {
-            get { return valueDict.GetValue<string>("ControllerCode"); }
-            set { valueDict.SetValue("ControllerCode", value); }
+            get => GetPropertyValue<string>(nameof(ControllerCode));
+            set => SetPropertyValue(nameof(ControllerCode), value);
         }
 
         /// <summary>
@@ -40,8 +40,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "操作方法")]
         public string ActionCode
         {
-            get { return valueDict.GetValue<string>("ActionCode"); }
-            set { valueDict.SetValue("ActionCode", value); }
+            get => GetPropertyValue<string>(nameof(ActionCode));
+            set => SetPropertyValue(nameof(ActionCode), value);
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "名称")]
         public string Name
         {
-            get { return valueDict.GetValue<string>("Name"); }
-            set { valueDict.SetValue("Name", value); }
+            get => GetPropertyValue<string>(nameof(Name));
+            set => SetPropertyValue(nameof(Name), value);
         }
 
         /// <summary>
@@ -60,28 +60,29 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "状态")]
         public int Status
         {
-            get { return valueDict.GetValue<int>("Status"); }
-            set { valueDict.SetValue("Status", value); }
+            get => GetPropertyValue<int>(nameof(Status));
+            set => SetPropertyValue(nameof(Status), value);
         }
 
         /// <summary>
         /// 排序
         /// </summary>
         [EntityField(Description = "排序")]
-        public int? Sort
+        public int Sort
         {
-            get { return valueDict.GetValue<int>("Sort"); }
-            set { valueDict.SetValue("Sort", value); }
+            get => GetPropertyValue<int>(nameof(Sort));
+            set => SetPropertyValue(nameof(Sort), value);
         }
 
         /// <summary>
         /// 操作分组
         /// </summary>
         [EntityField(Description = "操作分组")]
+        [EntityRelation(typeof(OperationGroupEntity), nameof(OperationGroupEntity.Id))]
         public long Group
         {
-            get { return valueDict.GetValue<long>("Group"); }
-            set { valueDict.SetValue("Group", value); }
+            get => GetPropertyValue<long>(nameof(Group));
+            set => SetPropertyValue(nameof(Group), value);
         }
 
         /// <summary>
@@ -90,8 +91,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "访问级别")]
         public OperationAccessLevel AccessLevel
         {
-            get { return valueDict.GetValue<OperationAccessLevel>("AccessLevel"); }
-            set { valueDict.SetValue("AccessLevel", value); }
+            get => GetPropertyValue<OperationAccessLevel>(nameof(AccessLevel));
+            set => SetPropertyValue(nameof(AccessLevel), value);
         }
 
         /// <summary>
@@ -100,8 +101,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "方法描述")]
         public string Remark
         {
-            get { return valueDict.GetValue<string>("Remark"); }
-            set { valueDict.SetValue("Remark", value); }
+            get => GetPropertyValue<string>(nameof(Remark));
+            set => SetPropertyValue(nameof(Remark), value);
         }
     }
 }

@@ -7,7 +7,7 @@ using AppConfig.Database;
 using EZNEW.Configuration;
 using EZNEW.Mapper.Convention;
 
-namespace Site.Console.Config
+namespace Site.Console.Util
 {
     public static class SiteConfig
     {

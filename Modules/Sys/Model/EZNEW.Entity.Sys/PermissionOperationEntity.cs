@@ -15,22 +15,22 @@ namespace EZNEW.Entity.Sys
         /// 操作功能
         /// </summary>
         [EntityField(Description = "操作功能", PrimaryKey = true)]
-        [EntityRelation(typeof(OperationEntity), "Id")]
+        [EntityRelation(typeof(OperationEntity), nameof(OperationEntity.Id))]
         public long OperationId
         {
-            get { return valueDict.GetValue<long>("OperationId"); }
-            set { valueDict.SetValue("OperationId", value); }
+            get => GetPropertyValue<long>(nameof(OperationId));
+            set => SetPropertyValue(nameof(OperationId), value);
         }
 
         /// <summary>
         /// 权限
         /// </summary>
         [EntityField(Description = "权限", PrimaryKey = true)]
-        [EntityRelation(typeof(PermissionEntity), "Id")]
+        [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
         public long PermissionId
         {
-            get { return valueDict.GetValue<long>("PermissionId"); }
-            set { valueDict.SetValue("PermissionId", value); }
+            get => GetPropertyValue<long>(nameof(PermissionId));
+            set => SetPropertyValue(nameof(PermissionId), value);
         }
     }
 }

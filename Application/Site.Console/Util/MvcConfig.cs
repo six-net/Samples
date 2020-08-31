@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EZNEW.DataValidation;
 using EZNEW.Web.Mvc.Display;
 
-namespace Site.Console.Config
+namespace Site.Console.Util
 {
     /// <summary>
     /// Mvc配置

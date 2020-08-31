@@ -15,20 +15,22 @@ namespace EZNEW.Entity.Sys
         /// 用户
         /// </summary>
         [EntityField(Description = "用户", PrimaryKey = true)]
+        [EntityRelation(typeof(UserEntity), nameof(UserEntity.Id))]
         public long UserId
         {
-            get { return valueDict.GetValue<long>("UserId"); }
-            set { valueDict.SetValue("UserId", value); }
+            get => GetPropertyValue<long>(nameof(UserId));
+            set => SetPropertyValue(nameof(UserId), value);
         }
 
         /// <summary>
         /// 权限
         /// </summary>
         [EntityField(Description = "权限", PrimaryKey = true)]
+        [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
         public long PermissionId
         {
-            get { return valueDict.GetValue<long>("PermissionId"); }
-            set { valueDict.SetValue("PermissionId", value); }
+            get => GetPropertyValue<long>(nameof(PermissionId));
+            set => SetPropertyValue(nameof(PermissionId), value);
         }
 
         /// <summary>
@@ -37,8 +39,8 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "禁用")]
         public bool Disable
         {
-            get { return valueDict.GetValue<bool>("Disable"); }
-            set { valueDict.SetValue("Disable", value); }
+            get => GetPropertyValue<bool>(nameof(Disable));
+            set => SetPropertyValue(nameof(Disable), value);
         }
     }
 }
