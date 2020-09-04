@@ -19,7 +19,7 @@ namespace EZNEW.Domain.Sys.Service
         /// 修改操作功能状态
         /// </summary>
         /// <param name="statusInfo">状态信息</param>
-        Result ModifyStatus(ModifyOperationStatus modifyOperationStatus);
+        Result ModifyStatus(ModifyOperationStatusParameter modifyOperationStatus);
 
         #endregion
 
@@ -119,7 +119,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="checkOperationAuthorization">用户操作功能授权信息</param>
         /// <returns>返回用户是否已授权</returns>
-        bool CheckAuthorization(CheckAuthorization checkOperationAuthorization);
+        bool CheckAuthorization(CheckAuthorizationParameter checkOperationAuthorization);
 
         #endregion
 
@@ -131,7 +131,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="initializeOperation">操作功能初始化信息</param>
         /// <returns>返回执行结果</returns>
-        Result Initialize(InitializeOperation initializeOperation);
+        Result Initialize(InitializeOperationParameter initializeOperation);
 
         #endregion
     }

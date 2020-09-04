@@ -36,14 +36,14 @@ namespace EZNEW.DTO.Sys.Filter
         public long? Parent { get; set; }
 
         /// <summary>
-        /// 分组等级
-        /// </summary>
-        public int? Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 只查询第一级数据
+        /// </summary>
+        public bool LevelOne { get; set; }
 
         #region 筛选条件转换
 

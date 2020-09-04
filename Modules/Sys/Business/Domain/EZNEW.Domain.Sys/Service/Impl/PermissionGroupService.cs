@@ -18,52 +18,6 @@ namespace EZNEW.Domain.Sys.Service.Impl
     {
         static readonly IPermissionGroupRepository permissionGroupRepository = ContainerManager.Resolve<IPermissionGroupRepository>();
 
-        #region 删除权限分组
-
-        /// <summary>
-        /// 删除权限分组
-        /// </summary>
-        /// <param name="groupIds">分组编号</param>
-        /// <returns></returns>
-        public Result Remove(IEnumerable<long> groupIds)
-        {
-            #region 参数判断
-
-            if (groupIds.IsNullOrEmpty())
-            {
-                return Result.FailedResult("没有指定任何要删除的权限分组");
-            }
-
-            #endregion
-
-            //删除分组信息
-            IQuery removeQuery = QueryManager.Create<PermissionGroupEntity>(c => groupIds.Contains(c.Id));
-            removeQuery.SetRecurve<PermissionGroupEntity>(c => c.Id, c => c.Parent);
-            permissionGroupRepository.Remove(removeQuery);
-            return Result.SuccessResult("删除成功");
-        }
-
-        #endregion
-
-        #region 验证权限分组是否存在
-
-        /// <summary>
-        /// 验证权限分组是否存在
-        /// </summary>
-        /// <param name="groupId">分组编号</param>
-        /// <returns></returns>
-        public bool Exist(long groupId)
-        {
-            if (groupId < 1)
-            {
-                return false;
-            }
-            IQuery query = QueryManager.Create<PermissionGroupEntity>(c => c.Id == groupId);
-            return permissionGroupRepository.Exist(query);
-        }
-
-        #endregion
-
         #region 保存权限分组
 
         /// <summary>
@@ -104,7 +58,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                     return Result<PermissionGroup>.FailedResult("请选择正确的上级分组");
                 }
             }
-            permissionGroup.SetParentGroup(parentGroup);
+            permissionGroup.SetParent(parentGroup);
 
             #endregion
 
@@ -142,7 +96,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                         return Result<PermissionGroup>.FailedResult("请选择正确的上级分组");
                     }
                 }
-                currentPermissionGroup.SetParentGroup(parentGroup);
+                currentPermissionGroup.SetParent(parentGroup);
             }
             //修改信息
             currentPermissionGroup.Name = newPermissionGroup.Name;
@@ -151,6 +105,33 @@ namespace EZNEW.Domain.Sys.Service.Impl
             var result = Result<PermissionGroup>.SuccessResult("更新成功");
             result.Data = currentPermissionGroup;
             return result;
+        }
+
+        #endregion
+
+        #region 删除权限分组
+
+        /// <summary>
+        /// 删除权限分组
+        /// </summary>
+        /// <param name="groupIds">分组编号</param>
+        /// <returns></returns>
+        public Result Remove(IEnumerable<long> groupIds)
+        {
+            #region 参数判断
+
+            if (groupIds.IsNullOrEmpty())
+            {
+                return Result.FailedResult("没有指定任何要删除的权限分组");
+            }
+
+            #endregion
+
+            //删除分组信息
+            IQuery removeQuery = QueryManager.Create<PermissionGroupEntity>(c => groupIds.Contains(c.Id));
+            removeQuery.SetRecurve<PermissionGroupEntity>(c => c.Id, c => c.Parent);
+            permissionGroupRepository.Remove(removeQuery);
+            return Result.SuccessResult("删除成功");
         }
 
         #endregion
@@ -286,6 +267,25 @@ namespace EZNEW.Domain.Sys.Service.Impl
             group.ModifySort(newSort);
             group.Save();
             return Result.SuccessResult("修改成功");
+        }
+
+        #endregion
+
+        #region 验证权限分组是否存在
+
+        /// <summary>
+        /// 验证权限分组是否存在
+        /// </summary>
+        /// <param name="groupId">分组编号</param>
+        /// <returns></returns>
+        public bool Exist(long groupId)
+        {
+            if (groupId < 1)
+            {
+                return false;
+            }
+            IQuery query = QueryManager.Create<PermissionGroupEntity>(c => c.Id == groupId);
+            return permissionGroupRepository.Exist(query);
         }
 
         #endregion

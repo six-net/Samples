@@ -39,6 +39,11 @@ namespace EZNEW.ViewModel.Sys
         public UserStatus Status { get; set; }
 
         /// <summary>
+        /// 状态名称
+        /// </summary>
+        public string StatusName => Status.GetEnumDisplayName();
+
+        /// <summary>
         /// 邮箱
         /// </summary>
         public string Email { get; set; }

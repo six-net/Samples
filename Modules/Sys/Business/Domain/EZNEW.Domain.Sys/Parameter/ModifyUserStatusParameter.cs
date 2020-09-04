@@ -7,7 +7,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 修改用户状态信息
     /// </summary>
-    public class ModifyUserStatus : IDomainParameter
+    public class ModifyUserStatusParameter : IDomainParameter
     {
         /// <summary>
         /// 用户状态信息

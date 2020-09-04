@@ -31,19 +31,19 @@ namespace EZNEW.DTO.Sys.Filter
         public int? Sort { get; set; }
 
         /// <summary>
-        /// 上级
+        /// 上级分组
         /// </summary>
         public long? Parent { get; set; }
-
-        /// <summary>
-        /// 等级
-        /// </summary>
-        public int? Level { get; set; }
 
         /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 是否只查询第一级
+        /// </summary>
+        public bool LevelOne { get; set; }
 
         #region 筛选条件转换
 

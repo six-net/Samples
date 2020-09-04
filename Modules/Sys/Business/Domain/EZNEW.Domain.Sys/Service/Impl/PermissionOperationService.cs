@@ -24,7 +24,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="modifyPermissionOperation">权限授权操作修改信息</param>
         /// <returns></returns>
-        public Result Modify(ModifyPermissionOperation modifyPermissionOperation)
+        public Result Modify(ModifyPermissionOperationParameter modifyPermissionOperation)
         {
             if (modifyPermissionOperation == null || (modifyPermissionOperation.Bindings.IsNullOrEmpty() && modifyPermissionOperation.Unbindings.IsNullOrEmpty()))
             {

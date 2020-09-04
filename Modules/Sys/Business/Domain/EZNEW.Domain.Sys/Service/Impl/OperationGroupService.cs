@@ -18,6 +18,20 @@ namespace EZNEW.Domain.Sys.Service.Impl
     {
         static readonly IOperationGroupRepository operationGroupRepository = ContainerManager.Resolve<IOperationGroupRepository>();
 
+        #region 保存操作分组
+
+        /// <summary>
+        /// 保存操作分组
+        /// </summary>
+        /// <param name="newOperationGroup">操作分组对象</param>
+        /// <returns>执行结果</returns>
+        public Result<OperationGroup> Save(OperationGroup newOperationGroup)
+        {
+            return newOperationGroup?.Save() ?? Result<OperationGroup>.FailedResult("操作分组保存失败");
+        }
+
+        #endregion
+
         #region 删除操作分组
 
         /// <summary>
@@ -40,95 +54,6 @@ namespace EZNEW.Domain.Sys.Service.Impl
             removeQuery.SetRecurve<OperationGroupEntity>(c => c.Id, c => c.Parent);
             operationGroupRepository.Remove(removeQuery);
             return Result.SuccessResult("删除成功");
-        }
-
-        #endregion
-
-        #region 保存操作分组
-
-        /// <summary>
-        /// 保存操作分组
-        /// </summary>
-        /// <param name="operationGroup">操作分组对象</param>
-        /// <returns>执行结果</returns>
-        public Result<OperationGroup> Save(OperationGroup operationGroup)
-        {
-            if (operationGroup == null)
-            {
-                return Result<OperationGroup>.FailedResult("操作分组信息不完整");
-            }
-            return operationGroup.Id > 0 ? UpdateOperationGroup(operationGroup) : AddOperationGroup(operationGroup);
-        }
-
-        /// <summary>
-        /// 添加操作分组
-        /// </summary>
-        /// <param name="operationGroup">操作分组对象</param>
-        /// <returns>执行结果</returns>
-        Result<OperationGroup> AddOperationGroup(OperationGroup operationGroup)
-        {
-            #region 上级
-
-            long parentGroupId = operationGroup.Parent == null ? 0 : operationGroup.Parent.Id;
-            OperationGroup parentGroup = null;
-            if (parentGroupId > 0)
-            {
-                IQuery parentQuery = QueryManager.Create<OperationGroupEntity>(c => c.Id == parentGroupId);
-                parentGroup = operationGroupRepository.Get(parentQuery);
-                if (parentGroup == null)
-                {
-                    return Result<OperationGroup>.FailedResult("请选择正确的上级分组");
-                }
-            }
-            operationGroup.SetParentGroup(parentGroup);
-
-            #endregion
-
-            operationGroup.Save();//保存
-
-            var result = Result<OperationGroup>.SuccessResult("添加成功");
-            result.Data = operationGroup;
-            return result;
-        }
-
-        /// <summary>
-        /// 更新操作分组
-        /// </summary>
-        /// <param name="newOperationGroup">操作分组对象</param>
-        /// <returns>执行结果</returns>
-        Result<OperationGroup> UpdateOperationGroup(OperationGroup newOperationGroup)
-        {
-            OperationGroup currentOperationGroup = Get(newOperationGroup.Id);
-            if (currentOperationGroup == null)
-            {
-                return Result<OperationGroup>.FailedResult("没有指定要操作的分组信息");
-            }
-            //上级
-            long newParentGroupId = newOperationGroup.Parent == null ? 0 : newOperationGroup.Parent.Id;
-            long oldParentGroupId = currentOperationGroup.Parent == null ? 0 : currentOperationGroup.Parent.Id;
-            //上级改变后 
-            if (newParentGroupId != oldParentGroupId)
-            {
-                OperationGroup parentGroup = null;
-                if (newParentGroupId > 0)
-                {
-                    IQuery parentQuery = QueryManager.Create<OperationGroupEntity>(c => c.Id == newParentGroupId);
-                    parentGroup = operationGroupRepository.Get(parentQuery);
-                    if (parentGroup == null)
-                    {
-                        return Result<OperationGroup>.FailedResult("请选择正确的上级分组");
-                    }
-                }
-                currentOperationGroup.SetParentGroup(parentGroup);
-            }
-            //修改信息
-            currentOperationGroup.Name = newOperationGroup.Name;
-            currentOperationGroup.Remark = newOperationGroup.Remark;
-            currentOperationGroup.Save();//保存
-
-            var result = Result<OperationGroup>.SuccessResult("修改成功");
-            result.Data = currentOperationGroup;
-            return result;
         }
 
         #endregion
@@ -304,6 +229,25 @@ namespace EZNEW.Domain.Sys.Service.Impl
 
         #endregion
 
+        #region 检查操作分组是否存在
+
+        /// <summary>
+        /// 检查操作分组是否存在
+        /// </summary>
+        /// <param name="ids">操作分组编号</param>
+        /// <returns>返回操作分组是否存在</returns>
+        public bool Exist(params long[] ids)
+        {
+            if (ids.IsNullOrEmpty())
+            {
+                return false;
+            }
+            var existQuery = QueryManager.Create<OperationGroupEntity>(o => ids.Contains(o.Id));
+            return operationGroupRepository.Exist(existQuery);
+        }
+
+        #endregion
+
         #region 初始化操作分组
 
         /// <summary>
@@ -348,7 +292,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                 var childGroups = allGroups?.Where(c => c.Parent?.Name == group.Name);
                 foreach (var childGroup in childGroups)
                 {
-                    childGroup.SetParentGroup(group);
+                    childGroup.SetParent(group);
                     InitializeSingleGroup(childGroup, childGroups);
                 }
             }

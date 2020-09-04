@@ -13,7 +13,7 @@
         <div class="split-panel">
             <div class="content-panel">
                 <div class="content-panel-head default h-50 bd-lw-0 bd-tw-0 txt-center lh-50">
-                    @Html.AuthIcoButton("添加权限分组", "PermissionGroup", "EditPermissionGroup",
+                    @Html.AuthIcoButton("添加分组", "PermissionGroup", "EditPermissionGroup",
                    new { @class = "layui-btn layui-btn-sm layui-btn-gsuccess", id = "btn_addgroup" }
                    , new { @class = "icon-plus" })
                     @Html.AuthIcoButton("删除选中", "PermissionGroup", "RemovePermissionGroup",
@@ -125,7 +125,8 @@
                     sortUrl: '@Url.Action("ChangePermissionGroupSort", "PermissionGroup")',
                     editUrl: '@Url.Action("EditPermissionGroup", "PermissionGroup")',
                     groupName: '权限分组',
-                    objectTag:"PermissionGroup"
+                    objectTag: "PermissionGroup",
+                    editWindowSize: ['600px', '300px']
                 },
                 dataTable: {
                     cols: [[

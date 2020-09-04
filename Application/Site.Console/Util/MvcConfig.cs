@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EZNEW.Application;
 using EZNEW.DataValidation;
 using EZNEW.Web.Mvc.Display;
 
@@ -29,8 +30,7 @@ namespace Site.Console.Util
         /// </summary>
         static void ConfigureDataValidation()
         {
-            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Validation");
-            ValidationManager.ConfigureByConfigFile(folderPath);
+            ValidationManager.ConfigureByConfigFile(ApplicationManager.ApplicationExecutableDirectory);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Site.Console.Util
         /// </summary>
         static void ConfigureDisplay()
         {
-            string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Config/Display");
+            string folderPath = Path.Combine(ApplicationManager.ApplicationExecutableDirectory);
             DisplayManager.ConfigureByConfigFile(folderPath);
         }
     }

@@ -1,38 +1,39 @@
 
 @{
-    ViewData["Title"] = "编辑角色";
+    ViewBag.Title = "编辑角色";
 }
+@using EZNEW.Web;
 @using EZNEW.ViewModel.Sys
-@using EZNEW.Module.Sys
+@using EZNEW.Module.Sys;
 @model RoleViewModel
-
-<environment>
-    <link href="~/script/ztree/skin.css" rel="stylesheet" />
-</environment>
 <div id="page-body">
     <div id="page-body-inner">
         <div class="layui-form">
-            @using (Html.AjaxBeginForm("EditRole", "Role", new AjaxFormOptions() { OnSuccess = "EZNEW_SuccessCallback", OnFailure = "EZNEW_FailedCallback", HttpMethod = "Post" }, new { id = "default-form", @class = "pdt-10" }))
+            @using (Html.AjaxBeginForm("EditRole", "Role", new AjaxFormOptions() { HttpMethod = "Post", OnSuccess = "RoleSuccessCallback", OnFailure = "RoleFailedCallback" }, new { id = "default-form", @class = "pdt-10" }))
             {
-                @Html.HiddenFor(c => c.Id)
-                @Html.HiddenFor(c => c.Parent.Id)
+                @Html.Hidden("Id", null, new { id = "Id" })
                 <div class="layui-form-item">
-                    <label class="layui-form-label">上级角色</label>
-                    <div class="layui-input-inline w-300 h-38">
-                        <div id="parent_role" class=""></div>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">名称</label>
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Name)</label>
                     <div class="layui-input-inline w-200">
                         @Html.TextBoxFor(a => a.Name, new { @class = "layui-input", autocomplete = "off" })
                     </div>
-                    <div class="layui-form-mid form-validate-msg">@Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })</div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Name, "", new { @class = "form-validate-msg" })
+                    </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">状态</label>
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Status)</label>
                     <div class="layui-input-inline w-200">
                         @Html.EnumToSelect(a => a.Status, RoleStatus.Enable, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">@Html.LabelFor(c => c.Remark)</label>
+                    <div class="layui-input-inline w-200">
+                        @Html.TextAreaFor(a => a.Remark, new { @class = "layui-input w-200 h-50", autocomplete = "off" })
+                    </div>
+                    <div class="layui-form-mid form-validate-msg">
+                        @Html.DefaultValidationMessageFor(c => c.Remark, "", new { @class = "form-validate-msg" })
                     </div>
                 </div>
             }
@@ -42,51 +43,32 @@
 
 <div id="page-foot" class="hidev">
     <div class="page-foot-btngroup">
-        <button type="button" id="btn_submit" class="layui-btn layui-btn-gsuccess"><i class="icon-save"></i> 提交</button>
-        <button type="reset" id="btn_reset" class="layui-btn layui-btn-gsecondary"><i class="icon-undo"></i> 重置</button>
+        <button class="layui-btn layui-btn-gsuccess" id="btn_submit"><i class="icon-save"></i> 提交</button>
+        <button type="reset" class="layui-btn layui-btn-gsecondary" id="btn_reset"><i class="icon-undo"></i> 重置</button>
     </div>
 </div>
+
 @section Scripts{
-    <environment>
-        <script src="~/script/ztree/jquery.ztree.all.js"></script>
-        <script src="~/script/ztree/jquery.ztree.exhide.js"></script>
-        <script src="~/script/treeselect.js"></script>
-    </environment>
     <script type="text/javascript">
-        DataObjectTag = "Role";
-        var selectRoleTree = null;
-        var nowRoleId ='@(Model?.Id??0)'
+        var detailUrl = '@Url.Action("RoleDetail","Role",new { id="_id"})';
         $(function () {
-            InitRoleTreeData();
-            BindDefaultFormSubmitEnterEvent();//绑定默认表单事件
+            BindDefaultFormSubmitEnterEvent();
         });
 
-        //初始化选择控件
-        function InitRoleTreeData() {
-            var options = {
-                containerEle: '#parent_role',
-                dataUrl:'@Url.Action("SearchRole", "Role")',
-                selectCallback: function (datas) {
-                   if (!datas || datas.length < 1) {
-                       return;
-                   }
-                   $("#Parent_Id").val(datas[0].id);
-                },
-                selectedValue: ['@(Model.Parent?.Id)'],
-                inputText: '@(Model.Parent?.Name)',
-                height: 200,
-                defaultNode: { id: 0, name: '一级角色', value: '0', isParent: true },
-                editMode: IsEdit(),
-                editKeyValue: nowRoleId
-            };
-            selectRoleTree = new CTreeSelect(options);
+        //成功回调
+        function RoleSuccessCallback(res) {
+            if (!res) {
+                return;
+            }
+            ResultMsg(res);
+            if (res.Success) {
+                window.top.RedirectCurrentPage(detailUrl.replace('_id', res.Data.Id), '角色详情');
+            }
         }
 
-        //是否编辑
-        function IsEdit() {
-            return nowRoleId != '' && nowRoleId != '0';
-
+        //失败回掉
+        function RoleFailedCallback() {
+            ErrorMsg('提交失败');
         }
     </script>
 }
-

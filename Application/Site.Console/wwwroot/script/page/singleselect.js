@@ -6,7 +6,7 @@ var defaultSingleSelectOptions = {
         requestMethod: "post",
         dataUrl: '',
         where: null,
-        dataField: "SysNo",
+        dataField: "Id",
         searchBtnId: 'search_btn',
         cols: [[]] //数据标题
     }

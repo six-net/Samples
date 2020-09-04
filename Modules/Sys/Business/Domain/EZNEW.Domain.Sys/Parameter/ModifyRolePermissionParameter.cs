@@ -9,7 +9,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 修改角色权限绑定
     /// </summary>
-    public class ModifyRolePermission : IDomainParameter
+    public class ModifyRolePermissionParameter : IDomainParameter
     {
         /// <summary>
         /// 绑定信息

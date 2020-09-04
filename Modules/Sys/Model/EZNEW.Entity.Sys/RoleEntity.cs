@@ -33,36 +33,6 @@ namespace EZNEW.Entity.Sys
         }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        [EntityField(Description = "等级")]
-        public int Level
-        {
-            get => GetPropertyValue<int>(nameof(Level));
-            set => SetPropertyValue(nameof(Level), value);
-        }
-
-        /// <summary>
-        /// 上级
-        /// </summary>
-        [EntityField(Description = "上级")]
-        public long Parent
-        {
-            get => GetPropertyValue<long>(nameof(Parent));
-            set => SetPropertyValue(nameof(Parent), value);
-        }
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        [EntityField(Description = "排序")]
-        public int Sort
-        {
-            get => GetPropertyValue<int>(nameof(Sort));
-            set => SetPropertyValue(nameof(Sort), value);
-        }
-
-        /// <summary>
         /// 状态
         /// </summary>
         [EntityField(Description = "状态")]

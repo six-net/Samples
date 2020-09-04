@@ -19,7 +19,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="modifyUserPermission">用户授权修改信息</param>
         /// <returns>返回执行结果</returns>
-        Result Modify(ModifyUserPermission modifyUserPermission);
+        Result Modify(ModifyUserPermissionParameter modifyUserPermission);
 
         #endregion
 

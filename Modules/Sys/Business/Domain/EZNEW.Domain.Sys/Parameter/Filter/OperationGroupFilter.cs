@@ -40,14 +40,14 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
         public long? Parent { get; set; }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        public int? Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 是否只查询第一级
+        /// </summary>
+        public bool LevelOne { get; set; }
 
         #endregion
 
@@ -62,34 +62,34 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
             IQuery query = base.CreateQuery() ?? QueryManager.Create<OperationGroupEntity>(this);
             if (!Ids.IsNullOrEmpty())
             {
-                query.In<OperationGroupEntity>(c => c.Id, Ids);
+                query.And<OperationGroupEntity>(c => Ids.Contains(c.Id));
             }
             if (!ExcludeIds.IsNullOrEmpty())
             {
-                query.NotIn<OperationGroupEntity>(c => c.Id, ExcludeIds);
+                query.And<OperationGroupEntity>(c => !ExcludeIds.Contains(c.Id));
             }
             if (!string.IsNullOrWhiteSpace(Name))
             {
-                query.Equal<OperationGroupEntity>(c => c.Name, Name);
+                query.And<OperationGroupEntity>(c => c.Name == Name);
             }
             if (Sort.HasValue)
             {
-                query.Equal<OperationGroupEntity>(c => c.Sort, Sort.Value);
+                query.And<OperationGroupEntity>(c => c.Sort == Sort.Value);
             }
             if (Parent.HasValue)
             {
-                query.Equal<OperationGroupEntity>(c => c.Parent, Parent.Value);
-            }
-            if (Level.HasValue)
-            {
-                query.Equal<OperationGroupEntity>(c => c.Level, Level.Value);
+                query.And<OperationGroupEntity>(c => c.Parent == Parent.Value);
             }
             if (!string.IsNullOrWhiteSpace(Remark))
             {
-                query.Equal<OperationGroupEntity>(c => c.Remark, Remark);
+                query.And<OperationGroupEntity>(c => c.Remark == Remark);
+            }
+            if (LevelOne)
+            {
+                query.And<OperationGroupEntity>(c => c.Parent <= 0);
             }
             return query;
-        } 
+        }
 
         #endregion
     }

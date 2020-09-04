@@ -30,7 +30,7 @@ function InitGroupDataManage(options) {
             objectTag: '',
             loadingIcoUrl: EZNEW_TreeLoadingIcoUrl,
             where: null,
-            initDataCondition: { level: 1 },
+            initDataCondition: { levelOne: true },
             selectCallback: null,
             nodeSelectToggle: null,
             treeSettings: {
@@ -455,8 +455,8 @@ function EZNEW_GroupDataEditCallback(data) {
             eval('oldParentId=oldParent.' + EZNEW_GroupDataOptions.groupData.keyField + ';');
         }
         if (parentId != oldParentId) {
-            eval('var nowLevel=data.' + EZNEW_GroupDataOptions.groupData.levelField+';');
-            if (nowLevel<2 || (parentNode && parentNode.loadData)) {
+            eval('var nowLevel=data.' + EZNEW_GroupDataOptions.groupData.levelField + ';');
+            if (nowLevel < 2 || (parentNode && parentNode.loadData)) {
                 nowTree.moveNode(parentNode, nowNode, 'inner', true);
                 nowTree.expandNode(parentNode, true);
             }
@@ -477,7 +477,7 @@ function EZNEW_GroupDataEditCallback(data) {
     } else {//新增
         if (data.Parent) {
             eval('parentNode = nowTree.getNodeByParam("id", data.Parent.' + EZNEW_GroupDataOptions.groupData.keyField + ');');
-            if (!parentNode || !parentNode.loadData) {
+            if (parentNode && !parentNode.loadData) {
                 return;
             }
         }

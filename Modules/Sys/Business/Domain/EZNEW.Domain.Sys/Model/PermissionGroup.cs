@@ -7,6 +7,9 @@ using EZNEW.ValueType;
 using EZNEW.Develop.Command.Modify;
 using EZNEW.Entity.Sys;
 using EZNEW.Module.Sys;
+using EZNEW.Response;
+using EZNEW.Domain.Sys.Service;
+using EZNEW.DependencyInjection;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -15,6 +18,9 @@ namespace EZNEW.Domain.Sys.Model
     /// </summary>
     public class PermissionGroup : AggregationRoot<PermissionGroup>
     {
+        //权限分组服务
+        private static readonly IPermissionGroupService permissionGroupService = ContainerManager.Resolve<IPermissionGroupService>();
+
         #region	字段
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         internal PermissionGroup()
         {
-            parent = new LazyMember<PermissionGroup>(LoadParentGroup);
+            parent = new LazyMember<PermissionGroup>(LoadParent);
             repository = this.Instance<IPermissionGroupRepository>();
         }
 
@@ -70,11 +76,6 @@ namespace EZNEW.Domain.Sys.Model
         }
 
         /// <summary>
-        /// 分组等级
-        /// </summary>
-        public int Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }
@@ -83,44 +84,18 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 内部方法
 
-        #region 修改下级分组
-
-        /// <summary>
-        /// 修改下级分组
-        /// </summary>
-        void ModifyChildPermissionGroupParent()
-        {
-            if (IsNew)
-            {
-                return;
-            }
-            IQuery query = QueryManager.Create<PermissionGroupEntity>(r => r.Parent == Id);
-            List<PermissionGroup> childGroupList = repository.GetList(query);
-            foreach (var group in childGroupList)
-            {
-                group.SetParentGroup(this);
-                group.Save();
-            }
-        }
-
-        #endregion
-
         #region 加载上级分组
 
         /// <summary>
         /// 加载上级分组
         /// </summary>
-        PermissionGroup LoadParentGroup()
+        PermissionGroup LoadParent()
         {
-            if (!AllowLazyLoad(r => r.Parent))
+            if (AllowLoad(c => c.Parent, parent))
             {
-                return parent.CurrentValue;
+                return permissionGroupService.Get(parent.CurrentValue.Id);
             }
-            if (Level <= 1 || parent.CurrentValue == null)
-            {
-                return null;
-            }
-            return repository.Get(QueryManager.Create<PermissionGroupEntity>(r => r.Id == parent.CurrentValue.Id));
+            return parent.CurrentValue;
         }
 
         #endregion
@@ -134,7 +109,50 @@ namespace EZNEW.Domain.Sys.Model
         protected override string GetIdentityValue()
         {
             return Id.ToString();
-        } 
+        }
+
+        #endregion
+
+        #region 更新对象时触发
+
+        /// <summary>
+        /// 更新对象时触发
+        /// </summary>
+        /// <param name="newData">新的数据对象</param>
+        /// <returns>返回更新后的对象</returns>
+        protected override PermissionGroup OnUpdating(PermissionGroup newData)
+        {
+            if (newData != null)
+            {
+                //修改上级分组
+                var originalParentId = parent?.CurrentValue?.Id ?? 0;
+                SetParent(newData.Parent);
+                var newParentId = parent?.CurrentValue?.Id ?? 0;
+                if (originalParentId != newParentId)
+                {
+                    //修改上级后重新修改排序
+                    InitSort();
+                }
+                Name = newData.Name;
+                Remark = newData.Remark;
+            }
+            return this;
+        }
+
+        #endregion
+
+        #region 添加对象时触发
+
+        /// <summary>
+        /// 添加对象时触发
+        /// </summary>
+        /// <returns>返回要保存的对象值</returns>
+        protected override PermissionGroup OnAdding()
+        {
+            base.OnAdding();
+            InitSort();//初始化排序
+            return this;
+        }
 
         #endregion
 
@@ -179,40 +197,58 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 功能方法
 
+        #region 验证对象标识信息是否为空
+
+        /// <summary>
+        /// 判断对象标识信息是否未设置
+        /// </summary>
+        /// <returns></returns>
+        public override bool IdentityValueIsNone()
+        {
+            return Id < 1;
+        }
+
+        #endregion
+
         #region 设置上级分组
 
         /// <summary>
         /// 设置上级分组
         /// </summary>
         /// <param name="parentGroup">上级分组</param>
-        public void SetParentGroup(PermissionGroup parentGroup)
+        public void SetParent(PermissionGroup parentGroup)
         {
-            int parentLevel = 0;
-            long parentSysNo = 0;
+            long newParentId = 0;//新的上级编号
+            long nowParentId = parent?.CurrentValue?.Id ?? 0;//当前上级编号
+            bool identityHasValue = !IdentityValueIsNone();
             if (parentGroup != null)
             {
-                parentLevel = parentGroup.Level;
-                parentSysNo = parentGroup.Id;
+                newParentId = parentGroup.Id;
             }
-            if (parentSysNo == Id && !IdentityValueIsNone())
+            //上级相同不需要修改
+            if (newParentId == nowParentId)
+            {
+                return;
+            }
+            //不能将对象本身设置为上级
+            if (newParentId == Id && identityHasValue)
             {
                 throw new Exception("不能将分组本身设置为上级分组");
             }
-            //排序
-            IQuery sortQuery = QueryManager.Create<PermissionGroupEntity>(r => r.Parent == parentSysNo);
-            sortQuery.AddQueryFields<PermissionGroupEntity>(c => c.Sort);
-            int maxSortIndex = repository.Max<int>(sortQuery);
-            Sort = maxSortIndex + 1;
+            //修改上级
             parent.SetValue(parentGroup, true);
-            //等级
-            int newLevel = parentLevel + 1;
-            bool modifyChild = newLevel != Level;
-            Level = newLevel;
-            if (modifyChild)
-            {
-                //修改所有子集信息
-                ModifyChildPermissionGroupParent();
-            }
+        }
+
+        /// <summary>
+        /// 初始化排序
+        /// </summary>
+        void InitSort()
+        {
+            var parentId = parent.CurrentValue?.Id ?? 0;
+            IQuery sortQuery = QueryManager.Create<PermissionGroupEntity>(r => r.Parent == parentId && r.Id != Id);
+            sortQuery.AddQueryFields<PermissionGroupEntity>(c => c.Sort);
+            int maxSort = repository.Max<int>(sortQuery);
+            Sort = maxSort + 1;
         }
 
         #endregion
@@ -227,11 +263,12 @@ namespace EZNEW.Domain.Sys.Model
         {
             if (newSort <= 0)
             {
-                throw new Exception("请填写正确的排序编号");
+                throw new Exception("请填写正确的排序号");
             }
             Sort = newSort;
-            //其它分组顺延
-            IQuery sortQuery = QueryManager.Create<PermissionGroupEntity>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.Id) && r.Sort >= newSort);
+            //同级其它数据顺延
+            var parentId = parent.CurrentValue?.Id ?? 0;
+            IQuery sortQuery = QueryManager.Create<PermissionGroupEntity>(r => r.Parent == parentId && r.Sort >= newSort);
             IModify modifyExpression = ModifyFactory.Create();
             modifyExpression.Add<PermissionGroupEntity>(r => r.Sort, 1);
             repository.Modify(modifyExpression, sortQuery);
@@ -248,19 +285,6 @@ namespace EZNEW.Domain.Sys.Model
         {
             base.InitIdentityValue();
             Id = GeneratePermissionGroupId();
-        }
-
-        #endregion
-
-        #region 验证对象标识信息是否未设置
-
-        /// <summary>
-        /// 判断对象标识信息是否未设置
-        /// </summary>
-        /// <returns></returns>
-        public override bool IdentityValueIsNone()
-        {
-            return Id <= 0;
         }
 
         #endregion

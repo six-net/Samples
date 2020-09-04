@@ -9,7 +9,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 修改用户授权
     /// </summary>
-    public class ModifyUserPermission : IDomainParameter
+    public class ModifyUserPermissionParameter : IDomainParameter
     {
         /// <summary>
         /// 用户授权信息

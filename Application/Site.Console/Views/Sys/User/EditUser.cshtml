@@ -63,7 +63,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">@Html.LabelFor(c => c.Status)</label>
                         <div class="layui-input-inline w-200">
-                            @Html.EnumToSelect(a => a.Status, RoleStatus.Enable, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
+                            @Html.EnumToSelect(a => a.Status, UserStatus.Enable, new { @class = "custom-select w-200" }, selectedValue: Model?.Status.ToString("d"))
                         </div>
                     </div>
                 }

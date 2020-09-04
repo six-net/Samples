@@ -247,7 +247,7 @@ var CTreeSelect = function (options) {
     //初始化树控件
     this.InitTree = function () {
         var data = {
-            level: 1
+            levelOne: true
         };
         if (thisObj.settings.where) {
             data = $.extend(true, {}, data, thisObj.settings.where(null, thisObj.settings.editKeyValue));

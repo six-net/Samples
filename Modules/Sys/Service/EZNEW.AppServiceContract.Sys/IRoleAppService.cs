@@ -67,17 +67,6 @@ namespace EZNEW.AppServiceContract.Sys
 
         #endregion
 
-        #region 修改角色排序
-
-        /// <summary>
-        /// 修改角色排序
-        /// </summary>
-        /// <param name="modifyRoleSortDto">角色排序修改信息</param>
-        /// <returns>返回角色排序修改执行结果</returns>
-        Result ModifyRoleSort(ModifyRoleSortDto modifyRoleSortDto);
-
-        #endregion
-
         #region 验证角色名称是否存在
 
         /// <summary>

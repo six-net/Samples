@@ -55,7 +55,7 @@ var CTreeControl = function CTreeControl(options) {
             parentField: 'Parent',
             loadingIcoUrl: EZNEW_TreeLoadingIcoUrl,
             where: null,
-            initDataCondition: { level: 1 },
+            initDataCondition: { levelOne: true },
             parseDataToNode: null,
             selectAllBtnId: 'btn_selectall',
             cancelAllBtnId: 'btn_cancelall',

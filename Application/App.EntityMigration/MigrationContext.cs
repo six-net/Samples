@@ -5,7 +5,7 @@ using EZNEW.Entity.Sys;
 using EZNEW.Module.Sys;
 using EZNEW.Data;
 using EZNEW.EntityMigration;
-using Site.Console.Config;
+using Site.Console.Util;
 
 namespace App.EntityMigration
 {

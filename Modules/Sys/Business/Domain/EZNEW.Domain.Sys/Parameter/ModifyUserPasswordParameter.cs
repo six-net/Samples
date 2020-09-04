@@ -10,7 +10,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 修改用户密码信息
     /// </summary>
-    public class ModifyUserPassword : IDomainParameter
+    public class ModifyUserPasswordParameter : IDomainParameter
     {
         /// <summary>
         /// 用户编号

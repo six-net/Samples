@@ -39,14 +39,14 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
         public long? Parent { get; set; }
 
         /// <summary>
-        /// 分组等级
-        /// </summary>
-        public int? Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 只查询第一级数据
+        /// </summary>
+        public bool LevelOne { get; set; }
 
         #endregion
 
@@ -59,36 +59,36 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
         public override IQuery CreateQuery()
         {
             IQuery query = base.CreateQuery() ?? QueryManager.Create<PermissionGroupEntity>(this);
+            if (LevelOne)
+            {
+                query.And<PermissionGroupEntity>(c => c.Parent <= 0);
+            }
             if (!Ids.IsNullOrEmpty())
             {
-                query.In<PermissionGroupEntity>(c => c.Id, Ids);
+                query.And<PermissionGroupEntity>(c => Ids.Contains(c.Id));
             }
             if (!ExcludeIds.IsNullOrEmpty())
             {
-                query.NotIn<PermissionGroupEntity>(c => c.Id, ExcludeIds);
+                query.And<PermissionGroupEntity>(c => !ExcludeIds.Contains(c.Id));
             }
             if (!string.IsNullOrWhiteSpace(Name))
             {
-                query.Equal<PermissionGroupEntity>(c => c.Name, Name);
+                query.And<PermissionGroupEntity>(c => c.Name == Name);
             }
             if (Sort.HasValue)
             {
-                query.Equal<PermissionGroupEntity>(c => c.Sort, Sort.Value);
+                query.And<PermissionGroupEntity>(c => c.Sort == Sort.Value);
             }
             if (Parent.HasValue)
             {
-                query.Equal<PermissionGroupEntity>(c => c.Parent, Parent.Value);
-            }
-            if (Level.HasValue)
-            {
-                query.Equal<PermissionGroupEntity>(c => c.Level, Level.Value);
+                query.And<PermissionGroupEntity>(c => c.Parent == Parent.Value);
             }
             if (!string.IsNullOrWhiteSpace(Remark))
             {
-                query.Equal<PermissionGroupEntity>(c => c.Remark, Remark);
+                query.And<PermissionGroupEntity>(c => c.Remark == Remark);
             }
             return query;
-        } 
+        }
 
         #endregion
     }

@@ -26,11 +26,6 @@ namespace EZNEW.ViewModel.Sys
         public OperationGroupViewModel Parent { get; set; }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        public int Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }

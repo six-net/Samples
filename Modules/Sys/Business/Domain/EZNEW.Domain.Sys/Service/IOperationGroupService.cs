@@ -114,6 +114,17 @@ namespace EZNEW.Domain.Sys.Service
 
         #endregion
 
+        #region 检查操作分组是否存在
+
+        /// <summary>
+        /// 检查操作分组是否存在
+        /// </summary>
+        /// <param name="ids">操作分组编号</param>
+        /// <returns>返回操作分组是否存在</returns>
+        bool Exist(params long[] ids);
+
+        #endregion
+
         #region 初始化操作分组
 
         /// <summary>

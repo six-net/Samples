@@ -11,7 +11,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 检查操作授权
     /// </summary>
-    public class CheckAuthorization : IDomainParameter
+    public class CheckAuthorizationParameter : IDomainParameter
     {
         /// <summary>
         /// 用户编号

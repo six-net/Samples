@@ -33,7 +33,7 @@ namespace EZNEW.Business.Sys
             }
             using (var businessWork = WorkManager.Create())
             {
-                var modifyResult = rolePermissionService.Modify(modifyRolePermissionDto.MapTo<ModifyRolePermission>());
+                var modifyResult = rolePermissionService.Modify(modifyRolePermissionDto.MapTo<ModifyRolePermissionParameter>());
                 if (!modifyResult.Success)
                 {
                     return modifyResult;

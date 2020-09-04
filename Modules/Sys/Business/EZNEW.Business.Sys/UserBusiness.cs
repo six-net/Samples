@@ -146,7 +146,7 @@ namespace EZNEW.Business.Sys
             {
                 return Result<UserDto>.FailedResult("用户登录信息为空");
             }
-            var loginResult = userService.Login(loginDto.MapTo<Login>());
+            var loginResult = userService.Login(loginDto.MapTo<LoginParameter>());
             if (!loginResult.Success)
             {
                 return Result<UserDto>.FailedResult(loginResult.Message);
@@ -178,7 +178,7 @@ namespace EZNEW.Business.Sys
 
             using (var businessWork = WorkManager.Create())
             {
-                var modifyResult = userService.ModifyPassword(modifyPasswordDto.MapTo<ModifyUserPassword>());
+                var modifyResult = userService.ModifyPassword(modifyPasswordDto.MapTo<ModifyUserPasswordParameter>());
                 if (!modifyResult.Success)
                 {
                     return modifyResult;
@@ -205,7 +205,7 @@ namespace EZNEW.Business.Sys
             }
             using (var businessWork = WorkManager.Create())
             {
-                var modifyResult = userService.ModifyStatus(modifyUserStatusDto.MapTo<ModifyUserStatus>());
+                var modifyResult = userService.ModifyStatus(modifyUserStatusDto.MapTo<ModifyUserStatusParameter>());
                 if (!modifyResult.Success)
                 {
                     return modifyResult;
@@ -228,7 +228,7 @@ namespace EZNEW.Business.Sys
         {
             using (var businessWork = WorkManager.Create())
             {
-                var result = userRoleService.Modify(modifyUserRoleDto.MapTo<ModifyUserRole>());
+                var result = userRoleService.Modify(modifyUserRoleDto.MapTo<ModifyUserRoleParameter>());
                 if (!result.Success)
                 {
                     return result;

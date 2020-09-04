@@ -52,16 +52,6 @@ namespace EZNEW.Entity.Sys
         }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        [EntityField(Description = "等级")]
-        public int Level
-        {
-            get => GetPropertyValue<int>(nameof(Level));
-            set => SetPropertyValue(nameof(Level), value);
-        }
-
-        /// <summary>
         /// 说明
         /// </summary>
         [EntityField(Description = "说明")]

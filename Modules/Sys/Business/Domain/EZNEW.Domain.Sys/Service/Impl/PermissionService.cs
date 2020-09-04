@@ -22,40 +22,16 @@ namespace EZNEW.Domain.Sys.Service.Impl
         static readonly IPermissionRepository permissionRepository = ContainerManager.Resolve<IPermissionRepository>();
         static readonly IPermissionGroupService permissionGroupService = ContainerManager.Resolve<IPermissionGroupService>();
 
-        #region 修改权限状态
+        #region 保存权限
 
         /// <summary>
-        /// 修改权限状态
+        /// 保存权限
         /// </summary>
-        /// <param name="modifyPermissionStatus">权限状态修改信息</param>
-        /// <returns>返回执行结果</returns>
-        public Result ModifyStatus(ModifyPermissionStatus modifyPermissionStatus)
+        /// <param name="permission">权限对象</param>
+        /// <returns>执行结果</returns>
+        public Result<Permission> Save(Permission permission)
         {
-            #region 参数判断
-
-            if (modifyPermissionStatus?.StatusInfos.IsNullOrEmpty() ?? true)
-            {
-                return Result.FailedResult("没有指定要操作的权限信息");
-            }
-
-            #endregion
-
-            IEnumerable<long> permissionIds = modifyPermissionStatus.StatusInfos.Keys;
-            var permissionList = GetList(permissionIds);
-            if (permissionList.IsNullOrEmpty())
-            {
-                return Result.FailedResult("没有指定要操作的权限信息");
-            }
-            foreach (var permission in permissionList)
-            {
-                if (permission == null || !modifyPermissionStatus.StatusInfos.TryGetValue(permission.Id, out var newStatus))
-                {
-                    continue;
-                }
-                permission.Status = newStatus;
-                permission.Save();
-            }
-            return Result.SuccessResult("修改成功");
+            return permission?.Save() ?? Result<Permission>.FailedResult("权限保存失败");
         }
 
         #endregion
@@ -73,57 +49,8 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 throw new Exception("没有指定任何要删除的权限");
             }
-            IQuery delQuery = QueryManager.Create<PermissionEntity>(a => ids.Contains(a.Id));
-            permissionRepository.Remove(delQuery);
-        }
-
-        #endregion
-
-        #region 保存权限
-
-        /// <summary>
-        /// 保存权限
-        /// </summary>
-        /// <param name="permission">权限对象</param>
-        /// <returns>执行结果</returns>
-        public Result<Permission> Save(Permission permission)
-        {
-            if (permission == null)
-            {
-                return Result<Permission>.FailedResult("权限信息为空");
-            }
-            //权限分组
-            if (permission.Group == null || permission.Group.Id < 1)
-            {
-                return Result<Permission>.FailedResult("请设置正确的权限组");
-            }
-            if (!permissionGroupService.Exist(permission.Group.Id))
-            {
-                return Result<Permission>.FailedResult("请设置正确的权限组");
-            }
-            Permission nowPermission = null;
-            if (permission.Id > 0)
-            {
-                nowPermission = Get(permission.Id); ;
-            }
-            if (nowPermission == null)
-            {
-                nowPermission = permission;
-                nowPermission.Type = PermissionType.Management;
-                nowPermission.CreateDate = DateTime.Now;
-                nowPermission.Sort = 0;
-            }
-            else
-            {
-                nowPermission.Code = permission.Code;
-                nowPermission.Name = permission.Name;
-                nowPermission.Status = permission.Status;
-                nowPermission.Remark = permission.Remark;
-            }
-            nowPermission.Save();
-            var result = Result<Permission>.SuccessResult("保存成功");
-            result.Data = nowPermission;
-            return result;
+            IQuery removeQuery = QueryManager.Create<PermissionEntity>(a => ids.Contains(a.Id));
+            permissionRepository.Remove(removeQuery);
         }
 
         #endregion
@@ -261,6 +188,44 @@ namespace EZNEW.Domain.Sys.Service.Impl
         public IPaging<Permission> GetPaging(PermissionFilter permissionFilter)
         {
             return GetPaging(permissionFilter?.CreateQuery());
+        }
+
+        #endregion
+
+        #region 修改权限状态
+
+        /// <summary>
+        /// 修改权限状态
+        /// </summary>
+        /// <param name="modifyPermissionStatus">权限状态修改信息</param>
+        /// <returns>返回执行结果</returns>
+        public Result ModifyStatus(ModifyPermissionStatusParameter modifyPermissionStatus)
+        {
+            #region 参数判断
+
+            if (modifyPermissionStatus?.StatusInfos.IsNullOrEmpty() ?? true)
+            {
+                return Result.FailedResult("没有指定要操作的权限信息");
+            }
+
+            #endregion
+
+            IEnumerable<long> permissionIds = modifyPermissionStatus.StatusInfos.Keys;
+            var permissionList = GetList(permissionIds);
+            if (permissionList.IsNullOrEmpty())
+            {
+                return Result.FailedResult("没有指定要操作的权限信息");
+            }
+            foreach (var permission in permissionList)
+            {
+                if (permission == null || !modifyPermissionStatus.StatusInfos.TryGetValue(permission.Id, out var newStatus))
+                {
+                    continue;
+                }
+                permission.Status = newStatus;
+                permission.Save();
+            }
+            return Result.SuccessResult("修改成功");
         }
 
         #endregion

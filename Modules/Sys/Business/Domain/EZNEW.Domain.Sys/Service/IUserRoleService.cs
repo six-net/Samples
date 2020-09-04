@@ -63,7 +63,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="modifyUserRole">用户&角色修绑定关系修改信息</param>
         /// <returns>返回操作结果</returns>
-        Result Modify(ModifyUserRole modifyUserRole);
+        Result Modify(ModifyUserRoleParameter modifyUserRole);
 
         #endregion
     }

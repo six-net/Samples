@@ -10,7 +10,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 用户登录信息
     /// </summary>
-    public class Login : IDomainParameter
+    public class LoginParameter : IDomainParameter
     {
         /// <summary>
         /// 用户名

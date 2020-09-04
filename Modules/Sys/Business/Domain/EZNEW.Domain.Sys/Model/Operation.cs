@@ -1,11 +1,12 @@
 using System;
 using EZNEW.ValueType;
-using EZNEW.Code;
 using EZNEW.Develop.Domain.Aggregation;
 using EZNEW.Domain.Sys.Repository;
 using EZNEW.Develop.CQuery;
 using EZNEW.Entity.Sys;
 using EZNEW.Module.Sys;
+using EZNEW.Domain.Sys.Service;
+using EZNEW.DependencyInjection;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -14,6 +15,11 @@ namespace EZNEW.Domain.Sys.Model
     /// </summary>
     public class Operation : AggregationRoot<Operation>
     {
+        /// <summary>
+        /// 操作分组服务
+        /// </summary>
+        static readonly IOperationGroupService operationGroupService = ContainerManager.Resolve<IOperationGroupService>();
+
         #region	字段
 
         /// <summary>
@@ -30,7 +36,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         private Operation()
         {
-            group = new LazyMember<OperationGroup>(LoadAuthorityOperationGroup);
+            group = new LazyMember<OperationGroup>(LoadOperationGroup);
             repository = this.Instance<IOperationRepository>();
         }
 
@@ -103,17 +109,13 @@ namespace EZNEW.Domain.Sys.Model
         /// 加载操作对应的分组
         /// </summary>
         /// <returns></returns>
-        OperationGroup LoadAuthorityOperationGroup()
+        OperationGroup LoadOperationGroup()
         {
-            if (!AllowLazyLoad(r => r.Group))
+            if (AllowLoad(o => o.Group, group))
             {
-                return group.CurrentValue;
+                return operationGroupService.Get(group.CurrentValue.Id);
             }
-            if (group.CurrentValue == null || group.CurrentValue.Id <= 0)
-            {
-                return group.CurrentValue;
-            }
-            return this.Instance<IOperationGroupRepository>().Get(QueryManager.Create<OperationGroupEntity>(r => r.Id == group.CurrentValue.Id));
+            return group.CurrentValue;
         }
 
         #endregion
@@ -131,31 +133,17 @@ namespace EZNEW.Domain.Sys.Model
             {
                 return valResult;
             }
-            if (group.CurrentValue == null || group.CurrentValue.Id < 1)
+            if (group.CurrentValue?.IdentityValueIsNone() ?? true)
             {
-                throw new Exception("请设置操作所属分组");
+                throw new Exception($"请设置操作功能:{Name} 的分组");
             }
-            IQuery groupQuery = QueryManager.Create<OperationGroupEntity>(c => c.Id == group.CurrentValue.Id);
-            if (!this.Instance<IOperationGroupRepository>().Exist(groupQuery))
+            if (!operationGroupService.Exist(group.CurrentValue.Id))
             {
-                throw new Exception("请设置正确的分组");
+                throw new Exception("操作功能设置的分组: {group.CurrentValue.Id} 不存在");
             }
-            ActionCode = ActionCode?.ToUpper();
-            ControllerCode = ControllerCode?.ToUpper();
+            ActionCode = ActionCode?.ToUpper() ?? string.Empty;
+            ControllerCode = ControllerCode?.ToUpper() ?? string.Empty;
             return true;
-        }
-
-        #endregion
-
-        #region 验证对象标识信息是否未设置
-
-        /// <summary>
-        /// 判断对象标识信息是否未设置
-        /// </summary>
-        /// <returns></returns>
-        public override bool IdentityValueIsNone()
-        {
-            return Id < 1;
         }
 
         #endregion
@@ -169,6 +157,30 @@ namespace EZNEW.Domain.Sys.Model
         protected override string GetIdentityValue()
         {
             return Id.ToString();
+        }
+
+        #endregion
+
+        #region 更新对象值
+
+        /// <summary>
+        /// 更新对象值
+        /// </summary>
+        /// <param name="newData">新的数据对象</param>
+        /// <returns>返回更新后的对象</returns>
+        protected override Operation OnUpdating(Operation newData)
+        {
+            if (newData != null)
+            {
+                SetGroup(newData.Group);
+                Name = newData.Name;
+                ControllerCode = newData.ControllerCode;
+                ActionCode = newData.ActionCode;
+                Status = newData.Status;
+                Remark = newData.Remark;
+                AccessLevel = newData.AccessLevel;
+            }
+            return this;
         }
 
         #endregion
@@ -217,6 +229,19 @@ namespace EZNEW.Domain.Sys.Model
         #endregion
 
         #region 功能方法
+
+        #region 验证对象标识是否为空
+
+        /// <summary>
+        /// 验证对象标识是否为空
+        /// </summary>
+        /// <returns>返回对象标识是否为空</returns>
+        public override bool IdentityValueIsNone()
+        {
+            return Id < 1;
+        }
+
+        #endregion
 
         #region 设置操作分组
 

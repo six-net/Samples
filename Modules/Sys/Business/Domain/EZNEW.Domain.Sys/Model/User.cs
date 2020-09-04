@@ -8,6 +8,8 @@ using EZNEW.Code;
 using EZNEW.Domain.Sys.Service;
 using EZNEW.DependencyInjection;
 using EZNEW.Module.Sys;
+using EZNEW.Domain.Sys.Parameter;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -48,7 +50,7 @@ namespace EZNEW.Domain.Sys.Model
         /// <summary>
         /// 密码
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; protected set; }
 
         /// <summary>
         /// 类型
@@ -89,101 +91,6 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 内部方法
 
-        #region 设置用户密码
-
-        /// <summary>
-        /// 设置用户密码
-        /// </summary>
-        /// <param name="newPwd">新的密码</param>
-        void SetPassword(string newPwd)
-        {
-            Password = PasswordEncryption(newPwd);
-        }
-
-        #endregion
-
-        #region 验证对象标识信息是否未设置
-
-        /// <summary>
-        /// 判断对象标识信息是否未设置
-        /// </summary>
-        /// <returns></returns>
-        public override bool IdentityValueIsNone()
-        {
-            return Id < 1;
-        }
-
-        #endregion
-
-        #region 从指定对象复制值
-
-        /// <summary>
-        /// 从指定对象复制值
-        /// </summary>
-        /// <typeparam name="TModel">数据类型</typeparam>
-        /// <param name="similarObject">数据对象</param>
-        /// <param name="excludePropertys">排除不复制的属性</param>
-        protected override void CopyDataFromSimilarObject<TModel>(TModel similarObject, IEnumerable<string> excludePropertys = null)
-        {
-            base.CopyDataFromSimilarObject(similarObject, excludePropertys);
-            if (similarObject == null)
-            {
-                return;
-            }
-            excludePropertys = excludePropertys ?? new List<string>(0);
-
-            #region 复制值
-
-            if (!excludePropertys.Contains("SysNo"))
-            {
-                Id = similarObject.Id;
-            }
-            if (!excludePropertys.Contains("UserName"))
-            {
-                UserName = similarObject.UserName;
-            }
-            if (!excludePropertys.Contains("RealName"))
-            {
-                RealName = similarObject.RealName;
-            }
-            if (!excludePropertys.Contains("Password"))
-            {
-                Password = similarObject.Password;
-            }
-            if (!excludePropertys.Contains("UserType"))
-            {
-                UserType = similarObject.UserType;
-            }
-            if (!excludePropertys.Contains("SuperUser"))
-            {
-                SuperUser = similarObject.SuperUser;
-            }
-            if (!excludePropertys.Contains("Status"))
-            {
-                Status = similarObject.Status;
-            }
-            if (!excludePropertys.Contains(nameof(Email)))
-            {
-                Email = similarObject.Email;
-            }
-            if (!excludePropertys.Contains(nameof(QQ)))
-            {
-                QQ = similarObject.QQ;
-            }
-            if (!excludePropertys.Contains(nameof(Mobile)))
-            {
-                Mobile = similarObject.Mobile;
-            }
-            if (!excludePropertys.Contains("CreateDate"))
-            {
-                CreateDate = similarObject.CreateDate;
-            }
-
-            #endregion
-        }
-
-        #endregion
-
         #region 获取对象标识值
 
         /// <summary>
@@ -197,24 +104,47 @@ namespace EZNEW.Domain.Sys.Model
 
         #endregion
 
-        #region 保存验证
+        #region 更新对象时触发
 
         /// <summary>
-        /// 保存验证
+        /// 更新对象时触发
         /// </summary>
-        /// <returns>返回是否允许保存执行</returns>
-        protected override bool SaveValidation()
+        /// <param name="newData">新的对象值</param>
+        /// <returns>返回更新后的对象</returns>
+        protected override User OnUpdating(User newData)
         {
-            var allowSave = base.SaveValidation();
-            if (allowSave)
+            if (newData != null)
             {
-                //添加数据
-                if (IsNew)
+                RealName = newData.RealName;
+                if (SuperUser)
                 {
-                    CreateDate = DateTime.Now;
+                    Status = UserStatus.Enable;
                 }
+                else
+                {
+                    Status = newData.Status;
+                }
+                Mobile = newData.Mobile;
+                Email = newData.Email;
+                QQ = newData.QQ;
             }
-            return allowSave;
+            return this;
+        }
+
+        #endregion
+
+        #region 添加对象时触发
+
+        /// <summary>
+        /// 添加对象时触发
+        /// </summary>
+        /// <returns>返回要保存的对象值</returns>
+        protected override User OnAdding()
+        {
+            var saveData = base.OnAdding();
+            saveData.Password = EncryptPassword(Password);
+            saveData.CreateDate = DateTime.Now;
+            return saveData;
         }
 
         #endregion
@@ -222,6 +152,20 @@ namespace EZNEW.Domain.Sys.Model
         #endregion
 
         #region 静态方法
+
+        #region 加密密码
+
+        /// <summary>
+        /// 加密密码
+        /// </summary>
+        /// <param name="password">密码明文</param>
+        /// <returns>返回密码密文</returns>
+        public static string EncryptPassword(string password)
+        {
+            return password.MD5();
+        }
+
+        #endregion
 
         #region 生成用户编号
 
@@ -260,29 +204,40 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 功能方法
 
+        #region 验证对象标识信息是否为空
+
+        /// <summary>
+        /// 验证对象标识信息是否为空
+        /// </summary>
+        /// <returns>返回标识信息是否为空</returns>
+        public override bool IdentityValueIsNone()
+        {
+            return Id < 1;
+        }
+
+        #endregion
+
         #region 修改密码
 
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="newPassword">信息的密码</param>
-        public void ModifyPassword(string newPassword)
+        /// <param name="modifyUserPasswordParameter">密码修改参数</param>
+        public Result ModifyPassword(ModifyUserPasswordParameter modifyUserPasswordParameter)
         {
-            SetPassword(newPassword);
-        }
-
-        #endregion
-
-        #region 执行用户密码加密
-
-        /// <summary>
-        /// 执行用户密码加密
-        /// </summary>
-        /// <param name="pwdValue">密码值</param>
-        /// <returns></returns>
-        public static string PasswordEncryption(string pwdValue)
-        {
-            return pwdValue.MD5();
+            if (string.IsNullOrWhiteSpace(modifyUserPasswordParameter?.NewPassword))
+            {
+                return Result.FailedResult("新密码为空");
+            }
+            //加密密码
+            string newPassword = EncryptPassword(modifyUserPasswordParameter.NewPassword);
+            //验证当前密码
+            if (modifyUserPasswordParameter.CheckCurrentPassword && Password != newPassword)
+            {
+                return Result.FailedResult("当前密码不正确");
+            }
+            Password = newPassword;
+            return Result.SuccessResult("用户密码修改成功");
         }
 
         #endregion
@@ -291,10 +246,9 @@ namespace EZNEW.Domain.Sys.Model
 
         /// <summary>
         /// 当前账号是否允许登陆
-        /// 超级管理员始终返回true
-        /// 若用户绑定的角色及所有上级角色都关闭，则不能登录
+        /// 超级管理员始终允许登录
         /// </summary>
-        /// <returns></returns>
+        /// <returns>返回当前账号是否允许登录</returns>
         public bool AllowLogin()
         {
             return SuperUser || Status == UserStatus.Enable;
@@ -311,24 +265,6 @@ namespace EZNEW.Domain.Sys.Model
         {
             base.InitIdentityValue();
             Id = GenerateUserId();
-        }
-
-        #endregion
-
-        #region 根据给定的对象更新当前信息
-
-        /// <summary>
-        /// 根据给定的对象更新当前信息
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <param name="excludePropertys">排除更新的属性</param>
-        public virtual void ModifyFromOtherUser(User user, IEnumerable<string> excludePropertys = null)
-        {
-            if (user == null)
-            {
-                return;
-            }
-            CopyDataFromSimilarObject(user, excludePropertys);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace EZNEW.Domain.Sys.Parameter
     /// <summary>
     /// 初始化
     /// </summary>
-    public class InitializeOperation : IDomainParameter
+    public class InitializeOperationParameter : IDomainParameter
     {
         /// <summary>
         /// 操作分组

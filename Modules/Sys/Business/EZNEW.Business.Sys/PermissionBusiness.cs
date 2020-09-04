@@ -154,7 +154,7 @@ namespace EZNEW.Business.Sys
                 {
                     return Result.FailedResult("没有指定任何要修改的权限信息");
                 }
-                var modifyResult = permissionService.ModifyStatus(modifyPermissionStatusDto.MapTo<ModifyPermissionStatus>());
+                var modifyResult = permissionService.ModifyStatus(modifyPermissionStatusDto.MapTo<ModifyPermissionStatusParameter>());
                 if (!modifyResult.Success)
                 {
                     return modifyResult;
@@ -217,7 +217,7 @@ namespace EZNEW.Business.Sys
             }
             using (var businessWork = WorkManager.Create())
             {
-                var modifyResult = permissionOperationService.Modify(modifyPermissionOperationDto.MapTo<ModifyPermissionOperation>());
+                var modifyResult = permissionOperationService.Modify(modifyPermissionOperationDto.MapTo<ModifyPermissionOperationParameter>());
                 if (!modifyResult.Success)
                 {
                     return modifyResult;

@@ -25,7 +25,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="roleAuthorizes">角色授权修改信息</param>
         /// <returns>返回执行结果</returns>
-        public Result Modify(ModifyRolePermission modifyRolePermission)
+        public Result Modify(ModifyRolePermissionParameter modifyRolePermission)
         {
             if (modifyRolePermission == null || (modifyRolePermission.Bindings.IsNullOrEmpty() && modifyRolePermission.Unbindings.IsNullOrEmpty()))
             {
