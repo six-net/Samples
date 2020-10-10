@@ -34,7 +34,7 @@
                     <li class="layui-nav-item">
                         <a href="javascript:void(0)"><img src="~/style/images/ava.jpg" class="layui-nav-img">@loginUser.RealName</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;" id="btn_modifypwd">修改密码</a></dd>
+                            <dd>@Html.AuthLink("修改密码","User", "ModifySelfPassword",new { id = "btn_modifypwd" })</dd>
                             <dd><a href="@Url.Action("LoginOut","Account")">安全退出</a></dd>
                         </dl>
                     </li>
@@ -56,15 +56,15 @@
                                 <h3 class="funcgroupmenu-title"><i class="menugroup-ico icon-user"></i> 角色/账户</h3>
                                 <div class="funcgroupmenu-list">
                                     <ul>
-                                        <li action="@Url.Action("RoleList","Role")">角色管理</li>
-                                        <li action="@Url.Action("UserList","User")">管理账户</li>
+                                        @Html.AuthMenuItem(Url, "角色管理", "Role", "RoleList")
+                                        @Html.AuthMenuItem(Url, "管理账户", "User", "UserList")
                                     </ul>
                                 </div>
                                 <h3 class="funcgroupmenu-title"><i class="menugroup-ico icon-cogs"></i> 权限/功能</h3>
                                 <div class="funcgroupmenu-list">
                                     <ul>
-                                        <li action="@Url.Action("PermissionGroupList","PermissionGroup")">权限管理</li>
-                                        <li action="@Url.Action("OperationGroupList","OperationGroup")">功能操作</li>
+                                        @Html.AuthMenuItem(Url, "权限管理", "PermissionGroup", "PermissionGroupList")
+                                        @Html.AuthMenuItem(Url, "操作功能", "OperationGroup", "OperationGroupList")
                                     </ul>
                                 </div>
                             </div>

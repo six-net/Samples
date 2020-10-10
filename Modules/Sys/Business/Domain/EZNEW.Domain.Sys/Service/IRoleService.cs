@@ -94,18 +94,6 @@ namespace EZNEW.Domain.Sys.Service
 
         #endregion
 
-        #region 修改角色排序
-
-        /// <summary>
-        /// 修改角色排序
-        /// </summary>
-        /// <param name="roleId">角色编号</param>
-        /// <param name="newSort">新的排序</param>
-        /// <returns>返回排序修改结果</returns>
-        Result ModifySort(long roleId, int newSort);
-
-        #endregion
-
         #region 检查角色名称是否存在
 
         /// <summary>

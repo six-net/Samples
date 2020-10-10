@@ -39,21 +39,6 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
         public string NameMateKey { get; set; }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        public int? Level { get; set; }
-
-        /// <summary>
-        /// 上级
-        /// </summary>
-        public long? Parent { get; set; }
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        public int? Sort { get; set; }
-
-        /// <summary>
         /// 状态
         /// </summary>
         public int? Status { get; set; }
@@ -115,18 +100,6 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
             {
                 query.Like<RoleEntity>(c => c.Name, NameMateKey.Trim());
             }
-            if (Level.HasValue)
-            {
-                query.Equal<RoleEntity>(c => c.Level, Level.Value);
-            }
-            if (Parent.HasValue)
-            {
-                query.Equal<RoleEntity>(c => c.Parent, Parent.Value);
-            }
-            if (Sort.HasValue)
-            {
-                query.Equal<RoleEntity>(c => c.Sort, Sort.Value);
-            }
             if (Status.HasValue)
             {
                 query.Equal<RoleEntity>(c => c.Status, Status.Value);
@@ -138,24 +111,6 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
             if (!string.IsNullOrWhiteSpace(Remark))
             {
                 query.Equal<RoleEntity>(c => c.Remark, Remark);
-            }
-
-            #endregion
-
-            #region 数据加载
-
-            if (LoadParent)
-            {
-                query.SetLoadProperty<Role>(true, r => r.Parent);
-            }
-
-            #endregion
-
-            #region 加载上级
-
-            if (QuerySuperiorRole)
-            {
-                query.SetRecurve<RoleEntity>(r => r.Id, r => r.Parent, RecurveDirection.Up);
             }
 
             #endregion

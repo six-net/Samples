@@ -36,21 +36,6 @@ namespace EZNEW.DTO.Sys.Filter
         public string NameMateKey { get; set; }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        public int? Level { get; set; }
-
-        /// <summary>
-        /// 上级
-        /// </summary>
-        public long? Parent { get; set; }
-
-        /// <summary>
-        /// 排序
-        /// </summary>
-        public int? Sort { get; set; }
-
-        /// <summary>
         /// 状态
         /// </summary>
         public int? Status { get; set; }

@@ -57,8 +57,6 @@ namespace EZNEW.Domain.Sys.Parameter.Filter
                     userRoleQuery.EqualInnerJoin(userQuery);
                     var roleQuery = QueryManager.Create<RoleEntity>(r => r.Status == RoleStatus.Enable);
                     roleQuery.EqualInnerJoin(userRoleQuery);
-                    //包括所有上级角色
-                    roleQuery.SetRecurve<RoleEntity>(r => r.Id, r => r.Parent, RecurveDirection.Up);
 
                     //角色授权
                     var roleBindingPermissionQuery = QueryManager.Create<RolePermissionEntity>();

@@ -42,7 +42,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="loginInfo">用户登录信息</param>
         /// <returns>返回登录结果</returns>
-        Result<User> Login(Login loginInfo);
+        Result<User> Login(LoginParameter loginInfo);
 
         #endregion
 
@@ -98,9 +98,9 @@ namespace EZNEW.Domain.Sys.Service
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="modifyUserPassword">用户密码修改信息</param>
+        /// <param name="modifyUserPasswordParameter">用户密码修改信息</param>
         /// <returns>返回执行结果</returns>
-        Result ModifyPassword(ModifyUserPassword modifyUserPassword);
+        Result ModifyPassword(ModifyUserPasswordParameter modifyUserPasswordParameter);
 
         #endregion
 
@@ -111,7 +111,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="modifyUserStatus">用户状态修改信息</param>
         /// <returns>返回执行结果</returns>
-        Result ModifyStatus(ModifyUserStatus modifyUserStatus);
+        Result ModifyStatus(ModifyUserStatusParameter modifyUserStatus);
 
         #endregion
 

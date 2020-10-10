@@ -19,6 +19,20 @@ namespace EZNEW.Domain.Sys.Service.Impl
     {
         static readonly IRoleRepository roleRepository = ContainerManager.Resolve<IRoleRepository>();
 
+        #region 保存角色信息
+
+        /// <summary>
+        /// 保存角色信息
+        /// </summary>
+        /// <param name="role">角色信息</param>
+        /// <returns></returns>
+        public Result<Role> Save(Role role)
+        {
+            return role?.Save() ?? Result<Role>.FailedResult("角色保存失败");
+        }
+
+        #endregion
+
         #region 删除角色
 
         /// <summary>
@@ -39,147 +53,8 @@ namespace EZNEW.Domain.Sys.Service.Impl
 
             //删除角色信息
             IQuery removeQuery = QueryManager.Create<RoleEntity>(c => roleIds.Contains(c.Id));
-            removeQuery.SetRecurve<RoleEntity>(c => c.Id, c => c.Parent);//删除角色所有的下级数据
             roleRepository.Remove(removeQuery);
             return Result.SuccessResult("角色移除成功");
-        }
-
-        #endregion
-
-        #region 获取指定用户绑定的角色
-
-        /// <summary>
-        /// 获取指定用户绑定的角色
-        /// </summary>
-        /// <param name="userId">用户编号</param>
-        /// <returns>返回用户绑定的角色</returns>
-        public List<Role> GetUserRoles(long userId)
-        {
-            if (userId < 1)
-            {
-                return new List<Role>(0);
-            }
-            var userRoleQuery = new UserRoleFilter()
-            {
-                UserFilter = new UserFilter() 
-                {
-                    Ids=new List<long>() { userId }
-                }
-            }.CreateQuery();
-            return GetList(userRoleQuery);
-        }
-
-        #endregion
-
-        #region 保存角色信息
-
-        /// <summary>
-        /// 保存角色信息
-        /// </summary>
-        /// <param name="role">角色信息</param>
-        /// <returns></returns>
-        public Result<Role> Save(Role role)
-        {
-            if (role == null)
-            {
-                return Result<Role>.FailedResult("没有指定要保存的");
-            }
-            return role.Id < 1 ? AddRole(role) : EditRole(role);
-        }
-
-        /// <summary>
-        /// 添加角色
-        /// </summary>
-        /// <param name="role">角色对象</param>
-        /// <returns>执行结果</returns>
-        Result<Role> AddRole(Role role)
-        {
-            #region 参数判断
-
-            if (role == null)
-            {
-                return Result<Role>.FailedResult("没有指定要添加的角色数据");
-            }
-
-            #endregion
-
-            #region 上级
-
-            long parentRoleId = role.Parent == null ? 0 : role.Parent.Id;
-            Role parentRole = null;
-            if (parentRoleId > 0)
-            {
-                IQuery parentQuery = QueryManager.Create<RoleEntity>(c => c.Id == parentRoleId);
-                parentRole = roleRepository.Get(parentQuery);
-                if (parentRole == null)
-                {
-                    return Result<Role>.FailedResult("请选择正确的上级角色");
-                }
-            }
-            role.SetParentRole(parentRole);
-
-            #endregion
-
-            role.CreateDate = DateTime.Now;
-            role.Save();
-            var result = Result<Role>.SuccessResult("添加成功");
-            result.Data = role;
-            return result;
-        }
-
-        /// <summary>
-        /// 编辑角色
-        /// </summary>
-        /// <param name="newRole">角色对象</param>
-        /// <returns>执行结果</returns>
-        Result<Role> EditRole(Role newRole)
-        {
-            #region 参数判断
-
-            if (newRole == null)
-            {
-                return Result<Role>.FailedResult("没有指定要操作的角色信息");
-            }
-
-            #endregion
-
-            IQuery roleQuery = QueryManager.Create<RoleEntity>(r => r.Id == newRole.Id);
-            Role currentRole = roleRepository.Get(roleQuery);
-            if (currentRole == null)
-            {
-                return Result<Role>.FailedResult("没有指定要操作的角色信息");
-            }
-
-            #region 修改上级
-
-            long newParentRoleId = newRole.Parent == null ? 0 : newRole.Parent.Id;
-            long oldParentRoleId = currentRole.Parent == null ? 0 : currentRole.Parent.Id;
-            //上级改变后 
-            if (newParentRoleId != oldParentRoleId)
-            {
-                Role parentRole = null;
-                if (newParentRoleId > 0)
-                {
-                    IQuery parentQuery = QueryManager.Create<RoleEntity>(c => c.Id == newParentRoleId);
-                    parentRole = roleRepository.Get(parentQuery);
-                    if (parentRole == null)
-                    {
-                        return Result<Role>.FailedResult("请选择正确的上级角色");
-                    }
-                }
-                currentRole.SetParentRole(parentRole);
-            }
-
-            #endregion
-
-            //修改信息
-            currentRole.Name = newRole.Name;
-            currentRole.Status = newRole.Status;
-            currentRole.Remark = newRole.Remark ?? string.Empty;
-            currentRole.Save();//保存角色信息
-            var result = Result<Role>.SuccessResult("修改成功");
-            result.Data = currentRole;
-            return result;
         }
 
         #endregion
@@ -220,6 +95,31 @@ namespace EZNEW.Domain.Sys.Service.Impl
         public Role Get(RoleFilter roleFilter)
         {
             return GetRole(roleFilter?.CreateQuery());
+        }
+
+        #endregion
+
+        #region 获取指定用户绑定的角色
+
+        /// <summary>
+        /// 获取指定用户绑定的角色
+        /// </summary>
+        /// <param name="userId">用户编号</param>
+        /// <returns>返回用户绑定的角色</returns>
+        public List<Role> GetUserRoles(long userId)
+        {
+            if (userId < 1)
+            {
+                return new List<Role>(0);
+            }
+            var userRoleQuery = new UserRoleFilter()
+            {
+                UserFilter = new UserFilter()
+                {
+                    Ids = new List<long>() { userId }
+                }
+            }.CreateQuery();
+            return GetList(userRoleQuery);
         }
 
         #endregion
@@ -285,37 +185,6 @@ namespace EZNEW.Domain.Sys.Service.Impl
         public IPaging<Role> GetPaging(RoleFilter roleFilter)
         {
             return GetPaging(roleFilter?.CreateQuery());
-        }
-
-        #endregion
-
-        #region 修改角色排序
-
-        /// <summary>
-        /// 修改角色排序
-        /// </summary>
-        /// <param name="roleId">角色编号</param>
-        /// <param name="newSort">新的排序</param>
-        /// <returns>返回角色排序修改结果</returns>
-        public Result ModifySort(long roleId, int newSort)
-        {
-            #region 参数判断
-
-            if (roleId <= 0)
-            {
-                return Result.FailedResult("没有指定要修改的角色");
-            }
-
-            #endregion
-
-            Role role = Get(roleId);
-            if (role == null)
-            {
-                return Result.FailedResult("没有指定要修改的角色");
-            }
-            role.ModifySort(newSort);
-            role.Save();
-            return Result.SuccessResult("修改成功");
         }
 
         #endregion

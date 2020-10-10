@@ -30,65 +30,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns>返回保存执行结果</returns>
         public Result<User> Save(User user)
         {
-            if (user == null)
-            {
-                return Result<User>.FailedResult("用户信息为空");
-            }
-            Result<User> result = null;
-            if (user.Id < 1)
-            {
-                result = AddUser(user);
-            }
-            else
-            {
-                result = UpdateUser(user);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// 添加用户信息
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <returns></returns>
-        Result<User> AddUser(User user)
-        {
-            user.ModifyPassword(user.Password);//密码加密
-            user.Save();
-            var result = Result<User>.SuccessResult("保存成功");
-            result.Data = user;
-            return result;
-        }
-
-        /// <summary>
-        /// 修改用户信息
-        /// </summary>
-        /// <param name="user">用户信息</param>
-        /// <returns></returns>
-        Result<User> UpdateUser(User user)
-        {
-            var nowUser = Get(user.Id);
-            if (nowUser == null)
-            {
-                return Result<User>.FailedResult("请指定要编辑的用户");
-            }
-            var excludeModifyPropertys = ExpressionHelper.GetExpressionPropertyNames<User>(u =>
-              u.Id
-            , u => u.Password
-            , u => u.UserType
-            , u => u.CreateDate
-            , u => u.UserName
-            , u => u.SuperUser
-            );
-            if (nowUser.SuperUser)
-            {
-                user.Status = UserStatus.Enable;
-            }
-            nowUser.ModifyFromOtherUser(user, excludeModifyPropertys);//更新用户
-            nowUser.Save();
-            var result = Result<User>.SuccessResult("更新成功");
-            result.Data = nowUser;
-            return result;
+            return user?.Save() ?? Result<User>.FailedResult("用户保存失败");
         }
 
         #endregion
@@ -106,8 +48,15 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return Result.FailedResult("没有指定任何要删除的用户");
             }
-            userRepository.Remove(users.ToArray());
-            return Result.SuccessResult("删除成功");
+            foreach (var user in users)
+            {
+                var removeResult = user.Remove();
+                if (!removeResult.Success)
+                {
+                    return removeResult;
+                }
+            }
+            return Result.SuccessResult("用户删除成功");
         }
 
         /// <summary>
@@ -134,17 +83,15 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="loginInfo">登录用户信息</param>
         /// <returns>返回登录执行结果</returns>
-        public Result<User> Login(Login loginInfo)
+        public Result<User> Login(LoginParameter loginInfo)
         {
-            var UserEntity = QueryManager.Create<UserEntity>(u => u.UserName == loginInfo.UserName && u.Password == User.PasswordEncryption(loginInfo.Password));
-            User user = userRepository.Get(UserEntity);
+            IQuery userQuery = QueryManager.Create<UserEntity>(u => u.UserName == loginInfo.UserName && u.Password == User.EncryptPassword(loginInfo.Password));
+            User user = userRepository.Get(userQuery);
             if (user == null || !user.AllowLogin())
             {
                 return Result<User>.FailedResult("登陆失败");
             }
-            var result = Result<User>.SuccessResult("登陆成功");
-            result.Data = user;
-            return result;
+            return Result<User>.SuccessResult("登陆成功", "", user);
         }
 
         #endregion
@@ -158,8 +105,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <returns>返回用户</returns>
         User GetUser(IQuery query)
         {
-            User user = userRepository.Get(query);
-            return user;
+            return userRepository.Get(query);
         }
 
         /// <summary>
@@ -257,34 +203,32 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="modifyUserPassword">用户密码修改信息</param>
+        /// <param name="modifyUserPasswordParameter">用户密码修改信息</param>
         /// <returns>返回执行结果</returns>
-        public Result ModifyPassword(ModifyUserPassword modifyUserPassword)
+        public Result ModifyPassword(ModifyUserPasswordParameter modifyUserPasswordParameter)
         {
             #region 参数判断
 
-            if (modifyUserPassword == null)
+            if (modifyUserPasswordParameter?.UserId < 1)
             {
-                return Result.FailedResult("密码修改信息为空");
+                return Result.FailedResult("请指定要修改密码的用户");
             }
 
             #endregion
 
             //获取用户
-            IQuery query = QueryManager.Create<UserEntity>(u => u.Id == modifyUserPassword.UserId);
-            User nowUser = userRepository.Get(query);
+            User nowUser = Get(modifyUserPasswordParameter.UserId);
             if (nowUser == null)
             {
                 return Result.FailedResult("用户不存在");
             }
-            //验证当前密码
-            if (modifyUserPassword.CheckCurrentPassword && nowUser.Password != User.PasswordEncryption(modifyUserPassword.CurrentPassword))
+            //修改用户密码
+            var modifyResult = nowUser.ModifyPassword(modifyUserPasswordParameter);
+            if (modifyResult.Success)
             {
-                return Result.FailedResult("当前密码不正确");
+                nowUser.Save();
             }
-            nowUser.ModifyPassword(modifyUserPassword.NewPassword);//设置新密码
-            nowUser.Save();
-            return Result.SuccessResult("密码修改成功");
+            return modifyResult;
         }
 
         #endregion
@@ -296,7 +240,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="modifyUserStatus">用户状态修改信息</param>
         /// <returns>返回执行结果</returns>
-        public Result ModifyStatus(ModifyUserStatus modifyUserStatus)
+        public Result ModifyStatus(ModifyUserStatusParameter modifyUserStatus)
         {
             if (modifyUserStatus?.StatusInfos.IsNullOrEmpty() ?? true)
             {

@@ -76,6 +76,32 @@ namespace Site.Console.Controllers.Sys
 
         #endregion
 
+        #region 角色详情
+
+        [AuthorizationOperation(Name = "查看角色详情")]
+        public ActionResult RoleDetail(long id)
+        {
+            RoleViewModel role = null;
+            if (id > 0)
+            {
+                RoleFilterDto filter = new RoleFilterDto()
+                {
+                    Ids = new List<long>()
+                    {
+                        id
+                    }
+                };
+                role = roleAppService.GetRole(filter).MapTo<RoleViewModel>();
+            }
+            if (role == null)
+            {
+                return Content("没有找到角色信息");
+            }
+            return View(role);
+        }
+
+        #endregion
+
         #region 删除角色
 
         [HttpPost]
@@ -92,32 +118,19 @@ namespace Site.Console.Controllers.Sys
 
         #endregion
 
-        #region 修改角色排序
-
-        [HttpPost]
-        [AuthorizationOperation(Name = "修改角色排序")]
-        public ActionResult ChangeRoleSort(long id, int sort)
-        {
-            Result result = null;
-            result = roleAppService.ModifyRoleSort(new ModifyRoleSortDto()
-            {
-                Id = id,
-                NewSort = sort
-            });
-            var ajaxResult = AjaxResult.CopyFromResult(result);
-            return Json(ajaxResult);
-        }
-
-        #endregion
-
         #region 查询角色数据
 
         [HttpPost]
         [AuthorizationOperation(Name = "查询角色数据")]
         public IActionResult SearchRole(RoleFilterDto roleFilter)
         {
-            var roles = roleAppService.GetRoleList(roleFilter).Select(c => c.MapTo<RoleViewModel>()).OrderBy(r => r.Sort).ToList();
-            return Json(roles);
+            var rolePaging = roleAppService.GetRolePaging(roleFilter).ConvertTo<RoleViewModel>();
+            object dataResult = new
+            {
+                rolePaging.TotalCount,
+                Datas = rolePaging.ToList()
+            };
+            return Json(dataResult);
         }
 
         [HttpPost]
@@ -136,8 +149,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 角色多选
 
-        [AuthorizationOperation(Name = "角色多选页面")]
-        public ActionResult RoleMultipleSelect()
+        public ActionResult RoleMultiSelect()
         {
             return View();
         }
@@ -150,21 +162,21 @@ namespace Site.Console.Controllers.Sys
 
         [HttpPost]
         [AuthorizationOperation(Name = "添加角色用户")]
-        public ActionResult AddRoleUser(long group, IEnumerable<long> datas)
+        public ActionResult AddRoleUser(long roleId, IEnumerable<long> userIds)
         {
-            if (group < 1)
+            if (roleId < 1)
             {
                 return Json(Result.FailedResult("没有指定角色"));
             }
-            if (datas.IsNullOrEmpty())
+            if (userIds.IsNullOrEmpty())
             {
                 return Json(Result.FailedResult("没有指定用户"));
             }
             ModifyUserRoleDto modifyUserRoleDto = new ModifyUserRoleDto()
             {
-                Bindings = datas.Select(uid => new UserRoleDto()
+                Bindings = userIds.Select(uid => new UserRoleDto()
                 {
-                    RoleId = group,
+                    RoleId = roleId,
                     UserId = uid
                 })
             };
@@ -177,21 +189,21 @@ namespace Site.Console.Controllers.Sys
 
         [HttpPost]
         [AuthorizationOperation(Name = "删除角色用户")]
-        public ActionResult RemoveRoleUser(long group, IEnumerable<long> datas)
+        public ActionResult RemoveRoleUser(long roleId, IEnumerable<long> userIds)
         {
-            if (group < 1)
+            if (roleId < 1)
             {
                 return Json(Result.FailedResult("没有指定角色"));
             }
-            if (datas.IsNullOrEmpty())
+            if (userIds.IsNullOrEmpty())
             {
                 return Json(Result.FailedResult("没有指定用户"));
             }
             ModifyUserRoleDto modifyUserRoleDto = new ModifyUserRoleDto()
             {
-                Unbindings = datas.Select(uid => new UserRoleDto()
+                Unbindings = userIds.Select(uid => new UserRoleDto()
                 {
-                    RoleId = group,
+                    RoleId = roleId,
                     UserId = uid
                 })
             };
@@ -204,9 +216,9 @@ namespace Site.Console.Controllers.Sys
 
         [HttpPost]
         [AuthorizationOperation(Name = "清除角色用户")]
-        public ActionResult ClearRoleUser(long group)
+        public ActionResult ClearRoleUser(long roleId)
         {
-            var result = roleAppService.ClearUser(new long[1] { group });
+            var result = roleAppService.ClearUser(new long[1] { roleId });
             return Json(result);
         }
 

@@ -8,7 +8,7 @@ var EZNEW_DefaultGroupMultSelectOptions = {
         dataUrl: "",
         requestMethod: "post",
         where: null,
-        initDataCondition: { level: 1 },
+        initDataCondition: { levelOne: true },
         groupDataToNodeFunc: null,
         keyField: "Id",
         nameField: "Name",

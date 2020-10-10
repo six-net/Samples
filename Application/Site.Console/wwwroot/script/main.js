@@ -89,7 +89,7 @@ function InitSplit(ele, options) {
     else {
         options = $.extend({}, verticalSplitDefaultOptions, options);
     }
-    $(ele).EZNEWSplitter(options);
+    $(ele).eznewSplitter(options);
     $(ele).on('resize', function (event) {
         InitContentPanel();
         setTimeout(ResizeAllTable, 0);

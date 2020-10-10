@@ -26,11 +26,6 @@ namespace EZNEW.DTO.Sys
         public OperationGroupDto Parent { get; set; }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        public int Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }

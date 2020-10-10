@@ -137,38 +137,6 @@ namespace EZNEW.Business.Sys
 
         #endregion
 
-        #region 修改角色排序
-
-        /// <summary>
-        /// 修改角色排序
-        /// </summary>
-        /// <param name="modifyRoleSortDto">角色排序修改信息</param>
-        /// <returns>返回角色排序修改执行结果</returns>
-        public Result ModifyRoleSort(ModifyRoleSortDto modifyRoleSortDto)
-        {
-            using (var businessWork = WorkManager.Create())
-            {
-                #region 参数判断
-
-                if (modifyRoleSortDto?.Id <= 0)
-                {
-                    return Result.FailedResult("没有指定要修改的角色");
-                }
-
-                #endregion
-
-                var modifyResult = roleService.ModifySort(modifyRoleSortDto.Id, modifyRoleSortDto.NewSort);
-                if (!modifyResult.Success)
-                {
-                    return modifyResult;
-                }
-                var executeVal = businessWork.Commit();
-                return executeVal.ExecutedSuccess ? Result.SuccessResult("排序修改成功") : Result.FailedResult("排序修改失败");
-            }
-        }
-
-        #endregion
-
         #region 验证角色名称是否存在
 
         /// <summary>

@@ -1,0 +1,113 @@
+{
+  "types": [
+    {
+      "typeName": "EZNEW.ViewModel.Sys.UserViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+      "properties": [
+        {
+          "name": "UserName",
+          "rules": [
+            {
+              "vtype": "Required",
+              "errorMsg": "请填写5-20个字符内的登陆名",
+              "tipMsg": true
+            },
+            {
+              "maxValue": "20",
+              "minValue": "5",
+              "vtype": "StringLength",
+              "errorMsg": "请填写-20个字符内的登陆名",
+              "tipMsg": false
+            }
+          ]
+        },
+        {
+          "name": "Status",
+          "rules": [
+            {
+              "vtype": "Required",
+              "errorMsg": "请选择状态",
+              "tipMsg": true
+            }
+          ]
+        },
+        {
+          "name": "RealName",
+          "rules": [
+            {
+              "vtype": "Required",
+              "errorMsg": "请填写10个字符内的姓名",
+              "tipMsg": true
+            },
+            {
+              "maxValue": "10",
+              "vtype": "StringLength",
+              "errorMsg": "请填写10个字符内的姓名",
+              "tipMsg": true
+            }
+          ]
+        },
+        {
+          "name": "Password",
+          "rules": [
+            {
+              "vtype": "Required",
+              "errorMsg": "请填写5-20个字符内的密码",
+              "tipMsg": true
+            },
+            {
+              "maxValue": "20",
+              "minValue": "5",
+              "vtype": "StringLength",
+              "errorMsg": "请填写5-20个字符内的密码",
+              "tipMsg": false
+            }
+          ]
+        },
+        {
+          "name": "Email",
+          "rules": [
+            //{
+            //  "vtype": "Required",
+            //  "errorMsg": "请填写50个字符内的邮箱",
+            //  "tipMsg": true
+            //},
+            {
+              "maxValue": "50",
+              "vtype": "StringLength",
+              "errorMsg": "请填写50个字符内的邮箱",
+              "tipMsg": false
+            },
+            {
+              "vtype": "Email",
+              "errorMsg": "请填写正确的邮箱",
+              "tipMsg": false
+            }
+          ]
+        },
+        {
+          "name": "Mobile",
+          "rules": [
+            {
+              "maxValue": "11",
+              "minValue": "11",
+              "vtype": "StringLength",
+              "errorMsg": "请填写正确的手机号码",
+              "tipMsg": true
+            }
+          ]
+        },
+        {
+          "name": "QQ",
+          "rules": [
+            {
+              "maxValue": "15",
+              "vtype": "StringLength",
+              "errorMsg": "请15位以内的QQ号码",
+              "tipMsg": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

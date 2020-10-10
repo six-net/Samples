@@ -105,7 +105,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="modifyUserRole">用户&角色修绑定关系修改信息</param>
         /// <returns>返回操作结果</returns>
-        public Result Modify(ModifyUserRole modifyUserRole)
+        public Result Modify(ModifyUserRoleParameter modifyUserRole)
         {
             if (modifyUserRole == null || (modifyUserRole.Bindings.IsNullOrEmpty() && modifyUserRole.Unbindings.IsNullOrEmpty()))
             {

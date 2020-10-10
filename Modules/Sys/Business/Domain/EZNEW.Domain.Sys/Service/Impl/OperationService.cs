@@ -23,34 +23,16 @@ namespace EZNEW.Domain.Sys.Service.Impl
         static readonly IOperationGroupService operationGroupService = ContainerManager.Resolve<IOperationGroupService>();
         static readonly IUserService userService = ContainerManager.Resolve<IUserService>();
 
-        #region 修改操作功能状态
+        #region 保存操作功能
 
         /// <summary>
-        /// 修改操作功能状态
+        /// 保存操作功能
         /// </summary>
-        /// <param name="statusInfo">状态信息</param>
-        public Result ModifyStatus(ModifyOperationStatus modifyOperationStatus)
+        /// <param name="operation">操作功能对象</param>
+        /// <returns>返回执行结果</returns>
+        public Result<Operation> Save(Operation operation)
         {
-            if (modifyOperationStatus?.StatusInfos.IsNullOrEmpty() ?? true)
-            {
-                return Result.FailedResult("没有指定任何要修改的状态信息");
-            }
-            var operationIds = modifyOperationStatus?.StatusInfos.Keys;
-            var operatioList = GetList(operationIds);
-            if (operatioList.IsNullOrEmpty())
-            {
-                return Result.FailedResult("没有指定任何要修改状态的操作信息");
-            }
-            foreach (var operation in operatioList)
-            {
-                if (operation == null || !modifyOperationStatus.StatusInfos.TryGetValue(operation.Id, out var newStatus))
-                {
-                    continue;
-                }
-                operation.Status = newStatus;
-                operation.Save();
-            }
-            return Result.SuccessResult("修改成功");
+            return operation?.Save() ?? Result<Operation>.FailedResult("操作功能保存失败");
         }
 
         #endregion
@@ -67,72 +49,9 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return Result.FailedResult("没有指定任何要删除的信息");
             }
-            IQuery delQuery = QueryManager.Create<OperationEntity>(c => operationIds.Contains(c.Id));
-            operationRepository.Remove(delQuery);
+            IQuery removeQuery = QueryManager.Create<OperationEntity>(c => operationIds.Contains(c.Id));
+            operationRepository.Remove(removeQuery);
             return Result.SuccessResult("删除成功");
-        }
-
-        #endregion
-
-        #region 保存操作功能
-
-        /// <summary>
-        /// 保存操作功能
-        /// </summary>
-        /// <param name="operation">操作功能对象</param>
-        /// <returns>返回执行结果</returns>
-        public Result<Operation> Save(Operation operation)
-        {
-            if (operation == null)
-            {
-                return Result<Operation>.FailedResult("操作功能信息不完整");
-            }
-            return operation.Id > 0 ? UpdateOperation(operation) : AddOperation(operation);
-        }
-
-        /// <summary>
-        /// 添加操作功能
-        /// </summary>
-        /// <param name="operation">操作功能对象</param>
-        /// <returns>执行结果</returns>
-        static Result<Operation> AddOperation(Operation operation)
-        {
-            operation.Save();
-            var result = Result<Operation>.SuccessResult("添加成功");
-            result.Data = operation;
-            return result;
-        }
-
-        /// <summary>
-        /// 更新操作功能
-        /// </summary>
-        /// <param name="newOperation">操作功能对象</param>
-        /// <returns>执行结果</returns>
-        static Result<Operation> UpdateOperation(Operation newOperation)
-        {
-            Operation currentOperation = operationRepository.Get(QueryManager.Create<OperationEntity>(a => a.Id == newOperation.Id));
-            if (currentOperation == null)
-            {
-                return Result<Operation>.FailedResult("请指定要修改操作功能");
-            }
-
-            #region 操作信息修改
-
-            currentOperation.Name = newOperation.Name;
-            currentOperation.ControllerCode = newOperation.ControllerCode;
-            currentOperation.ActionCode = newOperation.ActionCode;
-            currentOperation.Status = newOperation.Status;
-            currentOperation.Remark = newOperation.Remark;
-            currentOperation.AccessLevel = newOperation.AccessLevel;
-            currentOperation.SetGroup(newOperation.Group.MapTo<OperationGroup>());
-
-            #endregion
-
-            currentOperation.Save();
-
-            var result = Result<Operation>.SuccessResult("修改成功");
-            result.Data = currentOperation;
-            return result;
         }
 
         #endregion
@@ -246,7 +165,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         {
             var operationPaging = operationRepository.GetPaging(query);
             var operationList = LoadOtherData(operationPaging, query);
-            return new DefaultPaging<Operation>(operationPaging.Page, operationPaging.PageSize, operationPaging.TotalCount, operationList);
+            return Pager.Create<Operation>(operationPaging.Page, operationPaging.PageSize, operationPaging.TotalCount, operationList);
         }
 
         /// <summary>
@@ -257,6 +176,38 @@ namespace EZNEW.Domain.Sys.Service.Impl
         public IPaging<Operation> GetPaging(OperationFilter operationFilter)
         {
             return GetPaging(operationFilter?.CreateQuery());
+        }
+
+        #endregion
+
+        #region 修改操作功能状态
+
+        /// <summary>
+        /// 修改操作功能状态
+        /// </summary>
+        /// <param name="statusInfo">状态信息</param>
+        public Result ModifyStatus(ModifyOperationStatusParameter modifyOperationStatus)
+        {
+            if (modifyOperationStatus?.StatusInfos.IsNullOrEmpty() ?? true)
+            {
+                return Result.FailedResult("没有指定任何要修改的状态信息");
+            }
+            var operationIds = modifyOperationStatus?.StatusInfos.Keys;
+            var operatioList = GetList(operationIds);
+            if (operatioList.IsNullOrEmpty())
+            {
+                return Result.FailedResult("没有指定任何要修改状态的操作信息");
+            }
+            foreach (var operation in operatioList)
+            {
+                if (operation == null || !modifyOperationStatus.StatusInfos.TryGetValue(operation.Id, out var newStatus))
+                {
+                    continue;
+                }
+                operation.Status = newStatus;
+                operation.Save();
+            }
+            return Result.SuccessResult("修改成功");
         }
 
         #endregion
@@ -288,7 +239,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="checkOperationAuthorization">用户操作功能授权信息</param>
         /// <returns>返回用户是否已授权</returns>
-        public bool CheckAuthorization(CheckAuthorization checkOperationAuthorization)
+        public bool CheckAuthorization(CheckAuthorizationParameter checkOperationAuthorization)
         {
             if (checkOperationAuthorization?.Operation == null)
             {
@@ -306,9 +257,10 @@ namespace EZNEW.Domain.Sys.Service.Impl
             {
                 return false;
             }
+            //超级用户不受权限控制
             if (nowUser.SuperUser)
             {
-                return true;//超级用户不受权限控制
+                return true;
             }
 
             #endregion
@@ -335,7 +287,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="initializeOperation">操作功能初始化信息</param>
         /// <returns>返回执行结果</returns>
-        public Result Initialize(InitializeOperation initializeOperation)
+        public Result Initialize(InitializeOperationParameter initializeOperation)
         {
             //清除当前信息
             operationRepository.Remove(QueryManager.Create<OperationEntity>());

@@ -31,7 +31,7 @@ namespace Site.Console.Util
             var codeObj = VerificationCodeFactory.GetVerificationCodeProvider();
             codeObj.CodeType = VerificationCodeType.Number;
             var verificationValue = codeObj.CreateCode();
-            CookieHelper.SetCookieValue(LoginVerificationCodeKey, verificationValue.Code, DateTimeOffset.Now.AddMinutes(10));
+            CookieHelper.SetCookieValue(LoginVerificationCodeKey, verificationValue.Code);
             return verificationValue.FileBytes;
         }
 

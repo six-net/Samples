@@ -6,6 +6,9 @@ using EZNEW.ValueType;
 using EZNEW.Code;
 using EZNEW.Entity.Sys;
 using EZNEW.Module.Sys;
+using EZNEW.Response;
+using EZNEW.Domain.Sys.Service;
+using EZNEW.DependencyInjection;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -14,6 +17,9 @@ namespace EZNEW.Domain.Sys.Model
     /// </summary>
     public class Permission : AggregationRoot<Permission>
     {
+        //权限分组服务
+        private static readonly IPermissionGroupService permissionGroupService = ContainerManager.Resolve<IPermissionGroupService>();
+
         #region	字段
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace EZNEW.Domain.Sys.Model
         public Permission()
         {
             Status = PermissionStatus.Enable;
-            group = new LazyMember<PermissionGroup>(LoadAuthorityGroup);
+            group = new LazyMember<PermissionGroup>(LoadGroup);
             Type = PermissionType.Management;
             CreateDate = DateTime.Now;
             Sort = 0;
@@ -104,30 +110,13 @@ namespace EZNEW.Domain.Sys.Model
         /// 加载权限分组
         /// </summary>
         /// <returns></returns>
-        PermissionGroup LoadAuthorityGroup()
+        PermissionGroup LoadGroup()
         {
-            if (!AllowLazyLoad(r => r.Group))
+            if (AllowLoad(r => r.Group, group))
             {
-                return group.CurrentValue;
+                return permissionGroupService.Get(group.CurrentValue.Id);
             }
-            if (group.CurrentValue == null || group.CurrentValue.Id <= 0)
-            {
-                return group.CurrentValue;
-            }
-            return this.Instance<IPermissionGroupRepository>().Get(QueryManager.Create<PermissionGroupEntity>(r => r.Id == group.CurrentValue.Id));
-        }
-
-        #endregion
-
-        #region 验证对象标识信息是否未设置
-
-        /// <summary>
-        /// 判断对象标识信息是否未设置
-        /// </summary>
-        /// <returns></returns>
-        public override bool IdentityValueIsNone()
-        {
-            return Id < 1;
+            return group.CurrentValue;
         }
 
         #endregion
@@ -141,6 +130,43 @@ namespace EZNEW.Domain.Sys.Model
         protected override string GetIdentityValue()
         {
             return Id.ToString();
+        }
+
+        #endregion
+
+        #region 更新对象时触发
+
+        /// <summary>
+        /// 更新对象时触发
+        /// </summary>
+        /// <param name="newData">新的对象值</param>
+        /// <returns>返回更新后的对象</returns>
+        protected override Permission OnUpdating(Permission newData)
+        {
+            if (newData != null)
+            {
+                SetGroup(newData.Group);
+                Code = newData.Code;
+                Name = newData.Name;
+                Status = newData.Status;
+                Remark = newData.Remark;
+            }
+            return this;
+        }
+
+        #endregion
+
+        #region 添加对象时触发
+
+        /// <summary>
+        /// 添加对象时触发
+        /// </summary>
+        /// <returns>返回要保存的对象值</returns>
+        protected override Permission OnAdding()
+        {
+            var saveData = base.OnAdding();
+            saveData.CreateDate = DateTime.Now;
+            return saveData;
         }
 
         #endregion
@@ -170,6 +196,19 @@ namespace EZNEW.Domain.Sys.Model
         #endregion
 
         #region 功能方法
+
+        #region 验证对象标识信息是否为空
+
+        /// <summary>
+        /// 验证对象标识信息是否为空
+        /// </summary>
+        /// <returns>返回对象标识值是否为空</returns>
+        public override bool IdentityValueIsNone()
+        {
+            return Id < 1;
+        }
+
+        #endregion
 
         #region 设置分组
 

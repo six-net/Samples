@@ -5,12 +5,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EZNEW.Web.Mvc;
-using EZNEW.Web.Mvc.Display;
-using EZNEW.Web.Mvc.Validation;
+using EZNEW.Web.Security.Authentication.Cookie;
 using EZNEW.Web.Security.Authorization;
+using Site.Console.Util;
 using Site.Console.Controllers;
 using Site.Console.Filters;
-using Site.Console.Util;
+using Microsoft.Extensions.Logging;
+using EZNEW.Logging;
+using System.Diagnostics;
+using EZNEW.Web.Mvc.Validation;
+using EZNEW.Web.Mvc.Display;
 
 namespace Site.Console
 {
@@ -21,6 +25,12 @@ namespace Site.Console
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+            services.AddLogging(cfg =>
+            {
+                cfg.AddTraceSource("eznew", new ConsoleTraceListener());
+                cfg.AddFilter("microsoft", LogLevel.Warning);
+            });
+            TraceLogSwitchManager.EnableFrameworkTrace();
             services.AddMvc(options =>
             {
                 options.ModelValidatorProviders.Add(new CustomDataAnnotationsModelValidatorProvider());
@@ -44,6 +54,7 @@ namespace Site.Console
             {
                 option.ForceValidatePrincipal = true;
                 option.ValidatePrincipalAsync = IdentityManager.ValidatePrincipalAsync;
+                option.StorageModel = CookieStorageModel.InMemory;
                 option.CookieConfiguration = options =>
                 {
                     options.LoginPath = "/login";

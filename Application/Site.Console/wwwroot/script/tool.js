@@ -1,5 +1,5 @@
 var ajaxPro = 0;
-var EZNEW_TreeLoadingIcoUrl = '~/script/ztree/img/loading.gif';//树控件加载数据的时候图标地址
+var EZNEW_TreeLoadingIcoUrl = '/script/ztree/img/loading.gif';//树控件加载数据的时候图标地址
 
 //获取元素高度，若高度值不合法返回0
 function GetElementHeight(selector) {

@@ -64,11 +64,6 @@
         <script type="text/javascript" src="~/script/layui/layui.all.js"></script>
     </environment>
     <script type="text/javascript">
-        window.onload = function () {
-            if (!window.applicationCache) {
-                window.location.href = "@Url.Action("Browser","Home")";
-            }
-        }
         var imgUrl = '@Url.Action("VCode","Account")';
         var homeUrl = '@Url.Action("Index","Home")';
         $(function () {

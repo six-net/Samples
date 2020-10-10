@@ -18,7 +18,7 @@ namespace EZNEW.Domain.Sys.Service
         /// </summary>
         /// <param name="roleAuthorizes">角色授权修改信息</param>
         /// <returns>返回执行结果</returns>
-        Result Modify(ModifyRolePermission modifyRolePermission);
+        Result Modify(ModifyRolePermissionParameter modifyRolePermission);
 
         #endregion
 

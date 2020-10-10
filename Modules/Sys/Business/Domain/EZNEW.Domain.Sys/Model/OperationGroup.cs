@@ -8,6 +8,9 @@ using EZNEW.Code;
 using EZNEW.Develop.Command.Modify;
 using EZNEW.Entity.Sys;
 using EZNEW.Module.Sys;
+using EZNEW.Response;
+using EZNEW.Domain.Sys.Service;
+using EZNEW.DependencyInjection;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -16,6 +19,9 @@ namespace EZNEW.Domain.Sys.Model
     /// </summary>
     public class OperationGroup : AggregationRoot<OperationGroup>
     {
+        //操作分组服务
+        private static readonly IOperationGroupService operationGroupService = ContainerManager.Resolve<IOperationGroupService>();
+
         #region	字段
 
         /// <summary>
@@ -32,7 +38,7 @@ namespace EZNEW.Domain.Sys.Model
         /// </summary>
         internal OperationGroup()
         {
-            parent = new LazyMember<OperationGroup>(LoadParentGroup);
+            parent = new LazyMember<OperationGroup>(LoadParent);
             repository = this.Instance<IOperationGroupRepository>();
         }
 
@@ -71,11 +77,6 @@ namespace EZNEW.Domain.Sys.Model
         }
 
         /// <summary>
-        /// 等级
-        /// </summary>
-        public int Level { get; set; }
-
-        /// <summary>
         /// 说明
         /// </summary>
         public string Remark { get; set; }
@@ -84,58 +85,18 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 内部方法
 
-        #region 修改下级分组
-
-        /// <summary>
-        /// 修改下级分组
-        /// </summary>
-        void ModifyChildAuthorityGroupParentGroup()
-        {
-            if (IsNew)
-            {
-                return;
-            }
-            IQuery query = QueryManager.Create<OperationGroupEntity>(r => r.Parent == Id);
-            List<OperationGroup> childGroupList = repository.GetList(query);
-            foreach (var group in childGroupList)
-            {
-                group.SetParentGroup(this);
-                group.Save();
-            }
-        }
-
-        #endregion
-
         #region 加载上级分组
 
         /// <summary>
         /// 加载上级分组
         /// </summary>
-        OperationGroup LoadParentGroup()
+        OperationGroup LoadParent()
         {
-            if (!AllowLazyLoad(r => r.Parent))
+            if (AllowLoad(r => r.Parent, parent))
             {
-                return parent.CurrentValue;
+                return operationGroupService.Get(parent.CurrentValue.Id);
             }
-            if (Level <= 1 || parent.CurrentValue == null)
-            {
-                return parent.CurrentValue;
-            }
-            IQuery parentQuery = QueryManager.Create<OperationGroupEntity>(r => r.Id == parent.CurrentValue.Id);
-            return repository.Get(parentQuery);
-        }
-
-        #endregion
-
-        #region 验证对象标识信息是否未设置
-
-        /// <summary>
-        /// 判断对象标识信息是否未设置
-        /// </summary>
-        /// <returns></returns>
-        public override bool IdentityValueIsNone()
-        {
-            return Id < 1;
+            return parent.CurrentValue;
         }
 
         #endregion
@@ -149,6 +110,66 @@ namespace EZNEW.Domain.Sys.Model
         protected override string GetIdentityValue()
         {
             return Id.ToString();
+        }
+
+        #endregion
+
+        #region 更新对象时触发
+
+        /// <summary>
+        /// 更新对象时触发
+        /// </summary>
+        /// <param name="newData">新的数据对象</param>
+        /// <returns>返回更新后的对象</returns>
+        protected override OperationGroup OnUpdating(OperationGroup newData)
+        {
+            if (newData != null)
+            {
+                //修改上级分组
+                long originalParentId = parent.CurrentValue?.Id ?? 0;
+                SetParent(newData.Parent);
+                long newParentId = parent.CurrentValue?.Id ?? 0;
+                if (originalParentId != newParentId)
+                {
+                    //上级修改后重新设置排序
+                    InitSort();
+                }
+                Name = newData.Name;
+                Remark = newData.Remark;
+            }
+            return this;
+        }
+
+        #endregion
+
+        #region 添加对象时触发
+
+        /// <summary>
+        /// 添加对象时触发
+        /// </summary>
+        /// <returns>返回要保存的对象</returns>
+        protected override OperationGroup OnAdding()
+        {
+            base.OnAdding();
+            //初始化排序信息
+            InitSort();
+            return this;
+        }
+
+        #endregion
+
+        #region 初始化排序
+
+        /// <summary>
+        /// 初始化排序
+        /// </summary>
+        void InitSort()
+        {
+            var parentId = parent.CurrentValue?.Id ?? 0;
+            IQuery sortQuery = QueryManager.Create<OperationGroupEntity>(r => r.Parent == parentId && r.Id != Id);
+            sortQuery.AddQueryFields<OperationGroupEntity>(c => c.Sort);
+            int maxSort = repository.Max<int>(sortQuery);
+            Sort = maxSort + 1;
         }
 
         #endregion
@@ -194,40 +215,46 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 功能方法
 
+        #region 验证对象标识是否为空
+
+        /// <summary>
+        /// 验证对象标识是否为空
+        /// </summary>
+        /// <returns>返回标识值是否为空</returns>
+        public override bool IdentityValueIsNone()
+        {
+            return Id < 1;
+        }
+
+        #endregion
+
         #region 设置上级分组
 
         /// <summary>
         /// 设置上级分组
         /// </summary>
         /// <param name="parentGroup">上级分组</param>
-        public void SetParentGroup(OperationGroup parentGroup)
+        public void SetParent(OperationGroup parentGroup)
         {
-            int parentLevel = 0;
-            long parentId = 0;
+            long newParentId = 0;//新的上级编号
+            long nowParentId = parent?.CurrentValue?.Id ?? 0;//当前上级编号
+            bool identityHasValue = !IdentityValueIsNone();
             if (parentGroup != null)
             {
-                parentLevel = parentGroup.Level;
-                parentId = parentGroup.Id;
+                newParentId = parentGroup.Id;
             }
-            if (parentId == Id && !IdentityValueIsNone())
+            //上级相同不需要修改
+            if (newParentId == nowParentId)
+            {
+                return;
+            }
+            //不能将对象本身设置为上级
+            if (newParentId == Id && identityHasValue)
             {
                 throw new Exception("不能将分组本身设置为上级分组");
             }
-            //排序
-            IQuery sortQuery = QueryManager.Create<OperationGroupEntity>(r => r.Parent == parentId);
-            sortQuery.AddQueryFields<OperationGroupEntity>(c => c.Sort);
-            int maxSortIndex = repository.Max<int>(sortQuery);
-            Sort = maxSortIndex + 1;
+            //修改上级
             parent.SetValue(parentGroup, true);
-            //等级
-            int newLevel = parentLevel + 1;
-            bool modifyChild = newLevel != Level;
-            Level = newLevel;
-            if (modifyChild)
-            {
-                //修改所有子集信息
-                ModifyChildAuthorityGroupParentGroup();
-            }
         }
 
         #endregion
@@ -253,13 +280,14 @@ namespace EZNEW.Domain.Sys.Model
         /// <param name="newSort">新排序,排序编号必须大于0</param>
         public void ModifySort(int newSort)
         {
-            if (newSort <= 0)
+            if (newSort < 1)
             {
-                throw new Exception("请填写正确的排序编号");
+                throw new Exception("请填写正确的排序号");
             }
             Sort = newSort;
-            //其它分组顺延
-            IQuery sortQuery = QueryManager.Create<OperationGroupEntity>(r => r.Parent == (parent.CurrentValue == null ? 0 : parent.CurrentValue.Id) && r.Sort >= newSort);
+            //同级后面的数据排序顺延
+            var parentId = parent.CurrentValue?.Id ?? 0;
+            IQuery sortQuery = QueryManager.Create<OperationGroupEntity>(r => r.Parent == parentId && r.Sort >= newSort);
             IModify modifyExpression = ModifyFactory.Create();
             modifyExpression.Add<OperationGroupEntity>(r => r.Sort, 1);
             repository.Modify(modifyExpression, sortQuery);

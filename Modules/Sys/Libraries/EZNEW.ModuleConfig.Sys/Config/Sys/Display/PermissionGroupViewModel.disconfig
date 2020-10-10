@@ -1,0 +1,45 @@
+{
+    "types": [
+      {
+        "typeName": "EZNEW.ViewModel.Sys.PermissionGroupViewModel,EZNEW.ViewModel.Sys, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "displays": [
+          {
+            "name": "Level",
+            "display": {
+              "displayName": "等级"
+            }
+          },
+          {
+            "name": "Name",
+            "display": {
+              "displayName": "名称"
+            }
+          },
+          {
+            "name": "Parent",
+            "display": {
+              "displayName": "上级分组"
+            }
+          },
+          {
+            "name": "Remark",
+            "display": {
+              "displayName": "说明"
+            }
+          },
+          {
+            "name": "SortIndex",
+            "display": {
+              "displayName": "排序"
+            }
+          },
+          {
+            "name": "Id",
+            "display": {
+              "displayName": "编号"
+            }
+          }
+        ]
+      }
+    ]
+}

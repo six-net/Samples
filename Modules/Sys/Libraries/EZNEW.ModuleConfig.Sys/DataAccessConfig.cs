@@ -16,7 +16,7 @@ namespace EZNEW.ModuleConfig.Sys
         internal static void Configure()
         {
             //配置Oracle数据库访问
-            ConfigureOracle();
+            //ConfigureOracle();
             //配置数据访问事件
             //ConfigureDataAccessEvent();
         }

@@ -4,6 +4,7 @@ using EZNEW.Domain.Sys.Repository;
 using EZNEW.ValueType;
 using EZNEW.Develop.CQuery;
 using EZNEW.Entity.Sys;
+using EZNEW.Response;
 
 namespace EZNEW.Domain.Sys.Model
 {
@@ -45,19 +46,6 @@ namespace EZNEW.Domain.Sys.Model
 
         #region 内部方法
 
-        #region 标识值是否为空
-
-        /// <summary>
-        /// 主标识值是否为空
-        /// </summary>
-        /// <returns></returns>
-        public override bool IdentityValueIsNone()
-        {
-            return UserId < 1 || PermissionId < 1;
-        }
-
-        #endregion
-
         #region 获取标识值
 
         /// <summary>
@@ -67,6 +55,26 @@ namespace EZNEW.Domain.Sys.Model
         protected override string GetIdentityValue()
         {
             return $"{UserId}_{PermissionId}";
+        }
+
+        #endregion
+
+        #region 更新对象值
+
+        /// <summary>
+        /// 更新对象值
+        /// </summary>
+        /// <param name="newData">新的对象值</param>
+        /// <returns>返回更新后的对象</returns>
+        protected override UserPermission OnUpdating(UserPermission newData)
+        {
+            if (newData != null)
+            {
+                UserId = newData.UserId;
+                PermissionId = newData.PermissionId;
+                Disable = newData.Disable;
+            }
+            return this;
         }
 
         #endregion
@@ -99,6 +107,19 @@ namespace EZNEW.Domain.Sys.Model
         #endregion
 
         #region 功能方法
+
+        #region 标识值是否为空
+
+        /// <summary>
+        /// 主标识值是否为空
+        /// </summary>
+        /// <returns></returns>
+        public override bool IdentityValueIsNone()
+        {
+            return UserId < 1 || PermissionId < 1;
+        }
+
+        #endregion
 
         #endregion
     }

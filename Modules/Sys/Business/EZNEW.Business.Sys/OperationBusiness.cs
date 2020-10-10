@@ -161,7 +161,7 @@ namespace EZNEW.Business.Sys
             }
             using (var businessWork = WorkManager.Create())
             {
-                var modifyResult = operationService.ModifyStatus(modifyOperationStatusDto.MapTo<ModifyOperationStatus>());
+                var modifyResult = operationService.ModifyStatus(modifyOperationStatusDto.MapTo<ModifyOperationStatusParameter>());
                 if (!modifyResult.Success)
                 {
                     return modifyResult;
@@ -220,7 +220,7 @@ namespace EZNEW.Business.Sys
         /// <returns>返回授权是否验证通过</returns>
         public bool CheckAuthorization(CheckAuthorizationDto checkAuthorizationDto)
         {
-            return operationService.CheckAuthorization(checkAuthorizationDto.MapTo<CheckAuthorization>());
+            return operationService.CheckAuthorization(checkAuthorizationDto.MapTo<CheckAuthorizationParameter>());
         }
 
         #endregion
@@ -236,7 +236,7 @@ namespace EZNEW.Business.Sys
         {
             using (var work = WorkManager.Create())
             {
-                var initResult = operationService.Initialize(initializeOperationDto.MapTo<InitializeOperation>());
+                var initResult = operationService.Initialize(initializeOperationDto.MapTo<InitializeOperationParameter>());
                 if (!initResult.Success)
                 {
                     return initResult;

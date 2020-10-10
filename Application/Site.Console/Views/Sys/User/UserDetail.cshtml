@@ -205,7 +205,7 @@
                 cols: [[
                     { type: 'checkbox', fixed: 'left' },
                     { field: 'Name', title: '角色名', minWidth: 120 }
-                    , { field: 'StatusText', align: 'center', title: '状态', width: 80 }
+                    , { field: 'StatusName', align: 'center', title: '状态', width: 80 }
                     , { width: 80, align: 'center', fixed: 'right', toolbar: '#role_toolbar' }
                 ]]
             }, LoadRoleData);
@@ -227,8 +227,8 @@
             $("#btn_addrole").click(function () {
                 OpenDialogPage({
                     title: '选择角色',
-                    content:'@Url.Action("RoleMultipleSelect", "Role")',
-                    area: ["300px","450px"]
+                    content:'@Url.Action("RoleMultiSelect", "Role")',
+                    area: ["700px","500px"]
                 });
             });
 
@@ -350,12 +350,19 @@
 
         //选择回调
         function EZNEW_SelectCallback(res) {
-            if (!res || !res.data.keys || res.data.keys.length < 1) {
+            if (!res || !res.data) {
                 return;
             }
             switch (res.objectTag) {
                 case "Role":
-                    $.post('@Url.Action("AddUserRole", "User")', { userId: '@Model.Id', roleIds: res.data.keys }, function (res) {
+                    var roleIds = [];
+                    for (var r in res.data) {
+                        roleIds.push(res.data[r].Id);
+                    }
+                    if (roleIds.length < 1) {
+                        return;
+                    }
+                    $.post('@Url.Action("AddUserRole", "User")', { userId: '@Model.Id', roleIds: roleIds }, function (res) {
                         ResultMsg(res);
                         if (res.Success) {
                             LoadRoleData();

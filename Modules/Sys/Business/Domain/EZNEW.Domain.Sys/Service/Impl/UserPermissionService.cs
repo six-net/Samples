@@ -28,7 +28,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
         /// </summary>
         /// <param name="modifyUserPermission">用户授权修改信息</param>
         /// <returns>返回执行结果</returns>
-        public Result Modify(ModifyUserPermission modifyUserPermission)
+        public Result Modify(ModifyUserPermissionParameter modifyUserPermission)
         {
             if (modifyUserPermission?.UserPermissions.IsNullOrEmpty() ?? true)
             {

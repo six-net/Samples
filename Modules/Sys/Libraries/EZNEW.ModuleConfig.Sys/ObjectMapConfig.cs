@@ -19,15 +19,6 @@ namespace EZNEW.ModuleConfig.Sys
             {
                 var defaultMemberValidation = MemberList.None;
 
-                #region Role
-
-                cfg.CreateMap<RoleEntity, Role>(defaultMemberValidation)
-                    .ForMember(r => r.Parent, r => r.MapFrom<RoleParentResolver>());
-                cfg.CreateMap<Role, RoleEntity>(defaultMemberValidation)
-                    .ForMember(re => re.Parent, r => r.MapFrom(rs => rs.Parent.Id));
-
-                #endregion
-
                 #region Permission Group
 
                 cfg.CreateMap<PermissionGroup, PermissionGroupEntity>(defaultMemberValidation)
@@ -66,18 +57,6 @@ namespace EZNEW.ModuleConfig.Sys
             });
         }
     }
-
-    #region Role Parent Resolver
-
-    public class RoleParentResolver : IValueResolver<RoleEntity, Role, Role>
-    {
-        public Role Resolve(RoleEntity source, Role destination, Role destMember, ResolutionContext context)
-        {
-            return Role.Create(source?.Parent ?? 0);
-        }
-    }
-
-    #endregion
 
     #region Permission Group Parent Resolver
 
