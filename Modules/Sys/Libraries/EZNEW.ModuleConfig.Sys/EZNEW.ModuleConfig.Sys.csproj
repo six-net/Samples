@@ -25,6 +25,54 @@
     <ProjectReference Include="..\EZNEW.Module.Sys\EZNEW.Module.Sys.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Config\Sys\Display\OperationGroupViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\OperationViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\PermissionGroupViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\PermissionViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\RoleViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\UserViewModel.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\LoginViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\ModifyPasswordViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\OperationGroupViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\OperationViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\PermissionGroupViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\PermissionViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\Role.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\RoleViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\UserViewModel.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="build.bat" />
   </Target>
