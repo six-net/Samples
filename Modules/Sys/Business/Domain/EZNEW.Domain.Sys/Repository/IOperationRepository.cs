@@ -17,13 +17,13 @@ namespace EZNEW.Domain.Sys.Repository
         /// 根据操作分组删除分组下的授权操作
         /// </summary>
         /// <param name="groups">要移除操作的分组</param>
-        void RemoveOperationByGroup(IEnumerable<OperationGroup> groups, ActivationOption activationOption = null);
+        void RemoveOperationByGroup(IEnumerable<OperationGroup> groups, ActivationOptions activationOptions = null);
 
         /// <summary>
         /// 根据操作分组删除分组下的授权操作
         /// </summary>
         /// <param name="query">query</param>
-        void RemoveOperationByGroup(IQuery query, ActivationOption activationOption = null);
+        void RemoveOperationByGroup(IQuery query, ActivationOptions activationOptions = null);
 
         #endregion
     }

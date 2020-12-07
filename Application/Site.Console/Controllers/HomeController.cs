@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Site.Console.Controllers
 {
-    [AuthorizationOperationGroup(Name = "系统入口")]
+    [AuthorizationGroup(Name = "系统入口")]
     public class HomeController : WebBaseController
     {
         // GET: /<controller>/
-        [AuthorizationOperation(Name = "首页")]
+        [AuthorizationAction(Name = "首页")]
         public IActionResult Index()
         {
             return View();

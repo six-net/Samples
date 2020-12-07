@@ -21,7 +21,7 @@ namespace EZNEW.Repository.Sys
         /// 根据操作分组删除分组下的授权操作
         /// </summary>
         /// <param name="groups">要移除操作的分组</param>
-        public void RemoveOperationByGroup(IEnumerable<OperationGroup> groups, ActivationOption activationOption = null)
+        public void RemoveOperationByGroup(IEnumerable<OperationGroup> groups, ActivationOptions activationOptions = null)
         {
             if (groups.IsNullOrEmpty())
             {
@@ -29,14 +29,14 @@ namespace EZNEW.Repository.Sys
             }
             IEnumerable<long> groupIds = groups.Select(c => c.Id);
             IQuery removeOperationQuery = QueryManager.Create<OperationEntity>(c => groupIds.Contains(c.Group));
-            Remove(removeOperationQuery, activationOption);
+            Remove(removeOperationQuery, activationOptions);
         }
 
         /// <summary>
         /// 根据操作分组删除分组下的授权操作
         /// </summary>
         /// <param name="query">query</param>
-        public void RemoveOperationByGroup(IQuery query, ActivationOption activationOption = null)
+        public void RemoveOperationByGroup(IQuery query, ActivationOptions activationOptions = null)
         {
             if (query == null)
             {
@@ -48,7 +48,7 @@ namespace EZNEW.Repository.Sys
             //remove operation
             var removeOperationQuery = QueryManager.Create<OperationEntity>();
             removeOperationQuery.And<OperationEntity>(c => c.Group, CriteriaOperator.In, removeGroupQuery);
-            Remove(removeOperationQuery, activationOption);
+            Remove(removeOperationQuery, activationOptions);
         }
 
         #endregion

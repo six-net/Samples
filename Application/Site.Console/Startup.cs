@@ -1,20 +1,20 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using EZNEW.Web.Mvc.Validation;
+using EZNEW.Web.Mvc.Display;
+using EZNEW.Diagnostics;
 using EZNEW.Web.Mvc;
 using EZNEW.Web.Security.Authentication.Cookie;
 using EZNEW.Web.Security.Authorization;
 using Site.Console.Util;
 using Site.Console.Controllers;
 using Site.Console.Filters;
-using Microsoft.Extensions.Logging;
-using EZNEW.Logging;
-using System.Diagnostics;
-using EZNEW.Web.Mvc.Validation;
-using EZNEW.Web.Mvc.Display;
 
 namespace Site.Console
 {
@@ -30,12 +30,12 @@ namespace Site.Console
                 cfg.AddTraceSource("eznew", new ConsoleTraceListener());
                 cfg.AddFilter("microsoft", LogLevel.Warning);
             });
-            TraceLogSwitchManager.EnableFrameworkTrace();
+            SwitchManager.EnableFrameworkTrace();
             services.AddMvc(options =>
             {
                 options.ModelValidatorProviders.Add(new CustomDataAnnotationsModelValidatorProvider());
                 options.ModelMetadataDetailsProviders.Add(new CustomModelDisplayProvider());
-                options.Filters.Add<OperationAuthorizeFilter>();
+                options.Filters.Add<ActionAuthorizeFilter>();
                 options.Filters.Add<ConsoleExceptionFilter>();
             })
             .AddViewOptions(vo =>

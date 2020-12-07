@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Site.Console.Controllers.Sys
 {
-    [AuthorizationOperationGroup(Name = "功能操作", Parent = "账户/授权")]
+    [AuthorizationGroup(Name = "功能操作", Parent = "账户/授权")]
     public class OperationController : WebBaseController
     {
         readonly IOperationAppService operationAppService;
@@ -33,7 +33,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 权限关联的操作功能列表
 
-        [AuthorizationOperation(Name = "查看权限绑定操作功能页面")]
+        [AuthorizationAction(Name = "查看权限绑定操作功能页面")]
         public ActionResult PermissionOperationList(long id)
         {
             ViewBag.PermissionId = id;
@@ -44,7 +44,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 编辑/添加功能操作
 
-        [AuthorizationOperation(Name = "添加/编辑功能操作")]
+        [AuthorizationAction(Name = "添加/编辑功能操作")]
         public ActionResult EditOperation(OperationViewModel operation, long groupId = 0)
         {
             if (IsPost)
@@ -91,7 +91,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 删除功能操作
 
-        [AuthorizationOperation(Name = "删除功能操作")]
+        [AuthorizationAction(Name = "删除功能操作")]
         public ActionResult RemoveOperation(List<long> datas)
         {
             Result result = operationAppService.RemoveOperation(new RemoveOperationDto()
@@ -111,7 +111,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter">操作功能筛选条件</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询操作功能数据")]
+        [AuthorizationAction(Name = "查询操作功能数据")]
         public ActionResult SearchOperation(OperationFilterDto filter)
         {
             var operationPaging = operationAppService.GetOperationPaging(filter).ConvertTo<OperationViewModel>();
@@ -129,7 +129,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter">权限绑定操作功能筛选条件</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询权限绑定的操作功能数据")]
+        [AuthorizationAction(Name = "查询权限绑定的操作功能数据")]
         public ActionResult SearchPermissionOperation(PermissionOperationFilterDto filter)
         {
             filter.LoadGroup = true;
@@ -142,7 +142,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter">用户授权功能筛选条件</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询授予用户的操作功能数据")]
+        [AuthorizationAction(Name = "查询授予用户的操作功能数据")]
         public ActionResult SearchUserOperation(UserOperationFilterDto filter)
         {
             List<OperationDto> operationList = null;
@@ -162,7 +162,7 @@ namespace Site.Console.Controllers.Sys
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询当前登录用户授予的所有操作功能数据")]
+        [AuthorizationAction(Name = "查询当前登录用户授予的所有操作功能数据")]
         public ActionResult SearchCurrentUserOperation()
         {
             var userId = User.Id;
@@ -181,7 +181,7 @@ namespace Site.Console.Controllers.Sys
         #region 启用/关闭操作
 
         [HttpPost]
-        [AuthorizationOperation(Name = "修改操作功能状态")]
+        [AuthorizationAction(Name = "修改操作功能状态")]
         public ActionResult ModifyOperationStatus(IEnumerable<long> ids, OperationStatus status)
         {
             var result = operationAppService.ModifyOperationStatus(new ModifyOperationStatusDto()
@@ -196,7 +196,7 @@ namespace Site.Console.Controllers.Sys
         #region 检查操作名称是否存在
 
         [HttpPost]
-        [AuthorizationOperation(Name = "检查操作功能名称是否存在")]
+        [AuthorizationAction(Name = "检查操作功能名称是否存在")]
         public ActionResult CheckOperationName(OperationViewModel operation)
         {
             bool allowUse = true;
@@ -218,7 +218,7 @@ namespace Site.Console.Controllers.Sys
         #region 操作绑定权限
 
         [HttpPost]
-        [AuthorizationOperation(Name = "添加操作功能绑定的权限")]
+        [AuthorizationAction(Name = "添加操作功能绑定的权限")]
         public ActionResult AddOperationPermission(long operationId, IEnumerable<long> permissionIds)
         {
             ModifyPermissionOperationDto modifyPermissionOperationDto = new ModifyPermissionOperationDto()
@@ -237,7 +237,7 @@ namespace Site.Console.Controllers.Sys
         #region 操作解绑权限
 
         [HttpPost]
-        [AuthorizationOperation(Name = "解绑操作功能绑定的权限")]
+        [AuthorizationAction(Name = "解绑操作功能绑定的权限")]
         public ActionResult RemoveOperationPermission(long operationId, IEnumerable<long> permissionIds)
         {
             ModifyPermissionOperationDto modifyPermissionOperationDto = new ModifyPermissionOperationDto()
@@ -257,7 +257,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 操作多选
 
-        [AuthorizationOperation(Name = "操作功能多选页面")]
+        [AuthorizationAction(Name = "操作功能多选页面")]
         public ActionResult OperationMultiSelect()
         {
             return View();
@@ -267,11 +267,11 @@ namespace Site.Console.Controllers.Sys
 
         #region 初始化默认权限操作
 
-        [AuthorizationOperation(Name = "初始化默认操作功能")]
+        [AuthorizationAction(Name = "初始化默认操作功能")]
         [HttpPost]
         public ActionResult ResolveDefaultAuthorizationOperation()
         {
-            var operationGroups = AuthorizationManager.ResolveDefaultOperation();
+            var operationGroups = AuthorizationManager.ResolveDefaultAuthorizations();
             if (!operationGroups.IsNullOrEmpty())
             {
                 List<OperationGroupDto> operationGroupDtos = new List<OperationGroupDto>();
@@ -286,15 +286,15 @@ namespace Site.Console.Controllers.Sys
                         {
                             var nowChildGroup = new OperationGroupDto() { Name = childGroup.Name, Parent = nowGroup };
                             operationGroupDtos.Add(nowChildGroup);
-                            if (!childGroup.Operations.IsNullOrEmpty())
+                            if (!childGroup.Actions.IsNullOrEmpty())
                             {
-                                foreach (var operation in childGroup.Operations)
+                                foreach (var operation in childGroup.Actions)
                                 {
                                     operationDtos.Add(new OperationDto()
                                     {
                                         Name = operation.Name,
-                                        ActionCode = operation.ActionCode,
-                                        ControllerCode = operation.ControllerCode,
+                                        ActionCode = operation.Action,
+                                        ControllerCode = operation.Controller,
                                         Group = nowChildGroup,
                                         Status = OperationStatus.Enable,
                                         AccessLevel = operation.Public ? OperationAccessLevel.Public : OperationAccessLevel.Authorized
@@ -303,15 +303,15 @@ namespace Site.Console.Controllers.Sys
                             }
                         }
                     }
-                    if (!group.Operations.IsNullOrEmpty())
+                    if (!group.Actions.IsNullOrEmpty())
                     {
-                        foreach (var operation in group.Operations)
+                        foreach (var operation in group.Actions)
                         {
                             operationDtos.Add(new OperationDto()
                             {
                                 Name = operation.Name,
-                                ActionCode = operation.ActionCode,
-                                ControllerCode = operation.ControllerCode,
+                                ActionCode = operation.Action,
+                                ControllerCode = operation.Controller,
                                 Group = nowGroup,
                                 Status = OperationStatus.Enable,
                                 AccessLevel = operation.Public ? OperationAccessLevel.Public : OperationAccessLevel.Authorized

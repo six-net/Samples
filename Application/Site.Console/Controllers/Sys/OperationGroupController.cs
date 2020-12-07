@@ -15,7 +15,7 @@ using EZNEW.Web.Security.Authorization;
 
 namespace Site.Console.Controllers.Sys
 {
-    [AuthorizationOperationGroup(Name = "功能操作分组", Parent = "账户/授权")]
+    [AuthorizationGroup(Name = "功能操作分组", Parent = "账户/授权")]
     public class OperationGroupController : WebBaseController
     {
         readonly IOperationGroupAppService operationGroupAppService;
@@ -27,7 +27,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 操作功能组列表
 
-        [AuthorizationOperation(Name = "权限分组列表页面")]
+        [AuthorizationAction(Name = "权限分组列表页面")]
         public ActionResult OperationGroupList()
         {
             return View();
@@ -37,7 +37,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 编辑/添加操作功能组
 
-        [AuthorizationOperation(Name = "添加/编辑操作功能分组")]
+        [AuthorizationAction(Name = "添加/编辑操作功能分组")]
         public ActionResult EditOperationGroup(OperationGroupViewModel operationGroup)
         {
             if (IsPost)
@@ -71,7 +71,7 @@ namespace Site.Console.Controllers.Sys
         #region 删除操作功能组
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除操作功能分组")]
+        [AuthorizationAction(Name = "删除操作功能分组")]
         public ActionResult RemoveOperationGroup(List<long> ids)
         {
             Result result = operationGroupAppService.RemoveOperationGroup(new RemoveOperationGroupDto()
@@ -87,7 +87,7 @@ namespace Site.Console.Controllers.Sys
         #region 修改操作功能组排序
 
         [HttpPost]
-        [AuthorizationOperation(Name = "修改操作功能分组排序")]
+        [AuthorizationAction(Name = "修改操作功能分组排序")]
         public ActionResult ChangeOperationGroupSort(long id, int sort)
         {
             Result result = operationGroupAppService.ModifyOperationGroupSort(new ModifyOperationGroupSortDto()
@@ -104,7 +104,7 @@ namespace Site.Console.Controllers.Sys
         #region 查询操作功能分组数据
 
         [HttpPost]
-        [AuthorizationOperation(Name = "查询操作功能分组数据")]
+        [AuthorizationAction(Name = "查询操作功能分组数据")]
         public IActionResult SearchOperationGroup(OperationGroupFilterDto filter)
         {
             var operationGroups = operationGroupAppService.GetOperationGroupList(filter).Select(c => c.MapTo<OperationGroupViewModel>()).OrderBy(r => r.Sort).ToList();
@@ -116,7 +116,7 @@ namespace Site.Console.Controllers.Sys
         #region 检查操作分组名称是否可用
 
         [HttpPost]
-        [AuthorizationOperation(Name = "检查操作分组名称是否可用")]
+        [AuthorizationAction(Name = "检查操作分组名称是否可用")]
         public ActionResult CheckOperationGroupName(OperationGroupViewModel group)
         {
             ExistOperationGroupNameDto existInfo = new ExistOperationGroupNameDto()

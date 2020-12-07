@@ -52,7 +52,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             #endregion
 
             //移除当前存在的授权数据
-            userPermissionRepository.Remove(userPermissions, new ActivationOption()
+            userPermissionRepository.Remove(userPermissions, new ActivationOptions()
             {
                 ForceExecute = true
             });

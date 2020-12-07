@@ -15,7 +15,7 @@ using EZNEW.Web.Security.Authorization;
 
 namespace Site.Console.Controllers.Sys
 {
-    [AuthorizationOperationGroup(Name = "用户", Parent = "账户/授权")]
+    [AuthorizationGroup(Name = "用户", Parent = "账户/授权")]
     public class UserController : WebBaseController
     {
         readonly IUserAppService userAppService;
@@ -30,7 +30,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 用户列表
 
-        [AuthorizationOperation(Name = "用户列表")]
+        [AuthorizationAction(Name = "用户列表")]
         public ActionResult UserList()
         {
             return View();
@@ -41,7 +41,7 @@ namespace Site.Console.Controllers.Sys
         #region 搜索用户数据
 
         [HttpPost]
-        [AuthorizationOperation(Name = "查询用户数据")]
+        [AuthorizationAction(Name = "查询用户数据")]
         public ActionResult SearchUser(RoleUserFilterDto filter)
         {
             filter.UserType = UserType.Management;
@@ -58,7 +58,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 用户详情
 
-        [AuthorizationOperation(Name = "用户详情页面")]
+        [AuthorizationAction(Name = "用户详情页面")]
         public ActionResult UserDetail(long id)
         {
             UserViewModel user = null;
@@ -84,7 +84,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 添加/编辑用户
 
-        [AuthorizationOperation(Name = "添加/编辑用户")]
+        [AuthorizationAction(Name = "添加/编辑用户")]
         public ActionResult EditUser(UserViewModel user)
         {
             if (IsPost)
@@ -116,7 +116,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 删除用户
 
-        [AuthorizationOperation(Name = "删除用户")]
+        [AuthorizationAction(Name = "删除用户")]
         public ActionResult RemoveUser(List<long> ids)
         {
             Result result = userAppService.RemoveUser(new RemoveUserDto()
@@ -131,7 +131,7 @@ namespace Site.Console.Controllers.Sys
         #region 验证登陆名是否存在
 
         [HttpPost]
-        [AuthorizationOperation(Name = "验证用户名是否存在")]
+        [AuthorizationAction(Name = "验证用户名是否存在")]
         public ActionResult CheckUserName(string userName)
         {
             bool allowUse = true;
@@ -152,7 +152,7 @@ namespace Site.Console.Controllers.Sys
         #region 修改用户状态
 
         [HttpPost]
-        [AuthorizationOperation(Name = "修改用户状态")]
+        [AuthorizationAction(Name = "修改用户状态")]
         public ActionResult ModifyUserStatus(long id, UserStatus status)
         {
             ModifyUserStatusDto statusInfo = new ModifyUserStatusDto()
@@ -166,7 +166,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 修改密码
 
-        [AuthorizationOperation(Name = "修改用户密码")]
+        [AuthorizationAction(Name = "修改用户密码")]
         public ActionResult ModifyUserPassword(ModifyUserPasswordViewModel modifyInfo)
         {
             if (IsPost)
@@ -186,7 +186,7 @@ namespace Site.Console.Controllers.Sys
             return View(modifyInfo);
         }
 
-        [AuthorizationOperation(Name = "修改自己的登录密码")]
+        [AuthorizationAction(Name = "修改自己的登录密码")]
         public IActionResult ModifySelfPassword(ModifyUserPasswordViewModel modifyInfo)
         {
             if (IsPost)
@@ -209,7 +209,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 用户多选
 
-        [AuthorizationOperation(Name = "用户多选页面")]
+        [AuthorizationAction(Name = "用户多选页面")]
         public ActionResult UserMultiSelect()
         {
             return View();
@@ -222,7 +222,7 @@ namespace Site.Console.Controllers.Sys
         #region 移除用户角色
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除用户角色")]
+        [AuthorizationAction(Name = "删除用户角色")]
         public ActionResult RemoveUserRole(long userId, IEnumerable<long> roleIds)
         {
             if (userId < 1)
@@ -249,7 +249,7 @@ namespace Site.Console.Controllers.Sys
         #region 添加用户角色
 
         [HttpPost]
-        [AuthorizationOperation(Name = "添加用户角色")]
+        [AuthorizationAction(Name = "添加用户角色")]
         public ActionResult AddUserRole(long userId, IEnumerable<long> roleIds)
         {
             if (userId < 1)
@@ -276,7 +276,7 @@ namespace Site.Console.Controllers.Sys
         #region 清除用户角色
 
         [HttpPost]
-        [AuthorizationOperation(Name = "清除用户角色")]
+        [AuthorizationAction(Name = "清除用户角色")]
         public ActionResult ClearUserRole(long userId)
         {
             var result = userAppService.ClearRole(new long[1] { userId });
@@ -292,7 +292,7 @@ namespace Site.Console.Controllers.Sys
         #region 添加账户授权
 
         [HttpPost]
-        [AuthorizationOperation(Name = "添加用户权限")]
+        [AuthorizationAction(Name = "添加用户权限")]
         public ActionResult AddUserPermission(long userId, IEnumerable<long> permissionIds)
         {
             if (userId < 1)
@@ -320,7 +320,7 @@ namespace Site.Console.Controllers.Sys
         #region 删除账户授权
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除用户权限")]
+        [AuthorizationAction(Name = "删除用户权限")]
         public ActionResult RemoveUserPermission(long userId, IEnumerable<long> permissionIds)
         {
             if (userId < 1)
@@ -348,7 +348,7 @@ namespace Site.Console.Controllers.Sys
         #region 还原用户角色授权
 
         [HttpPost]
-        [AuthorizationOperation(Name = "清除用户权限")]
+        [AuthorizationAction(Name = "清除用户权限")]
         public ActionResult RestoreUserRolePermission(long userId)
         {
             var result = userPermissionAppService.ClearUserPermission(new long[1] { userId });

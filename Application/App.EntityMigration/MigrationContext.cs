@@ -17,18 +17,15 @@ namespace App.EntityMigration
             Site.Console.Program.CreateHostBuilder(Array.Empty<string>()).Build();
             SiteConfig.Init();
             DatabaseServer = DataManager.GetDatabaseServers(new MigrationCommand() { ObjectName = EntityMigrationManager.MigrationCommandObjectName })?.FirstOrDefault();
-            switch (DatabaseServer.ServerType)
+            DbContextOptionsBuilder contextOptionsBuilder = DatabaseServer.ServerType switch
             {
-                case DatabaseServerType.SQLServer:
-                    optionsBuilder.UseSqlServer(DatabaseServer.ConnectionString);
-                    break;
-                case DatabaseServerType.MySQL:
-                    optionsBuilder.UseMySQL(DatabaseServer.ConnectionString);
-                    break;
-                case DatabaseServerType.Oracle:
-                    optionsBuilder.UseOracle(DatabaseServer.ConnectionString);
-                    break;
-            }
+                DatabaseServerType.SQLServer => optionsBuilder.UseSqlServer(DatabaseServer.ConnectionString),
+                DatabaseServerType.Oracle => optionsBuilder.UseOracle(DatabaseServer.ConnectionString),
+                DatabaseServerType.MySQL => optionsBuilder.UseMySQL(DatabaseServer.ConnectionString),
+                DatabaseServerType.SQLite => optionsBuilder.UseSqlite(DatabaseServer.ConnectionString),
+                DatabaseServerType.PostgreSQL => optionsBuilder.UseNpgsql(DatabaseServer.ConnectionString),
+                _ => null
+            };
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

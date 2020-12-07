@@ -31,7 +31,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
                 return Result.FailedResult("没有指定任何要绑定的用户&角色信息");
             }
             var bindingInfos = userRoleBindings.Select(c => new Tuple<User, Role>(User.Create(c.UserId), Role.Create(c.RoleId)));
-            userRoleRepository.Remove(bindingInfos, new ActivationOption()
+            userRoleRepository.Remove(bindingInfos, new ActivationOptions()
             {
                 ForceExecute = true
             });

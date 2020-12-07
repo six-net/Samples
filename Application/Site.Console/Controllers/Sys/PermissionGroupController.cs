@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Site.Console.Controllers.Sys
 {
-    [AuthorizationOperationGroup(Name = "权限分组", Parent = "账户/授权")]
+    [AuthorizationGroup(Name = "权限分组", Parent = "账户/授权")]
     public class PermissionGroupController : WebBaseController
     {
         readonly IPermissionGroupAppService permissionGroupAppService;
@@ -26,7 +26,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 权限分组列表
 
-        [AuthorizationOperation(Name = "权限分组列表页面")]
+        [AuthorizationAction(Name = "权限分组列表页面")]
         public ActionResult PermissionGroupList()
         {
             return View();
@@ -36,7 +36,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 编辑/添加权限分组
 
-        [AuthorizationOperation(Name = "添加/编辑权限分组")]
+        [AuthorizationAction(Name = "添加/编辑权限分组")]
         public ActionResult EditPermissionGroup(PermissionGroupViewModel permissionGroup)
         {
             if (IsPost)
@@ -69,7 +69,7 @@ namespace Site.Console.Controllers.Sys
         #region 删除权限分组
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除权限分组")]
+        [AuthorizationAction(Name = "删除权限分组")]
         public ActionResult RemovePermissionGroup(List<long> ids)
         {
             Result result = permissionGroupAppService.RemovePermissionGroup(new RemovePermissionGroupDto()
@@ -85,7 +85,7 @@ namespace Site.Console.Controllers.Sys
         #region 修改权限分组排序
 
         [HttpPost]
-        [AuthorizationOperation(Name = "修改权限分组排序")]
+        [AuthorizationAction(Name = "修改权限分组排序")]
         public ActionResult ChangePermissionGroupSort(long id, int sort)
         {
             Result result = null;
@@ -103,7 +103,7 @@ namespace Site.Console.Controllers.Sys
         #region 查询权限分组数据
 
         [HttpPost]
-        [AuthorizationOperation(Name = "查看权限分组数据")]
+        [AuthorizationAction(Name = "查看权限分组数据")]
         public IActionResult SearchPermissionGroup(PermissionGroupFilterDto filter)
         {
             var permissionGroups = permissionGroupAppService.GetPermissionGroupList(filter).Select(c => c.MapTo<PermissionGroupViewModel>()).OrderBy(r => r.Sort).ToList();
@@ -115,7 +115,7 @@ namespace Site.Console.Controllers.Sys
         #region 验证权限分组名称是否存在
 
         [HttpPost]
-        [AuthorizationOperation(Name = "验证权限分组名称是否存在")]
+        [AuthorizationAction(Name = "验证权限分组名称是否存在")]
         public ActionResult CheckPermissionGroupName(PermissionGroupViewModel group)
         {
             ExistPermissionGroupNameDto existInfo = new ExistPermissionGroupNameDto()

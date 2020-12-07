@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
-using EZNEW.Cache;
-using EZNEW.Cache.Set.Request;
+using Microsoft.AspNetCore.Mvc.Filters;
 using EZNEW.ViewModel.Sys;
 using EZNEW.AppServiceContract.Sys;
 using EZNEW.DependencyInjection;
@@ -14,11 +14,7 @@ using EZNEW.Web.Security.Authentication;
 using EZNEW.Web.Utility;
 using EZNEW.DTO.Sys;
 using EZNEW.DTO.Sys.Cmd;
-using EZNEW.Module.Sys;
 using EZNEW.Web.Security.Authorization;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Security.Claims;
 
 namespace Site.Console.Util
 {
@@ -31,7 +27,7 @@ namespace Site.Console.Util
         {
             userService = ContainerManager.Resolve<IUserAppService>();
             operationAppService = ContainerManager.Resolve<IOperationAppService>();
-            AuthorizationManager.ConfigureAuthorizationVerify(CheckAuthorization);
+            AuthorizationManager.ConfigureAuthorization(CheckAuthorization);
         }
 
         #region 登陆
@@ -180,11 +176,11 @@ namespace Site.Console.Util
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static VerifyAuthorizationResult CheckAuthorization(AuthorizationFilterContext context)
+        public static AuthorizeResult CheckAuthorization(AuthorizationFilterContext context)
         {
             if (context == null)
             {
-                return VerifyAuthorizationResult.ChallengeResult();
+                return AuthorizeResult.ChallengeResult();
             }
 
             #region 操作信息
@@ -204,10 +200,10 @@ namespace Site.Console.Util
             var loginUser = IdentityManager.GetLoginUser();
             if (loginUser == null)
             {
-                return VerifyAuthorizationResult.ChallengeResult();
+                return AuthorizeResult.ChallengeResult();
             }
             var allowAccess = CheckAuthorization(loginUser, operation);
-            return allowAccess ? VerifyAuthorizationResult.SuccessResult() : VerifyAuthorizationResult.ForbidResult();
+            return allowAccess ? AuthorizeResult.SuccessResult() : AuthorizeResult.ForbidResult();
         }
 
         /// <summary>
@@ -215,22 +211,22 @@ namespace Site.Console.Util
         /// </summary>
         /// <param name="request">认证授权信息</param>
         /// <returns></returns>
-        public static VerifyAuthorizationResult CheckAuthorization(VerifyAuthorizationOption request)
+        public static AuthorizeResult CheckAuthorization(AuthorizeOptions request)
         {
             if (request == null)
             {
-                return VerifyAuthorizationResult.ForbidResult();
+                return AuthorizeResult.ForbidResult();
             }
             var operation = new OperationDto()
             {
-                ActionCode = request.ActionCode,
-                ControllerCode = request.ControllerCode
+                ActionCode = request.Action,
+                ControllerCode = request.Controller
             };
             var user = AuthenticationUser<long>.GetUserFromClaims(request.Claims?.Select(c => new Claim(c.Key, c.Value)).ToList());
             var allowAccess = CheckAuthorization(user, operation);
-            return new VerifyAuthorizationResult()
+            return new AuthorizeResult()
             {
-                Status = allowAccess ? AuthorizationVerificationStatus.Success : AuthorizationVerificationStatus.Forbid
+                Status = allowAccess ? AuthorizationStatus.Success : AuthorizationStatus.Forbid
             };
         }
 

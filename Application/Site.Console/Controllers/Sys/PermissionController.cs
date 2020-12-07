@@ -16,7 +16,7 @@ using EZNEW.Web.Security.Authorization;
 
 namespace Site.Console.Controllers.Sys
 {
-    [AuthorizationOperationGroup(Name = "权限", Parent = "账户/授权")]
+    [AuthorizationGroup(Name = "权限", Parent = "账户/授权")]
     public class PermissionController : WebBaseController
     {
         readonly IPermissionAppService permissionAppService;
@@ -31,7 +31,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 操作功能绑定权限列表
 
-        [AuthorizationOperation(Name = "操作功能绑定权限列表页面")]
+        [AuthorizationAction(Name = "操作功能绑定权限列表页面")]
         public ActionResult OperationPermissionList(long id)
         {
             ViewBag.OperationId = id;
@@ -48,7 +48,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter">权限筛选信息</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询权限数据")]
+        [AuthorizationAction(Name = "查询权限数据")]
         public ActionResult SearchPermission(PermissionFilterDto filter)
         {
             IPaging<PermissionViewModel> permissionPager = permissionAppService.GetPermissionPaging(filter).ConvertTo<PermissionViewModel>();
@@ -66,7 +66,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter">权限筛选信息</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询角色权限数据")]
+        [AuthorizationAction(Name = "查询角色权限数据")]
         public ActionResult SearchRolePermission(RolePermissionFilterDto filter)
         {
             return SearchPermission(filter);
@@ -78,7 +78,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter">权限筛选信息</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询用户权限数据")]
+        [AuthorizationAction(Name = "查询用户权限数据")]
         public ActionResult SearchUserPermission(UserPermissionFilterDto filter)
         {
             return SearchPermission(filter);
@@ -90,7 +90,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="filter"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "查询操作功能绑定的权限")]
+        [AuthorizationAction(Name = "查询操作功能绑定的权限")]
         public ActionResult SearchOperationPermission(OperationPermissionFilterDto filter)
         {
             filter.LoadGroup = true;
@@ -101,7 +101,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 编辑/添加权限
 
-        [AuthorizationOperation(Name = "添加/编辑权限")]
+        [AuthorizationAction(Name = "添加/编辑权限")]
         public ActionResult EditPermission(PermissionViewModel perission, long groupId = 0)
         {
             if (IsPost)
@@ -149,7 +149,7 @@ namespace Site.Console.Controllers.Sys
         #region 删除权限
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除权限")]
+        [AuthorizationAction(Name = "删除权限")]
         public ActionResult RemovePermission(List<long> datas)
         {
             Result result = permissionAppService.RemovePermission(new RemovePermissionDto()
@@ -164,7 +164,7 @@ namespace Site.Console.Controllers.Sys
         #region 启用/关闭权限
 
         [HttpPost]
-        [AuthorizationOperation(Name = "修改权限状态")]
+        [AuthorizationAction(Name = "修改权限状态")]
         public ActionResult ModifyPermissionStatus(IEnumerable<long> ids, PermissionStatus status)
         {
             if (ids.IsNullOrEmpty())
@@ -182,7 +182,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 权限多选
 
-        [AuthorizationOperation(Name = "权限多选页面")]
+        [AuthorizationAction(Name = "权限多选页面")]
         public ActionResult PermissionMultiSelect()
         {
             return View();
@@ -195,7 +195,7 @@ namespace Site.Console.Controllers.Sys
         #region 权限绑定操作功能
 
         [HttpPost]
-        [AuthorizationOperation(Name = "添加权限绑定的操作功能")]
+        [AuthorizationAction(Name = "添加权限绑定的操作功能")]
         public ActionResult AddPermissionOperation(long permissionId, IEnumerable<long> operationIds)
         {
             if (permissionId < 1)
@@ -222,7 +222,7 @@ namespace Site.Console.Controllers.Sys
         #region 权限解绑操作功能
 
         [HttpPost]
-        [AuthorizationOperation(Name = "解绑权限绑定的操作功能")]
+        [AuthorizationAction(Name = "解绑权限绑定的操作功能")]
         public ActionResult RemovePermissionOperation(long permissionId, IEnumerable<long> operationIds)
         {
             if (permissionId < 1)
@@ -251,7 +251,7 @@ namespace Site.Console.Controllers.Sys
         #region 检查权限码是否可用
 
         [HttpPost]
-        [AuthorizationOperation(Name = "检查权限编码是否可用")]
+        [AuthorizationAction(Name = "检查权限编码是否可用")]
         public ActionResult CheckPermissionCode(PermissionViewModel authority)
         {
             bool allowUse = !permissionAppService.ExistPermissionCode(new ExistPermissionCodeDto()
@@ -267,7 +267,7 @@ namespace Site.Console.Controllers.Sys
         #region 检查权限名称是否可用
 
         [HttpPost]
-        [AuthorizationOperation(Name = "检查权限名称是否可用")]
+        [AuthorizationAction(Name = "检查权限名称是否可用")]
         public ActionResult CheckPermissionName(PermissionViewModel authority)
         {
             bool allowUse = !permissionAppService.ExistPermissionName(new ExistPermissionNameDto()

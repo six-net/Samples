@@ -7,6 +7,7 @@ using EZNEW.VerificationCode.SkiaSharp;
 using EZNEW.Drawing.VerificationCode;
 using EZNEW.DependencyInjection;
 using EZNEW.Logging;
+using EZNEW.Diagnostics;
 
 namespace AppConfig.IoC
 {
@@ -25,7 +26,7 @@ namespace AppConfig.IoC
         public IDIContainer CreateBuilder(IServiceCollection services)
         {
             //打开框架跟踪日志
-            TraceLogSwitchManager.EnableFrameworkTrace();
+            SwitchManager.EnableFrameworkTrace();
             services.AddLogging(cfg =>
             {
                 cfg.AddTraceSource("", new DefaultTraceListener());

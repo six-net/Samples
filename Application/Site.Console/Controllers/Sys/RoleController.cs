@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Site.Console.Controllers.Sys
 {
-    [AuthorizationOperationGroup(Name = "角色", Parent = "账户/授权")]
+    [AuthorizationGroup(Name = "角色", Parent = "账户/授权")]
     public class RoleController : WebBaseController
     {
         readonly IRoleAppService roleAppService;
@@ -33,7 +33,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 角色列表
 
-        [AuthorizationOperation(Name = "角色列表")]
+        [AuthorizationAction(Name = "角色列表")]
         public ActionResult RoleList()
         {
             return View();
@@ -43,7 +43,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 编辑/添加角色
 
-        [AuthorizationOperation(Name = "添加/编辑角色")]
+        [AuthorizationAction(Name = "添加/编辑角色")]
         public ActionResult EditRole(RoleViewModel role)
         {
             if (IsPost)
@@ -78,7 +78,7 @@ namespace Site.Console.Controllers.Sys
 
         #region 角色详情
 
-        [AuthorizationOperation(Name = "查看角色详情")]
+        [AuthorizationAction(Name = "查看角色详情")]
         public ActionResult RoleDetail(long id)
         {
             RoleViewModel role = null;
@@ -105,7 +105,7 @@ namespace Site.Console.Controllers.Sys
         #region 删除角色
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除角色")]
+        [AuthorizationAction(Name = "删除角色")]
         public ActionResult RemoveRole(List<long> ids)
         {
             Result result = roleAppService.RemoveRole(new RemoveRoleDto()
@@ -121,7 +121,7 @@ namespace Site.Console.Controllers.Sys
         #region 查询角色数据
 
         [HttpPost]
-        [AuthorizationOperation(Name = "查询角色数据")]
+        [AuthorizationAction(Name = "查询角色数据")]
         public IActionResult SearchRole(RoleFilterDto roleFilter)
         {
             var rolePaging = roleAppService.GetRolePaging(roleFilter).ConvertTo<RoleViewModel>();
@@ -134,7 +134,7 @@ namespace Site.Console.Controllers.Sys
         }
 
         [HttpPost]
-        [AuthorizationOperation(Name = "查询用户绑定角色数据")]
+        [AuthorizationAction(Name = "查询用户绑定角色数据")]
         public IActionResult SearchRolePaging(UserRoleFilterDto roleFilter)
         {
             var rolePaging = roleAppService.GetRolePaging(roleFilter).ConvertTo<RoleViewModel>();
@@ -161,7 +161,7 @@ namespace Site.Console.Controllers.Sys
         #region 添加角色用户
 
         [HttpPost]
-        [AuthorizationOperation(Name = "添加角色用户")]
+        [AuthorizationAction(Name = "添加角色用户")]
         public ActionResult AddRoleUser(long roleId, IEnumerable<long> userIds)
         {
             if (roleId < 1)
@@ -188,7 +188,7 @@ namespace Site.Console.Controllers.Sys
         #region 删除角色用户
 
         [HttpPost]
-        [AuthorizationOperation(Name = "删除角色用户")]
+        [AuthorizationAction(Name = "删除角色用户")]
         public ActionResult RemoveRoleUser(long roleId, IEnumerable<long> userIds)
         {
             if (roleId < 1)
@@ -215,7 +215,7 @@ namespace Site.Console.Controllers.Sys
         #region 清除角色用户
 
         [HttpPost]
-        [AuthorizationOperation(Name = "清除角色用户")]
+        [AuthorizationAction(Name = "清除角色用户")]
         public ActionResult ClearRoleUser(long roleId)
         {
             var result = roleAppService.ClearUser(new long[1] { roleId });
@@ -235,7 +235,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="permissionIds">权限编码</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "添加角色权限")]
+        [AuthorizationAction(Name = "添加角色权限")]
         public ActionResult AddRolePermission(long roleId, List<long> permissionIds)
         {
             if (roleId < 1)
@@ -264,7 +264,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="authSysNos">权限编码</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "删除角色权限")]
+        [AuthorizationAction(Name = "删除角色权限")]
         public ActionResult RemoveRolePermission(long roleId, List<long> permissionIds)
         {
             if (roleId < 1)
@@ -292,7 +292,7 @@ namespace Site.Console.Controllers.Sys
         /// <param name="roleId">角色编号</param>
         /// <returns></returns>
         [HttpPost]
-        [AuthorizationOperation(Name = "清除角色权限")]
+        [AuthorizationAction(Name = "清除角色权限")]
         public ActionResult ClearRolePermission(long roleId)
         {
             var result = rolePermissionAppService.ClearRolePermission(new long[1] { roleId });
@@ -304,7 +304,7 @@ namespace Site.Console.Controllers.Sys
         #region 检查角色名称是否存在
 
         [HttpPost]
-        [AuthorizationOperation(Name = "检查角色名称是否存在")]
+        [AuthorizationAction(Name = "检查角色名称是否存在")]
         public ActionResult CheckRoleName(RoleViewModel role)
         {
             bool allowUse = !roleAppService.ExistRoleName(new ExistRoleNameDto()

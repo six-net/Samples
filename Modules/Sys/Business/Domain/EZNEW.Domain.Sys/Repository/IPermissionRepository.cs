@@ -17,15 +17,15 @@ namespace EZNEW.Domain.Sys.Repository
         /// 根据分组删除权限
         /// </summary>
         /// <param name="groups">分组信息</param>
-        /// <param name="activationOption">操作配置项</param>
-        void RemovePermissionByGroup(IEnumerable<PermissionGroup> groups, ActivationOption activationOption);
+        /// <param name="activationOptions">操作配置项</param>
+        void RemovePermissionByGroup(IEnumerable<PermissionGroup> groups, ActivationOptions activationOptions);
 
         /// <summary>
         /// 根据分组删除权限
         /// </summary>
         /// <param name="query">查询对象</param>
-        /// <param name="activationOption">操作配置项</param>
-        void RemovePermissionByGroup(IQuery query, ActivationOption activationOption);
+        /// <param name="activationOptions">操作配置项</param>
+        void RemovePermissionByGroup(IQuery query, ActivationOptions activationOptions);
 
         #endregion
     }

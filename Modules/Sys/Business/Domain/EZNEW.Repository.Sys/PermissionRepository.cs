@@ -21,7 +21,7 @@ namespace EZNEW.Repository.Sys
         /// 根据分组删除权限
         /// </summary>
         /// <param name="groups">分组信息</param>
-        public void RemovePermissionByGroup(IEnumerable<PermissionGroup> groups, ActivationOption activationOption)
+        public void RemovePermissionByGroup(IEnumerable<PermissionGroup> groups, ActivationOptions activationOptions)
         {
             if (groups.IsNullOrEmpty())
             {
@@ -29,14 +29,14 @@ namespace EZNEW.Repository.Sys
             }
             IEnumerable<long> groupIds = groups.Select(c => c.Id);
             IQuery removePermissionQuery = QueryManager.Create<PermissionEntity>(c => groupIds.Contains(c.Group));
-            Remove(removePermissionQuery, activationOption);
+            Remove(removePermissionQuery, activationOptions);
         }
 
         /// <summary>
         /// 根据分组删除权限
         /// </summary>
         /// <param name="query">query</param>
-        public void RemovePermissionByGroup(IQuery query, ActivationOption activationOption)
+        public void RemovePermissionByGroup(IQuery query, ActivationOptions activationOptions)
         {
             if (query == null)
             {
@@ -48,7 +48,7 @@ namespace EZNEW.Repository.Sys
             //remove permission
             var removePermissionQuery = QueryManager.Create<PermissionEntity>();
             removePermissionQuery.And<PermissionEntity>(c => c.Group, CriteriaOperator.In, removeGroupQuery);
-            Remove(removePermissionQuery, activationOption);
+            Remove(removePermissionQuery, activationOptions);
         }
         #endregion
     }

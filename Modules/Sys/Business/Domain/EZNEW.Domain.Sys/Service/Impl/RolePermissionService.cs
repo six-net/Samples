@@ -40,7 +40,7 @@ namespace EZNEW.Domain.Sys.Service.Impl
             if (!modifyRolePermission.Bindings.IsNullOrEmpty())
             {
                 var bindingInfos = modifyRolePermission.Bindings.Select(c => new Tuple<Role, Permission>(Role.Create(c.RoleId), Permission.Create(c.PermissionId)));
-                rolePermissionRepository.Remove(bindingInfos, new ActivationOption()
+                rolePermissionRepository.Remove(bindingInfos, new ActivationOptions()
                 {
                     ForceExecute = true
                 });
