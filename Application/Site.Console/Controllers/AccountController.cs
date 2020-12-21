@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+Ôªøusing Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EZNEW.ViewModel.Sys;
 using Site.Console.Util;
@@ -29,7 +29,7 @@ namespace Site.Console.Controllers
         }
 
         /// <summary>
-        /// —È÷§¬Î
+        /// È™åËØÅÁ†Å
         /// </summary>
         /// <returns></returns>
         public IActionResult VCode()

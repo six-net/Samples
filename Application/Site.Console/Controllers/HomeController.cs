@@ -1,4 +1,4 @@
-using System;
+锘縰sing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Site.Console.Controllers
 {
-    [AuthorizationGroup(Name = "系统入口")]
+    [AuthorizationGroup(Name = "绯荤粺鍏ュ彛")]
     public class HomeController : WebBaseController
     {
         // GET: /<controller>/
-        [AuthorizationAction(Name = "首页")]
+        [AuthorizationAction(Name = "棣栭〉")]
         public IActionResult Index()
         {
             return View();
