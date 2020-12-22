@@ -23,7 +23,7 @@ An example application for the EZNEW.NET development framework
 	* [Download the database script to create the database](https://github.com/eznew-net/Demo.File/tree/master/DemoDataBase)
 	
 7. Build and run <b>Site.Console</b> 
-8. Login by default UserName：<b>admin</b> and default Passwork：<b>admin</b>
+8. Login by default UserName：<b>admin</b> and default Password：<b>admin</b>
 
 # Reporting issues and bugs
 
