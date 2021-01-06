@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Modules\Sys\Model\EZNEW.Entity.Sys\EZNEW.Entity.Sys.csproj" />
-    <ProjectReference Include="..\..\Modules\Goods\Model\EZNEW.Entity.Goods\EZNEW.Entity.Goods.csproj" />
   </ItemGroup>
 
   <ItemGroup>
