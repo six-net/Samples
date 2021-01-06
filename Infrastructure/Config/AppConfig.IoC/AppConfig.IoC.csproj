@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Modules\Sys\Libraries\EZNEW.ModuleConfig.Sys\EZNEW.ModuleConfig.Sys.csproj" />
+    <ProjectReference Include="..\..\..\Modules\Goods\Libraries\EZNEW.ModuleConfig.Goods\EZNEW.ModuleConfig.Goods.csproj" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
