@@ -14,7 +14,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 操作功能
         /// </summary>
-        [EntityField(Description = "操作功能", PrimaryKey = true)]
+        [EntityField(Description = "操作功能", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(OperationEntity), nameof(OperationEntity.Id))]
         public long OperationId
         {
@@ -25,7 +25,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 权限
         /// </summary>
-        [EntityField(Description = "权限", PrimaryKey = true)]
+        [EntityField(Description = "权限", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
         public long PermissionId
         {

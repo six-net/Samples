@@ -35,7 +35,7 @@ namespace Site.Console
             {
                 options.ModelValidatorProviders.Add(new CustomDataAnnotationsModelValidatorProvider());
                 options.ModelMetadataDetailsProviders.Add(new CustomModelDisplayProvider());
-                options.Filters.Add<ActionAuthorizeFilter>();
+                options.Filters.Add<ExtendAuthorizeFilter>();
                 options.Filters.Add<ConsoleExceptionFilter>();
             })
             .AddViewOptions(vo =>

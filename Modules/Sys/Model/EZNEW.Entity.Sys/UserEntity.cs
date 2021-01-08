@@ -15,7 +15,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 用户编号
         /// </summary>
-        [EntityField(Description = "用户编号", PrimaryKey = true)]
+        [EntityField(Description = "用户编号", Role = FieldRole.PrimaryKey)]
         public long Id
         {
             get => GetPropertyValue<long>(nameof(Id));
@@ -25,7 +25,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 用户名
         /// </summary>
-        [EntityField(Description = "用户名", CacheOption = EntityFieldCacheOption.CacheKey)]
+        [EntityField(Description = "用户名")]
         public string UserName
         {
             get => GetPropertyValue<string>(nameof(UserName));

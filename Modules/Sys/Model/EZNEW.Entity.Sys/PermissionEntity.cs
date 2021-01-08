@@ -15,7 +15,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 编号
         /// </summary>
-        [EntityField(Description = "编号", PrimaryKey = true)]
+        [EntityField(Description = "编号", Role = FieldRole.PrimaryKey)]
         public long Id
         {
             get => GetPropertyValue<long>(nameof(Id));

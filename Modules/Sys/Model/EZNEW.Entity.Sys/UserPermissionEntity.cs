@@ -14,7 +14,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 用户
         /// </summary>
-        [EntityField(Description = "用户", PrimaryKey = true)]
+        [EntityField(Description = "用户", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(UserEntity), nameof(UserEntity.Id))]
         public long UserId
         {
@@ -25,7 +25,7 @@ namespace EZNEW.Entity.Sys
         /// <summary>
         /// 权限
         /// </summary>
-        [EntityField(Description = "权限", PrimaryKey = true)]
+        [EntityField(Description = "权限", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
         public long PermissionId
         {
