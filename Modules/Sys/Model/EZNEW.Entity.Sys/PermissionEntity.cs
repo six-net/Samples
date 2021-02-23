@@ -16,91 +16,55 @@ namespace EZNEW.Entity.Sys
         /// 编号
         /// </summary>
         [EntityField(Description = "编号", Role = FieldRole.PrimaryKey)]
-        public long Id
-        {
-            get => GetPropertyValue<long>(nameof(Id));
-            set => SetPropertyValue(nameof(Id), value);
-        }
+        public long Id { get; set; }
 
         /// <summary>
         /// 权限编码
         /// </summary>
         [EntityField(Description = "权限编码")]
-        public string Code
-        {
-            get => GetPropertyValue<string>(nameof(Code));
-            set => SetPropertyValue(nameof(Code), value);
-        }
+        public string Code { get; set; }
 
         /// <summary>
         /// 名称
         /// </summary>
         [EntityField(Description = "名称")]
-        public string Name
-        {
-            get => GetPropertyValue<string>(nameof(Name));
-            set => SetPropertyValue(nameof(Name), value);
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// 权限类型
         /// </summary>
         [EntityField(Description = "权限类型")]
-        public PermissionType Type
-        {
-            get => GetPropertyValue<PermissionType>(nameof(Type));
-            set => SetPropertyValue(nameof(Type), value);
-        }
+        public PermissionType Type { get; set; }
 
         /// <summary>
         /// 状态
         /// </summary>
         [EntityField(Description = "状态")]
-        public PermissionStatus Status
-        {
-            get => GetPropertyValue<PermissionStatus>(nameof(Status));
-            set => SetPropertyValue(nameof(Status), value);
-        }
+        public PermissionStatus Status { get; set; }
 
         /// <summary>
         /// 排序
         /// </summary>
         [EntityField(Description = "排序")]
-        public int Sort
-        {
-            get => GetPropertyValue<int>(nameof(Sort));
-            set => SetPropertyValue(nameof(Sort), value);
-        }
+        public int Sort { get; set; }
 
         /// <summary>
         /// 权限分组
         /// </summary>
         [EntityField(Description = "权限分组")]
         [EntityRelation(typeof(PermissionGroupEntity), nameof(PermissionGroupEntity.Id))]
-        public long Group
-        {
-            get => GetPropertyValue<long>(nameof(Group));
-            set => SetPropertyValue(nameof(Group), value);
-        }
+        public long Group { get; set; }
 
         /// <summary>
         /// 说明
         /// </summary>
         [EntityField(Description = "说明")]
-        public string Remark
-        {
-            get => GetPropertyValue<string>(nameof(Remark));
-            set => SetPropertyValue(nameof(Remark), value);
-        }
+        public string Remark { get; set; }
 
         /// <summary>
         /// 添加时间
         /// </summary>
         [EntityField(Description = "添加时间")]
-        public DateTime CreateDate
-        {
-            get => GetPropertyValue<DateTime>(nameof(CreateDate));
-            set => SetPropertyValue(nameof(CreateDate), value);
-        }
+        public DateTime CreateDate { get; set; }
     }
 }

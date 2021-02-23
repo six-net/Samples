@@ -16,21 +16,13 @@ namespace EZNEW.Entity.Sys
         /// </summary>
         [EntityField(Description = "操作功能", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(OperationEntity), nameof(OperationEntity.Id))]
-        public long OperationId
-        {
-            get => GetPropertyValue<long>(nameof(OperationId));
-            set => SetPropertyValue(nameof(OperationId), value);
-        }
+        public long OperationId { get; set; }
 
         /// <summary>
         /// 权限
         /// </summary>
         [EntityField(Description = "权限", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
-        public long PermissionId
-        {
-            get => GetPropertyValue<long>(nameof(PermissionId));
-            set => SetPropertyValue(nameof(PermissionId), value);
-        }
+        public long PermissionId { get; set; }
     }
 }

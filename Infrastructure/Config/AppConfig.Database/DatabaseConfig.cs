@@ -25,7 +25,7 @@ namespace AppConfig.Database
         /// </summary>
         static void ConfigureDatabaseEngine()
         {
-            DataManager.ConfigureDatabaseEngine(DatabaseServerType.SQLServer, new SqlServerEngine());
+            DataManager.ConfigureDatabaseProvider(DatabaseServerType.SQLServer, new SqlServerProvider());
         }
 
         /// <summary>

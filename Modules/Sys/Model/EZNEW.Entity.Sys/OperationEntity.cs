@@ -18,91 +18,55 @@ namespace EZNEW.Entity.Sys
         /// 主键编号
         /// </summary>
         [EntityField(Description = "主键编号", Role = FieldRole.PrimaryKey)]
-        public long Id
-        {
-            get => GetPropertyValue<long>(nameof(Id));
-            set => SetPropertyValue(nameof(Id), value);
-        }
+        public long Id { get; set; }
 
         /// <summary>
         /// 控制器
         /// </summary>
         [EntityField(Description = "控制器", IsRequired = true)]
-        public string ControllerCode
-        {
-            get => GetPropertyValue<string>(nameof(ControllerCode));
-            set => SetPropertyValue(nameof(ControllerCode), value);
-        }
+        public string ControllerCode { get; set; }
 
         /// <summary>
         /// 操作方法
         /// </summary>
         [EntityField(Description = "操作方法")]
-        public string ActionCode
-        {
-            get => GetPropertyValue<string>(nameof(ActionCode));
-            set => SetPropertyValue(nameof(ActionCode), value);
-        }
+        public string ActionCode { get; set; }
 
         /// <summary>
         /// 名称
         /// </summary>
         [EntityField(Description = "名称")]
-        public string Name
-        {
-            get => GetPropertyValue<string>(nameof(Name));
-            set => SetPropertyValue(nameof(Name), value);
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// 状态
         /// </summary>
         [EntityField(Description = "状态")]
-        public int Status
-        {
-            get => GetPropertyValue<int>(nameof(Status));
-            set => SetPropertyValue(nameof(Status), value);
-        }
+        public int Status { get; set; }
 
         /// <summary>
         /// 排序
         /// </summary>
         [EntityField(Description = "排序")]
-        public int Sort
-        {
-            get => GetPropertyValue<int>(nameof(Sort));
-            set => SetPropertyValue(nameof(Sort), value);
-        }
+        public int Sort { get; set; }
 
         /// <summary>
         /// 操作分组
         /// </summary>
         [EntityField(Description = "操作分组")]
         [EntityRelation(typeof(OperationGroupEntity), nameof(OperationGroupEntity.Id))]
-        public long Group
-        {
-            get => GetPropertyValue<long>(nameof(Group));
-            set => SetPropertyValue(nameof(Group), value);
-        }
+        public long Group { get; set; }
 
         /// <summary>
         /// 访问级别
         /// </summary>
         [EntityField(Description = "访问级别")]
-        public OperationAccessLevel AccessLevel
-        {
-            get => GetPropertyValue<OperationAccessLevel>(nameof(AccessLevel));
-            set => SetPropertyValue(nameof(AccessLevel), value);
-        }
+        public OperationAccessLevel AccessLevel { get; set; }
 
         /// <summary>
         /// 方法描述
         /// </summary>
         [EntityField(Description = "方法描述")]
-        public string Remark
-        {
-            get => GetPropertyValue<string>(nameof(Remark));
-            set => SetPropertyValue(nameof(Remark), value);
-        }
+        public string Remark { get; set; }
     }
 }

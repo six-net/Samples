@@ -17,21 +17,13 @@ namespace EZNEW.Entity.Sys
         [EntityField(Description = "角色", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(RoleEntity), nameof(RoleEntity.Id))]
         [EntityRelation(typeof(UserRoleEntity), nameof(UserRoleEntity.RoleId))]
-        public long RoleId
-        {
-            get => GetPropertyValue<long>(nameof(RoleId));
-            set => SetPropertyValue(nameof(RoleId), value);
-        }
+        public long RoleId { get; set; }
 
         /// <summary>
         /// 权限
         /// </summary>
         [EntityField(Description = "权限", Role = FieldRole.PrimaryKey)]
         [EntityRelation(typeof(PermissionEntity), nameof(PermissionEntity.Id))]
-        public long PermissionId
-        {
-            get => GetPropertyValue<long>(nameof(PermissionId));
-            set => SetPropertyValue(nameof(PermissionId), value);
-        }
+        public long PermissionId { get; set; }
     }
 }
