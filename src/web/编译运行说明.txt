@@ -1,0 +1,9 @@
+
+	1：安装最新版本的Node
+	
+	2:  安装cnpm
+		npm install cnpm -g --registry=https://registry.nlark.com
+
+	3:  安装包，分别执行 npm install 和 cnpm install
+
+	4: 运行开发服务：npm run serve

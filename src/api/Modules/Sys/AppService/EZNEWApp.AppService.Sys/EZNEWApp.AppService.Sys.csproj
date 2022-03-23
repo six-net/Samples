@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business\EZNEWApp.BusinessContract.Sys\EZNEWApp.BusinessContract.Sys.csproj" />
+    <ProjectReference Include="..\EZNEWApp.AppServiceContract.Sys\EZNEWApp.AppServiceContract.Sys.csproj" />
+  </ItemGroup>
+
+</Project>

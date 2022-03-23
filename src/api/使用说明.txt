@@ -1,0 +1,34 @@
+
+	一：初始化默认数据库
+	
+		项目中默认采用 SQLServer 数据库，若要切换到其它数据库请参考：http://eznew.net/start/quickstart#%E5%88%87%E6%8D%A2%E6%95%B0%E6%8D%AE%E5%BA%93
+	
+		1，配置appsettings.json中的数据库连接字符串
+		2，打开命令行工具(cmd.exe)
+		3，运行命令 dotnet tool install --global dotnet-ef
+		4，在命令行工具导航到目录 Application/App.EntityMigration
+		5，运行命令 dotnet ef migrations add init
+		6，运行命令 dotnet ef database update
+		7，默认测试用户名和密码都是 admin
+		
+	二：创建功能模块(以"Shop"为例)
+		
+		1，调试运行项目 Application/App.CodeBuilder
+		2，根据提示选择创建功能分组，输入 1
+		3，输入模块名称 "Shop"
+		
+	三：创建代码
+	
+		1，创建实体(以"GoodsEntity"为例,默认建议实体统一以Entity结尾)，实体的配置请参考默认模块"Sys"下的相关实体
+		2，调试运行项目 Application/App.CodeBuilder
+		3，根据提示选择创建代码，输入 2
+		4，输入要创建代码的实体名称，例如:GoodsEntity,多个实体以英文逗号(,)分隔
+		
+	四：删除代码
+	
+		会删除实体以外其它默认生成的相关代码
+		
+		1，调试运行项目 Application/App.CodeBuilder
+		2，根据提示选择创建代码，输入3
+		3，输入要创建代码的实体名称，例如:GoodsEntity,多个实体以英文逗号(,)分隔
+		

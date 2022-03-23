@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework Condition="'$(TargetFrameworkOverride)' == ''">net5.0</TargetFramework>
+	  <TargetFramework Condition="'$(TargetFrameworkOverride)' != ''">TargetFrameworkOverride</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\EZNEWApp.Domain.Sys\EZNEWApp.Domain.Sys.csproj" />
+    <ProjectReference Include="..\EZNEWApp.Module.Sys\EZNEWApp.Module.Sys.csproj" />
+    <ProjectReference Include="..\..\Business\EZNEWApp.Business.Sys\EZNEWApp.Business.Sys.csproj" />
+    <ProjectReference Include="..\..\Business\EZNEWApp.BusinessContract.Sys\EZNEWApp.BusinessContract.Sys.csproj" />
+    <ProjectReference Include="..\..\AppService\EZNEWApp.AppService.Sys\EZNEWApp.AppService.Sys.csproj" />
+    <ProjectReference Include="..\..\AppService\EZNEWApp.AppServiceContract.Sys\EZNEWApp.AppServiceContract.Sys.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\Sys\Display\OperationGroup.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\Operation.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\Role.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Display\User.disconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\LoginParameter.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\OperationGroup.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\Operation.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\Sys\Validation\User.dvconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="build.bat" />
+	</Target>
+</Project>

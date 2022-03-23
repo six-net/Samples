@@ -1,40 +1,27 @@
-# Demo.Core3.0
+# Samples
 
-An example application for the EZNEW.NET development framework
+示例应用
 
-# Get Started
+# 快速开始
 
-1. Download and install [.NetCore3.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
-2. Download and install [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)
-3. If you can't access nuget.org,you can use this nuget package source：<b>http://nuget.eznew.net/v3/index.json</b>
-4. Clone or download project
-5. Configure database connection in <b>Application/Site.Console/appsettings.json</b> and modify the database type in <b>Infrastructure/AppConfig.Database/DatabaseConfig</b>(The default value is DatabaseServerType.SQLServer)
-6. Create database
-	* [Create the database using EntityFramework Migration](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)(recommended)
+1. 下载安装 [.NetCore5.0 SDK](https://dotnet.microsoft.com/download/dotnet-core/5.0)
+2. 下载安装 [Visual Studio 2019](https://visualstudio.microsoft.com/zh-hans/downloads/)
+3. EZNEW备用Nuget包地址：<b>http://nuget.eznew.net/v3/index.json</b>
+4. 下载项目:git clone https://github.com/eznew-net/Samples.git
+5. 默认使用MySQL8+数据库，在<b>/src/api/Application/Api.Console/appsettings.json</b>中配置数据库连接
+6. 创建数据库
+	* [使用EF Migration创建数据库](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli)
 	
-		1. Open the command line tool(cmd.exe)
+		1. 打开命令行工具cmd.exe
 		
-		2. Installing the tools：<b>dotnet tool install --global dotnet-ef</b>
+		2. 安装ef工具：<b>dotnet tool install --global dotnet-ef</b>
 		
-		3. Navigate to the path to the <b>Application/App.EntityMigration</b> then run the command: <b>dotnet ef migrations add InitialCreate</b>
+		3. 导航到路径 <b>/src/api/Application/App.EntityMigration</b> 并运行命令: <b>dotnet ef migrations add init</b>
 		
-		4. Run the command：<b>dotnet ef database update</b>
-		
-	* [Download the database script to create the database](https://github.com/eznew-net/Demo.File/tree/master/DemoDataBase)
+		4. 运行命令：<b>dotnet ef database update</b>
 	
-7. Build and run <b>Site.Console</b> 
-8. Login by default UserName：<b>admin</b> and default Password：<b>admin</b>
-
-# Reporting issues and bugs
-
-If you have any questions or Suggestions, you can report to us via email,to the lidingbin@live.com, and we will reply to you as soon as possible, or you can contact [DingBin Li](https://github.com/lidingbin) via GitHub
-
-# Related projects
-
-These are some other repos for related projects:
-
-  * [EZNEW](https://github.com/eznew-net/EZNEW)-A simple, easy-to-use, flexible, and efficient .NET development framework
-  * [EZNEW.Data.SqlServer](https://github.com/eznew-net/EZNEW.Data.SqlServer)-Provides access to SQL Server databases based on the EZNEW development framework
-  * [EZNEW.Data.MySQL](https://github.com/eznew-net/EZNEW.Data.MySQL)-Provides access to MySQL databases based on the EZNEW development framework
-  * [EZNEW.Data.Oracle](https://github.com/eznew-net/EZNEW.Data.Oracle)-Provides access to Oracle databases based on the EZNEW development framework
-  * [EZNEW.Web](https://github.com/eznew-net/EZNEW.Web)-ASP.NET development tool library
+7. 编译运行 <b>Api.Console</b> 
+8. 导航到路径 <b>src/web</b>,运行命令 <b>npm install cnpm -g --registry=https://registry.nlark.com</b>
+9. 运行命令 <b>cnpm install</b>
+10. 运行命令  <b>npm run serve</b>
+11. 使用默认用户名密码登录：<b>admin</b> and default Password：<b>admin</b>
